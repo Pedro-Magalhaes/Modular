@@ -480,6 +480,11 @@
 
    } /* Fim função: LIS  &Procurar elemento contendo valor */
 
+   int LIS_ObtemTamanho(LIS_tppLista pLista)
+   {	  
+	   return pLista->numElem;
+   }
+
 
 /*****  Código das funções encapsuladas no módulo  *****/
 
