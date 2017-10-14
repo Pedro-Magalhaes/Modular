@@ -9,7 +9,7 @@ if ""=="%3" goto console
 goto sai
 
 :console
-..\produto\%1 /s..\scripts\%2 
+..\produto\%1 /s..\produto\%2 
 goto sai
 
 :erro

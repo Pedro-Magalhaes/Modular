@@ -47,7 +47,7 @@ INCLUDE = $(INCLUDE);$(PDEFAULT)
 ### Regras de geração
 
 all : limpa \
-   $(Fobj)\testlis.obj   $(Fobj)\lista.obj \
+   $(Fobj)\TestLis.obj   $(Fobj)\Lista.obj   $(Fobj)\Grafo.obj \
    Construto
 
 ### Limpar arquivos
@@ -58,20 +58,24 @@ limpa :
 
 ### Dependências de módulos objeto a compilar
 
-$(Fobj)\testlis.obj :  {$(Pc)}\testlis.c \
-    {$(Ph)}generico.h           {$(Ph)}lerparm.h            {$(Ph)}lista.h              \
-    {$(Ph)}tst_espc.h          
+$(Fobj)\TestLis.obj :  {$(Pc)}\TestLis.c \
+    {$(Ph)}Generico.h           {$(Ph)}LerParm.h            {$(Ph)}Lista.h              \
+    {$(Ph)}TST_Espc.h          
    cl $(O) $(OPT) /Fo$(Fobj)\ $(Fc)\$(@B).c >> $(Ferr)\$(NOME).err
 
-$(Fobj)\lista.obj :  {$(Pc)}\lista.c \
-    {$(Ph)}lista.h             
+$(Fobj)\Lista.obj :  {$(Pc)}\Lista.c \
+    {$(Ph)}LISTA.h             
+   cl $(O) $(OPT) /Fo$(Fobj)\ $(Fc)\$(@B).c >> $(Ferr)\$(NOME).err
+
+$(Fobj)\Grafo.obj :  {$(Pc)}\Grafo.c \
+    {$(Ph)}GRAFO.h              {$(PDEFAULT)}LISTA.H             
    cl $(O) $(OPT) /Fo$(Fobj)\ $(Fc)\$(@B).c >> $(Ferr)\$(NOME).err
 
 
 ### Terminação
 
 Construto : \
-   $(Fobj)\testlis.obj   $(Fobj)\lista.obj
+   $(Fobj)\TestLis.obj   $(Fobj)\Lista.obj   $(Fobj)\Grafo.obj
     cd $(Fobj)
     LINK $(L) @$(NOME).build >> $(Ferr)\$(NOME).err
 

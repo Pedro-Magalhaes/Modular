@@ -12,6 +12,7 @@ c			= ..\Fontes
 [Modulos]
 TestLis
 Lista
+Grafo
 
 [BuildInicio]
 /OUT:..\Produto\TesteGrafo.exe

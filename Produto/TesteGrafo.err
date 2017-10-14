@@ -1,10 +1,28 @@
-testlis.c
-lista.c
+TestLis.c
+Lista.c
+Grafo.c
+..\Fontes\Grafo.c(95) : warning C4047: 'return' : 'GRA_tppGrafo' differs in levels of indirection from 'int'
+..\Fontes\Grafo.c(143) : warning C4098: 'GRA_EsvaziarGrafo' : 'void' function returning a value
+..\Fontes\Grafo.c(145) : warning C4047: 'function' : 'LIS_tppLista' differs in levels of indirection from 'LIS_tppLista *'
+..\Fontes\Grafo.c(145) : warning C4024: 'LIS_ObterValor' : different types for formal and actual parameter 1
+..\Fontes\Grafo.c(146) : warning C4047: 'function' : 'LIS_tppLista' differs in levels of indirection from 'LIS_tppLista *'
+..\Fontes\Grafo.c(146) : warning C4024: 'LIS_EsvaziarLista' : different types for formal and actual parameter 1
+..\Fontes\Grafo.c(148) : warning C4047: 'function' : 'LIS_tppLista' differs in levels of indirection from 'LIS_tppLista *'
+..\Fontes\Grafo.c(148) : warning C4024: 'LIS_AvancarElementoCorrente' : different types for formal and actual parameter 1
+..\Fontes\Grafo.c(151) : warning C4047: 'function' : 'LIS_tppLista' differs in levels of indirection from 'LIS_tppLista *'
+..\Fontes\Grafo.c(151) : warning C4024: 'LIS_ObterValor' : different types for formal and actual parameter 1
+..\Fontes\Grafo.c(152) : warning C4047: 'function' : 'LIS_tppLista' differs in levels of indirection from 'LIS_tppLista *'
+..\Fontes\Grafo.c(152) : warning C4024: 'LIS_EsvaziarLista' : different types for formal and actual parameter 1
+..\Fontes\Grafo.c(155) : warning C4047: 'function' : 'LIS_tppLista' differs in levels of indirection from 'LIS_tppLista *'
+..\Fontes\Grafo.c(155) : warning C4024: 'LIS_EsvaziarLista' : different types for formal and actual parameter 1
+..\Fontes\Grafo.c(160) : warning C4098: 'GRA_EsvaziarGrafo' : 'void' function returning a value
+..\Fontes\Grafo.c(180) : warning C4047: 'function' : 'LIS_tppLista' differs in levels of indirection from 'LIS_tppLista *'
+..\Fontes\Grafo.c(180) : warning C4024: 'LIS_InserirElementoApos' : different types for formal and actual parameter 1
 Microsoft (R) Incremental Linker Version 10.00.40219.01
 Copyright (C) Microsoft Corporation.  All rights reserved.
 
 /OUT:..\Produto\TesteGrafo.exe 
 /INCREMENTAL:NO 
 /MACHINE:IX86 
-testlis.obj lista.obj 
+TestLis.obj Lista.obj Grafo.obj 
 ArcaboucoTeste.lib 
