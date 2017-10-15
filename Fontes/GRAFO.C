@@ -139,7 +139,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  void GRA_EsvaziarGrafo(GRA_tppGrafo pGrafo)
  {
 
-	 LIS_tppLista * Elem= pGrafo->pOrigemGrafo;
+	 LIS_tppLista Elem= pGrafo->pOrigemGrafo;
 	 
 	 tpVerticeGrafo * atual;
 	 
@@ -147,9 +147,9 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 #ifdef _DEBUG
 	 assert(pGrafo != NULL);
 #endif
-	 if (pGrafo != NULL)
+	 if (pGrafo == NULL)
 	 {
-		 return GRA_CondRetGrafoVazia;
+		 return;
 	 }
 	 LIS_IrInicioLista(Elem); //indo pro inicio da lista
 	 atual = LIS_ObterValor(Elem);//pegando o primeiro valor
@@ -168,7 +168,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
 	 LimparCabeca(pGrafo);
 
-	 return GRA_CondRetOK;
+	 return;
 
  } /* Fim função: GRA  &Esvaziar grafo */
 
@@ -182,7 +182,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 		 assert(pGrafo != NULL);
 	#endif
-	GRA_tpCondRet retorno;
+	
 	tpVerticeGrafo* pVerticeAux=NULL;
 	pVerticeAux = CriarElemento( pValor);
 	if (pVerticeAux==NULL)
@@ -304,7 +304,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 		assert(pGrafo != NULL);
 	#endif
-	tpVerticeGrafo* aux;
+	//tpVerticeGrafo* aux;
 	LIS_tpCondRet retorno = LIS_ProcurarValor(pGrafo->pOrigemGrafo, vertice);
 
 	if (retorno==LIS_CondRetListaVazia)
@@ -384,14 +384,14 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 assert(pGrafo != NULL);
 #endif
 	 if (pGrafo == NULL)
-		 return GRA_CondRetGrafoVazia;
-	 LIS_tppLista Lisaux = pGrafo;
+		 return NULL;
+	 LIS_tppLista Lisaux = pGrafo->pOrigemGrafo;
 	 tpVerticeGrafo *vertaux;
 	 LIS_IrInicioLista(Lisaux);
 	 vertaux = LIS_ObterValor(Lisaux);
 	 if (vertaux == NULL)
 	 {
-		 return GRA_CondRetGrafoVazia;
+		 return NULL;
 	 }
 	 if (vertaux->valor == pValor)
 	 {
@@ -399,7 +399,8 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 }
 
 
-	 return GRA_CondRetNaoAchou;
+
+	 return NULL;
  }
 
  /* Fim Função: GRA  &ProcurarValor */
