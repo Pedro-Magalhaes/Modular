@@ -246,7 +246,7 @@ GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo, void* vertice);
 *
 ***********************************************************************/
 
-void * GRA_ObterValorCorrente(GRA_tppGrafo pGrafo);
+void* GRA_ObterValorCorrente(GRA_tppGrafo pGrafo);
 
 
 
@@ -276,7 +276,7 @@ GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Procurar elemento contendo valor
+*  $FC Função: GRA  &IrVertice elemento contendo valor
 *
 *  $ED Descrição da função
 *     Procura o elemento que referencia o valor dado.
@@ -299,8 +299,7 @@ GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
 *
 ***********************************************************************/
 
-GRA_tpCondRet GRA_ProcurarValor(GRA_tppGrafo pGrafo,
-	void * pValor);
+GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * vertice);
 
 #undef GRAFO_EXT
 
