@@ -82,7 +82,7 @@ static tpVerticeGrafo* GRA_ProcurarValor (LIS_tppLista pOrigemGrafo, void* pValo
 
 static tpVerticeGrafo* CriarElemento(void * pValor);
 
-static void LimparCabeca(GRA_tppGrafo pGrafo);
+static void LimparCabeca(GRA_tppGrafo pGrafo);  /* por enquanto nao foi utilizada */
 
 static void naoExclui(void * pDado);
 
@@ -122,9 +122,13 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  void GRA_DestruirGrafo( GRA_tppGrafo pGrafo )
    {
 
-      #ifdef _DEBUG
-         assert( pGrafo != NULL ) ;
-      #endif
+    #ifdef _DEBUG
+      assert( pGrafo != NULL ) ;
+    #endif
+	  if (pGrafo == NULL)
+	  {//nada a ser feito
+		  return;
+	  }
 
       GRA_EsvaziarGrafo( pGrafo ) ;
 
@@ -169,9 +173,8 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 }
 	 //limpa a lista de vertices
 	 LIS_EsvaziarLista(pGrafo->pOrigemGrafo);
-	 
-
-	 //LimparCabeca(pGrafo);
+	 pGrafo->pArestas = NULL;
+	 pGrafo->pVertice = NULL;
 
 	 return;
 
@@ -187,6 +190,11 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 		 assert(pGrafo != NULL);
 	#endif
+
+	if (pGrafo == NULL)
+	{
+		return GRA_CondRetGrafoVazia;  //***   Verificar se essa é a condição de retorno adequado pra um ponteiro de grafo NULL  ***//
+	}
 	
 	tpVerticeGrafo* pVerticeAux=NULL;
 	pVerticeAux = CriarElemento( pValor);
@@ -254,46 +262,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 		pGrafo->pArestas = NULL;
 	}
 	return GRA_CondRetOK;
-	 
 
-	 //Percorre a lista de aresta do vertice a ser excluido (lista do corrente)
-	/* while (LIS_AvancarElementoCorrente(pGrafo->pArestas, 1) != LIS_CondRetFimLista)
-	 {
-		 tpVerticeGrafo *aux =(tpVerticeGrafo*) LIS_ObterValor(pGrafo->pArestas);
-		
-		 //Percorre a lista de arestas dos elementos que tem o vertice a ser excluido como aresta
-		 while (LIS_AvancarElementoCorrente(aux->pVerticeArestas, 1) != LIS_CondRetFimLista)
-		 {
-			 if (aux->valor == pGrafo->pVertice->valor)
-			 {
-				 LIS_ExcluirElemento(aux->pVerticeArestas);
-			 }
-		 }
-	 }*/
-
-	 ////Eliminar o vertice corrente
-	 //if (LIS_ExcluirElemento(pGrafo->pOrigemGrafo) == LIS_CondRetListaVazia)
-	 //{
-		// return GRA_CondRetGrafoVazia;
-	 //}
-	 //LIS_DestruirLista(pGrafo->pArestas);
-	 //
-	 //pGrafo->ExcluirValor(pGrafo->pVertice->valor);
-	 //free(pGrafo->pVertice);
-	 //
-	 ////atualizando o corrente
-	 //pGrafo->pVertice = LIS_ObterValor(pGrafo->pOrigemGrafo);
-	 //if (pGrafo->pVertice != NULL)
-	 //{
-		// pGrafo->pArestas = pGrafo->pVertice->pVerticeArestas;
-	 //}
-	 //else
-	 //{
-		// pGrafo->pArestas = NULL;
-	 //}
-
-
-	 return GRA_CondRetOK;
  }
 
  /* Fim Função: GRA  &Excluir Vertice */
@@ -309,6 +278,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 	 assert(pGrafo != NULL);
 	#endif
+	 if (pGrafo == NULL)
+	 {
+		 return GRA_CondRetGrafoVazia;  //***   Verificar se essa é a condição de retorno adequado pra um ponteiro de grafo NULL  ***//
+	 }
 	 GRA_tppGrafo gAux = pGrafo;
 	 tpVerticeGrafo* vAux = GRA_ProcurarValor(gAux->pOrigemGrafo, valor);
 	 GRA_tpCondRet ret = EfetuaExclusaoAresta(pGrafo->pVertice, vAux);
@@ -330,6 +303,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 		assert(pGrafo != NULL);
 	#endif
+	if (pGrafo == NULL)
+	{
+		return GRA_CondRetGrafoVazia;  //***   Verificar se essa é a condição de retorno adequado pra um ponteiro de grafo NULL  ***//
+	}
 	tpVerticeGrafo* aux;
 	aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo,valor);
 
@@ -378,6 +355,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 		 assert(pGrafo != NULL);
 	#endif
+	if (pGrafo == NULL)
+	{
+		return GRA_CondRetGrafoVazia;  //***   Verificar se essa é a condição de retorno adequado pra um ponteiro de grafo NULL  ***//
+	}
 		 tpVerticeGrafo *aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo, valor);
 	 if (aux != NULL)
 	 {	
@@ -387,7 +368,6 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 		 LIS_IrFinalLista(aux->pVerticeArestas);
 		 LIS_InserirElementoApos(aux->pVerticeArestas,pGrafo->pVertice);
 
-		// GRA_IrVertice(pGrafo, corrente->valor);//voltando com o corrente
 		 return GRA_CondRetOK;
 	 }
 	 return GRA_CondRetNaoAchou;
@@ -399,6 +379,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
  int GRA_QNTvertices(GRA_tppGrafo pGrafo)
  {
+	 if (pGrafo == NULL)
+	 {
+		 return -1;					//* RETORNAR -1 QUANDO O PONTEIRO É NULL?????? ********************************//
+	 }
 	 return LIS_ObtemTamanho(pGrafo->pOrigemGrafo);
  }
 
@@ -454,6 +438,8 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
  static void LimparCabeca(GRA_tppGrafo pGrafo)
  {
+	 if (pGrafo == NULL)
+		 return;
 	 pGrafo->pArestas = NULL;
 	 pGrafo->pOrigemGrafo = NULL;
 	 pGrafo->pVertice = NULL;
@@ -490,6 +476,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
  static GRA_tpCondRet EfetuaExclusaoAresta(tpVerticeGrafo* vertice1, tpVerticeGrafo* vertice2)
  {
+	 if (vertice1 == NULL || vertice2 == NULL)
+	 {
+		 return GRA_CondRetGrafoVazia; //*************      MELHORAR ESSA CONDIÇÃO DE RETORNO, CRIAR UMA NOVA? COMO É INTERNA RETORNAR -1?? *******//
+	 }
 	 LIS_tpCondRet retorno;
 	 LIS_IrInicioLista(vertice1->pVerticeArestas);
 	 retorno = LIS_ProcurarValor(vertice1->pVerticeArestas, vertice2);
@@ -520,6 +510,8 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  /*******************************************************
  *
  *  Função: GRA  &naoExclui
+ *	função para criar a lista de arestas dos vertices sem que ao deletar alguma aresta
+ *	o vertice não seja desalocado
  *  ****/
  static void naoExclui (void * pDado)
  {
