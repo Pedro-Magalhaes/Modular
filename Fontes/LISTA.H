@@ -230,6 +230,29 @@ typedef struct LIS_tagLista * LIS_tppLista ;
    LIS_tpCondRet LIS_ExcluirElemento( LIS_tppLista pLista ) ;
 
 
+
+   /***********************************************************************
+   *
+   *  $FC Função: LIS  &Retira elemento
+   *
+   *  $ED Descrição da função
+   *     Retira o elemento corrente da lista dada.
+   *     Se existir o elemento aa esquerda do corrente será o novo corrente.
+   *     Se não existir e existir o elemento à direita, este se tornará corrente.
+   *     Se este também não existir a lista tornou-se vazia.
+   *
+   *  $EP Parâmetros
+   *     pLista    - ponteiro para a lista na qual deve excluir.
+   *
+   *  $FV Valor retornado
+   *     LIS_CondRetOK
+   *     LIS_CondRetListaVazia
+   *
+   ***********************************************************************/
+
+   LIS_tpCondRet LIS_RetiraElemento(LIS_tppLista pLista);
+
+
 /***********************************************************************
 *
 *  $FC Função: LIS  &Obter referência para o valor contido no elemento
@@ -263,7 +286,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 ***********************************************************************/
 
-   void IrInicioLista( LIS_tppLista pLista ) ;
+   void LIS_IrInicioLista( LIS_tppLista pLista ) ;
 
 
 /***********************************************************************
@@ -279,7 +302,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 ***********************************************************************/
 
-   void IrFinalLista( LIS_tppLista pLista ) ;
+   void LIS_IrFinalLista( LIS_tppLista pLista ) ;
 
 
 /***********************************************************************

@@ -12,21 +12,22 @@
 *
 *  Projeto: INF 1301 / 1628 Automatização dos testes de módulos C
 *  Gestor:  LES/DI/PUC-Rio
-*  Autores: Hfac
+*  Autores: Hfac & Pfm 
 *
 *  $HA Histórico de evolução:
-*     Versão  Autor    Data     Observações
-*     1       Hfac   10/out/2017 início desenvolvimento
+*     Versão  Autor			Data		 Observações
+*     1       Hfac & Pfm   13/out/2017	 início desenvolvimento
+*	  2		  Hfac & Pfm   14/out/2017   continuação do desenvolvimento
 *
 *  $ED Descrição do módulo
-*     Implementa grafos genéricas duplamente encadeadas.
+*     Implementa grafos com cabeça genéricos.
 *     Podem existir n grafos em operação simultaneamente.
 *     As grafos possuem uma cabeça encapsulando o seu estado.
 *
 *     Cada grafo é homogênea quanto ao tipo dos dados que armazena.
 *     Cada elemento da grafo referencia o valor que contém.
 *
-*     Os ponteiros para os dados são copiados para elementos da grafo.
+*     Os ponteiros para os dados são copiados para elementos do grafo.
 *        Não é copiado o valor apontado por estes ponteiros.
 *
 *     O controle da destruição do valor de um elemento a ser excluído
@@ -185,7 +186,7 @@ GRA_tpCondRet GRA_InserirVertice(GRA_tppGrafo pGrafo,
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Excluir elemento
+*  $FC Função: GRA  &Excluir vertice
 *
 *  $ED Descrição da função
 *     Exclui o elemento corrente da grafo dada.
@@ -217,6 +218,7 @@ GRA_tpCondRet GRA_ExcluirVertice(GRA_tppGrafo pGrafo);
 *
 *  $EP Parâmetros
 *     pGrafo    - ponteiro para a grafo na qual deve excluir.
+*	  vertice	- Ponteiro para o vertice cuja aresta deve ser excluida
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK
@@ -224,7 +226,7 @@ GRA_tpCondRet GRA_ExcluirVertice(GRA_tppGrafo pGrafo);
 *
 ***********************************************************************/
 
-GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo);
+GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo, void* vertice);
 
 
 /***********************************************************************
@@ -244,25 +246,21 @@ GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo);
 *
 ***********************************************************************/
 
-void * GRA_ObterValor(GRA_tppGrafo pGrafo);
+void * GRA_ObterValorCorrente(GRA_tppGrafo pGrafo);
 
 
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Avançar elemento
+*  $FC Função: GRA  &CriarAresta
 *
 *  $ED Descrição da função
-*     Avança o elemento corrente numElem elementos na grafo
-*     Se numElem for positivo avança em direção ao final
-*     Se numElem for negativo avança em direção ao início
-*     numElem pode ser maior do que o númro de elementos existentes na
-*               direção desejada
-*     Se numElem for zero somente verifica se a grafo está vazia
+*    cria uma aresta entre o vertice corrente e o vertice recebido como parametro
+*     
 *
 *  $EP Parâmetros
 *     pGrafo  - ponteiro para a grafo a ser manipulada
-*     numElem - o número de elementos a andar
+*     vertice - vertice destino 
 *
 *  $FV Valor retornado
 *     CondRetOK         - se numElem elementos tiverem sido andados
@@ -272,8 +270,8 @@ void * GRA_ObterValor(GRA_tppGrafo pGrafo);
 *
 ***********************************************************************/
 
-GRA_tpCondRet GRA_AvancarElementoCorrente(GRA_tppGrafo pGrafo,
-	int numElem);
+GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
+	void* vertice);
 
 
 /***********************************************************************
