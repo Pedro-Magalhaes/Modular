@@ -76,8 +76,9 @@ typedef struct GRA_tagGrafo {
 /*static void LiberarElemento(LIS_tppLista   pLista,
 	tpElemLista  * pElem);*/
 
-static tpVerticeGrafo* GRA_ProcurarValor(GRA_tppGrafo pGrafo,
-	void* pValor);
+static GRA_tpCondRet EfetuaExclusaoAresta(tpVerticeGrafo* vertice1, tpVerticeGrafo* vertice2);
+
+static tpVerticeGrafo* GRA_ProcurarValor (LIS_tppLista pOrigemGrafo, void* pValor);
 
 static tpVerticeGrafo* CriarElemento(void * pValor);
 
@@ -139,23 +140,27 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  void GRA_EsvaziarGrafo(GRA_tppGrafo pGrafo)
  {
 
-	 LIS_tppLista Elem= pGrafo->pOrigemGrafo;
-	 
-	 tpVerticeGrafo * atual;
-	 
-
 #ifdef _DEBUG
 	 assert(pGrafo != NULL);
 #endif
+
 	 if (pGrafo == NULL)
 	 {
 		 return;
 	 }
+	 LIS_tppLista Elem= pGrafo->pOrigemGrafo;	 
+	 tpVerticeGrafo * atual; 
+
+
 	 LIS_IrInicioLista(Elem); //indo pro inicio da lista
 	 atual = LIS_ObterValor(Elem);//pegando o primeiro valor
-	 LIS_DestruirLista(atual->pVerticeArestas); //DECIDIR SE QUEREMOS DELETAR TODOS OS NÓS OU NÃO E DEIXAR A LISTA VAZIA  (pra manter os vertices é só esvaziar suas listas de arestas ao invés de destruir)
+	 if (atual != NULL)
+	 {
+		 LIS_DestruirLista(atual->pVerticeArestas); //DECIDIR SE QUEREMOS DELETAR TODOS OS NÓS OU NÃO E DEIXAR A LISTA VAZIA  (pra manter os vertices é só esvaziar suas listas de arestas ao invés de destruir)
+	 }
+		
 	 	 	 
-	 while (LIS_AvancarElementoCorrente(Elem, 1) != LIS_CondRetFimLista)
+	 while (LIS_AvancarElementoCorrente(Elem, 1) == LIS_CondRetOK)
 	 {
 		 //limpa as outras listas de arestas se existirem		 
 		 atual = LIS_ObterValor(Elem);
@@ -166,7 +171,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 LIS_EsvaziarLista(pGrafo->pOrigemGrafo);
 	 
 
-	 LimparCabeca(pGrafo);
+	 //LimparCabeca(pGrafo);
 
 	 return;
 
@@ -210,6 +215,8 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  /***************************************************************************
  *
  *  Função: GRA  &Excluir Vertice
+	
+	exclui o corrente
  *  ****/
  GRA_tpCondRet GRA_ExcluirVertice(GRA_tppGrafo pGrafo)
  {
@@ -217,9 +224,40 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 {
 		 return GRA_CondRetGrafoVazia;
 	 }
+	 LIS_IrInicioLista(pGrafo->pArestas);//indo p/ o inicio das arestas
+	 tpVerticeGrafo *vizinho = LIS_ObterValor(pGrafo->pArestas);
+	 if (vizinho != NULL)
+	 {
+		 EfetuaExclusaoAresta(pGrafo->pVertice,vizinho);
+
+		 while (LIS_AvancarElementoCorrente(vizinho->pVerticeArestas,1)==LIS_CondRetOK)
+		 {
+			 vizinho= LIS_ObterValor(pGrafo->pArestas);
+			 EfetuaExclusaoAresta(pGrafo->pVertice, vizinho);
+		 }
+		 
+	 }
+	 
+	LIS_DestruirLista(pGrafo->pArestas);
+	LIS_IrInicioLista(pGrafo->pOrigemGrafo);
+	LIS_ProcurarValor(pGrafo->pOrigemGrafo, pGrafo->pVertice);
+	LIS_ExcluirElemento(pGrafo->pOrigemGrafo);
+	vizinho = LIS_ObterValor(pGrafo->pOrigemGrafo);
+	if (vizinho != NULL)
+	{
+		pGrafo->pVertice = vizinho;
+		pGrafo->pArestas = vizinho->pVerticeArestas;
+	}
+	else
+	{
+		pGrafo->pVertice = NULL;
+		pGrafo->pArestas = NULL;
+	}
+	return GRA_CondRetOK;
+	 
 
 	 //Percorre a lista de aresta do vertice a ser excluido (lista do corrente)
-	 while (LIS_AvancarElementoCorrente(pGrafo->pArestas, 1) != LIS_CondRetFimLista)
+	/* while (LIS_AvancarElementoCorrente(pGrafo->pArestas, 1) != LIS_CondRetFimLista)
 	 {
 		 tpVerticeGrafo *aux =(tpVerticeGrafo*) LIS_ObterValor(pGrafo->pArestas);
 		
@@ -231,27 +269,28 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 				 LIS_ExcluirElemento(aux->pVerticeArestas);
 			 }
 		 }
-	 }
+	 }*/
 
-	 //Eliminar o vertice corrente
-	 if (LIS_ExcluirElemento(pGrafo->pOrigemGrafo) == LIS_CondRetListaVazia)
-	 {
-		 return GRA_CondRetGrafoVazia;
-	 }
-	 LIS_DestruirLista(pGrafo->pArestas);
-	 pGrafo->ExcluirValor(pGrafo->pVertice->valor);
-	 free(pGrafo->pVertice);
-	 
-	 //atualizando o corrente
-	 pGrafo->pVertice = LIS_ObterValor(pGrafo->pOrigemGrafo);
-	 if (pGrafo->pVertice != NULL)
-	 {
-		 pGrafo->pArestas = pGrafo->pVertice->pVerticeArestas;
-	 }
-	 else
-	 {
-		 pGrafo->pArestas = NULL;
-	 }
+	 ////Eliminar o vertice corrente
+	 //if (LIS_ExcluirElemento(pGrafo->pOrigemGrafo) == LIS_CondRetListaVazia)
+	 //{
+		// return GRA_CondRetGrafoVazia;
+	 //}
+	 //LIS_DestruirLista(pGrafo->pArestas);
+	 //
+	 //pGrafo->ExcluirValor(pGrafo->pVertice->valor);
+	 //free(pGrafo->pVertice);
+	 //
+	 ////atualizando o corrente
+	 //pGrafo->pVertice = LIS_ObterValor(pGrafo->pOrigemGrafo);
+	 //if (pGrafo->pVertice != NULL)
+	 //{
+		// pGrafo->pArestas = pGrafo->pVertice->pVerticeArestas;
+	 //}
+	 //else
+	 //{
+		// pGrafo->pArestas = NULL;
+	 //}
 
 
 	 return GRA_CondRetOK;
@@ -263,31 +302,18 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  /***************************************************************************
  *
  *  Função: GRA  &ExcluirAresta
+	exclui do vertice corrente para o vertice recebido e do recebido para o corrente
  *  ****/
- GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo, void * vertice)
+ GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo, void * valor)
  {
 	#ifdef _DEBUG
 	 assert(pGrafo != NULL);
 	#endif
-
-	 tpVerticeGrafo * aux = pGrafo->pVertice; //vertice corrente
-	 GRA_tpCondRet retorno = GRA_IrVertice(pGrafo, vertice);//corrente é alterado para vertice procurado se for encontrado
-	 if (retorno == GRA_CondRetGrafoVazia)
-	 {
-		 return retorno;
-	 }
-	 if (retorno==GRA_CondRetNaoAchou)
-	 {	//nao possui aresta, nao há o que deletar
-		 return GRA_CondRetOK;
-	 }
-	 //agora com certeza achou o vertice
-	 LIS_ProcurarValor(aux->pVerticeArestas, pGrafo->pVertice);
-	 LIS_ExcluirElemento(aux->pVerticeArestas);//excluimos no primeiro
+	 GRA_tppGrafo gAux = pGrafo;
+	 tpVerticeGrafo* vAux = GRA_ProcurarValor(gAux->pOrigemGrafo, valor);
+	 GRA_tpCondRet ret = EfetuaExclusaoAresta(pGrafo->pVertice, vAux);
 	 
-	 LIS_ProcurarValor(pGrafo->pArestas, aux);
-	 LIS_ExcluirElemento(pGrafo->pArestas);//excluimos do segundo
-
-	 return GRA_CondRetOK;
+	 return ret;
  }
 
  /* Fim Função: GRA  &ExcluirAresta */
@@ -298,26 +324,25 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  *
  *  Função: GRA  &IrVertice
  *  ****/
- GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * vertice)
+ GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * valor)
  {
 
 	#ifdef _DEBUG
 		assert(pGrafo != NULL);
 	#endif
-	//tpVerticeGrafo* aux;
-	LIS_tpCondRet retorno = LIS_ProcurarValor(pGrafo->pOrigemGrafo, vertice);
+	tpVerticeGrafo* aux;
+	aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo,valor);
 
-	if (retorno==LIS_CondRetListaVazia)
+	if (aux==NULL)
 	 {
-		 return GRA_CondRetGrafoVazia;
-	 }
-	if (retorno == LIS_CondRetOK)
-	{
-		pGrafo->pVertice = LIS_ObterValor(pGrafo->pOrigemGrafo);
-		pGrafo->pArestas = pGrafo->pVertice->pVerticeArestas;
-		return GRA_CondRetOK;
-	}
-	return GRA_CondRetNaoAchou;
+		return GRA_CondRetNaoAchou;
+	 }	
+	//pGrafo->pVertice = LIS_ObterValor(pGrafo->pOrigemGrafo);
+	pGrafo->pVertice = aux;
+	pGrafo->pArestas = pGrafo->pVertice->pVerticeArestas;
+
+	return GRA_CondRetOK;
+	
 
 }
 
@@ -348,26 +373,35 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  *  Função: GRA  &CriarAresta
  *  ****/
 
- GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
-	 void* vertice)
+ GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo, void* valor)
  {
 	#ifdef _DEBUG
 		 assert(pGrafo != NULL);
 	#endif
-	 tpVerticeGrafo* aux= GRA_ObterValorCorrente(pGrafo);
-	 GRA_tpCondRet retorno = GRA_IrVertice(pGrafo, vertice);
-	 if (retorno == GRA_CondRetOK)
-	 {		 
-		 LIS_InserirElementoApos(pGrafo->pArestas, aux);
-		 LIS_InserirElementoApos(aux->pVerticeArestas, pGrafo->pVertice);
+		 tpVerticeGrafo *aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo, valor);
+	 if (aux != NULL)
+	 {	
+		 LIS_IrFinalLista(pGrafo->pArestas);
+		 LIS_InserirElementoApos(pGrafo->pArestas, aux );
+		 
+		 LIS_IrFinalLista(aux->pVerticeArestas);
+		 LIS_InserirElementoApos(aux->pVerticeArestas,pGrafo->pVertice);
+
+		// GRA_IrVertice(pGrafo, corrente->valor);//voltando com o corrente
+		 return GRA_CondRetOK;
 	 }
-	 GRA_IrVertice(pGrafo, aux->valor);
-	 return GRA_CondRetOK;
+	 return GRA_CondRetNaoAchou;
  }
 
  /* Fim Função: GRA  &CriarAresta */
 
  
+
+ int GRA_QNTvertices(GRA_tppGrafo pGrafo)
+ {
+	 return LIS_ObtemTamanho(pGrafo->pOrigemGrafo);
+ }
+
 
   /*****  Código das funções encapsuladas no módulo  *****/
 
@@ -377,15 +411,14 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
   *  Função: GRA  &ProcurarValor
   *  ****/
 
- static tpVerticeGrafo* GRA_ProcurarValor(GRA_tppGrafo pGrafo,
-	 void* pValor)
+ static tpVerticeGrafo* GRA_ProcurarValor(LIS_tppLista pOrigemGrafo, void* pValor)
  {
 #ifdef _DEBUG
-	 assert(pGrafo != NULL);
+	 assert(pOrigemGrafo != NULL);
 #endif
-	 if (pGrafo == NULL)
+	 if (pOrigemGrafo == NULL)
 		 return NULL;
-	 LIS_tppLista Lisaux = pGrafo->pOrigemGrafo;
+	 LIS_tppLista Lisaux = pOrigemGrafo;
 	 tpVerticeGrafo *vertaux;
 	 LIS_IrInicioLista(Lisaux);
 	 vertaux = LIS_ObterValor(Lisaux);
@@ -397,7 +430,14 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 {
 		 return vertaux;
 	 }
-
+	 while (LIS_AvancarElementoCorrente(Lisaux,1)==LIS_CondRetOK)
+	 {
+		 vertaux = LIS_ObterValor(Lisaux);
+		 if (vertaux != NULL && vertaux->valor == pValor)
+		 {
+			 return vertaux;
+		 }
+	 }
 
 
 	 return NULL;
@@ -443,6 +483,39 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
  /* Fim Função: GRA  &CriarElemento */
 
+ /*******************************************************
+ *
+ *  Função: GRA  &EfetuaExclusaoAresta
+ *  ****/
+
+ static GRA_tpCondRet EfetuaExclusaoAresta(tpVerticeGrafo* vertice1, tpVerticeGrafo* vertice2)
+ {
+	 LIS_tpCondRet retorno;
+	 LIS_IrInicioLista(vertice1->pVerticeArestas);
+	 retorno = LIS_ProcurarValor(vertice1->pVerticeArestas, vertice2);
+	 if (retorno == LIS_CondRetListaVazia)
+	 {
+		 return GRA_CondRetGrafoVazia;
+	 }
+	 if (retorno == LIS_CondRetNaoAchou)
+	 {	//nao possui aresta, nao há o que deletar
+		 return GRA_CondRetOK;
+	 }
+	 //agora com certeza achou o vertice
+	 LIS_ExcluirElemento(vertice1->pVerticeArestas);//excluimos do primeiro
+
+	 LIS_IrInicioLista(vertice2->pVerticeArestas);
+	 retorno = LIS_ProcurarValor(vertice2->pVerticeArestas, vertice1);
+	 if (retorno == LIS_CondRetNaoAchou)
+	 {	//nao possui aresta, nao há o que deletar(aqui seria um erro na inclusao de arestas)
+		 return GRA_CondRetOK;
+	 }
+	 LIS_ExcluirElemento(vertice2->pVerticeArestas);//excluimos no segundo	 
+
+	 return GRA_CondRetOK;
+ }
+
+ /* Fim Função: GRA  &EfetuaExclusaoAresta */
 
  /*******************************************************
  *

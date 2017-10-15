@@ -218,7 +218,7 @@ GRA_tpCondRet GRA_ExcluirVertice(GRA_tppGrafo pGrafo);
 *
 *  $EP Parâmetros
 *     pGrafo    - ponteiro para a grafo na qual deve excluir.
-*	  vertice	- Ponteiro para o vertice cuja aresta deve ser excluida
+*	  valor	- Ponteiro para o valor contido no vertice cuja aresta deve ser excluida
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK
@@ -226,7 +226,7 @@ GRA_tpCondRet GRA_ExcluirVertice(GRA_tppGrafo pGrafo);
 *
 ***********************************************************************/
 
-GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo, void* vertice);
+GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo, void* valor);
 
 
 /***********************************************************************
@@ -260,7 +260,7 @@ void* GRA_ObterValorCorrente(GRA_tppGrafo pGrafo);
 *
 *  $EP Parâmetros
 *     pGrafo  - ponteiro para a grafo a ser manipulada
-*     vertice - vertice destino 
+*     valor - valor contido no vertice destino 
 *
 *  $FV Valor retornado
 *     CondRetOK         - se numElem elementos tiverem sido andados
@@ -271,7 +271,7 @@ void* GRA_ObterValorCorrente(GRA_tppGrafo pGrafo);
 ***********************************************************************/
 
 GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
-	void* vertice);
+	void* valor);
 
 
 /***********************************************************************
@@ -284,8 +284,9 @@ GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
 *
 *  $EP Parâmetros
 *     pGrafo  - ponteiro para a grafo onde procura
-*     pValor  - ponteiro para o valor procurado
-*               Pode ser NULL
+*     Valor  - ponteiro para o valor contido no vertice que se
+*				deseja chegar
+
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK  - se encontrou.
@@ -299,7 +300,9 @@ GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
 *
 ***********************************************************************/
 
-GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * vertice);
+GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * valor);
+
+int GRA_QNTvertices(GRA_tppGrafo pGrafo);
 
 #undef GRAFO_EXT
 

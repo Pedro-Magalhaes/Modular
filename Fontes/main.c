@@ -62,7 +62,7 @@ int main(void)
 
 
 	//LIS_DestruirLista(lis);
-
+	int tam;
 	GRA_tppGrafo g = GRA_CriarGrafo(excluir);
 	puts("criei");
 	if (g == NULL)
@@ -72,7 +72,7 @@ int main(void)
 	}
 	int a = 0, b = 1, c = 2, d = 3, e = 4;
 	GRA_tpCondRet retGra;
-	puts("inseri 1");
+	puts("inserindo a=0");
 	retGra = GRA_InserirVertice(g, &a);
 	if (retGra == GRA_CondRetFaltouMemoria)
 	{
@@ -81,21 +81,21 @@ int main(void)
 	}
 	else
 		puts("ok\n");
-	puts("inseri 1");
+	puts("inserindo b=1");
 	retGra = GRA_InserirVertice(g, &b);
 	if (retGra == GRA_CondRetFaltouMemoria)
 	{
 		puts("erro de memoria\n");
 		exit(-1);
 	}
-	puts("inseri 1");
+	puts("inserindo c=2");
 	retGra = GRA_InserirVertice(g, &c);
 	if (retGra == GRA_CondRetFaltouMemoria)
 	{
 		puts("erro de memoria\n");
 		exit(-1);
 	}
-	puts("inseri 1");
+	puts("inserindo d=3");
 	retGra = GRA_InserirVertice(g, &d);
 	if (retGra == GRA_CondRetFaltouMemoria)
 	{
@@ -106,6 +106,69 @@ int main(void)
 	int* aux = GRA_ObterValorCorrente(g);
 	if (aux != NULL)
 		printf("retorno = %d\n", *aux);
+	retGra = GRA_IrVertice(g, &c);
+	if (retGra != GRA_CondRetNaoAchou)
+	{
+		aux= GRA_ObterValorCorrente(g);
+	}
+	if (aux != NULL)
+		printf("retorno apos busca por c(2) = %d\n", *aux);
+
+	retGra = GRA_IrVertice(g, &b);
+	if (retGra != GRA_CondRetNaoAchou)
+	{
+		aux = GRA_ObterValorCorrente(g);
+	}
+	if (aux != NULL)
+		printf("retorno apos busca por b(1) = %d\n", *aux);
+
+	retGra = GRA_IrVertice(g, &e);
+	
+	aux = GRA_ObterValorCorrente(g);
+	
+	if (aux != NULL)
+		printf("retorno apos busca por e(nao esta no grafo) = %d\n", *aux);
+
+	GRA_ExcluirVertice(g);
+	
+	aux = GRA_ObterValorCorrente(g);
+
+	if (aux != NULL)
+		printf("corrente apos deleção = %d\n", *aux);
+
+	retGra = GRA_IrVertice(g, &b);
+
+	aux = GRA_ObterValorCorrente(g);
+
+	if (aux != NULL)
+		printf("retorno apos busca por b(deletado) = %d\n", *aux);
+
+
+	GRA_IrVertice(g, &c);
+	aux = GRA_ObterValorCorrente(g);
+
+	if (aux != NULL)
+		printf("retorno apos ir c(2) = %d\n", *aux);
+
+	GRA_CriarAresta(g, &a);
+
+	aux = GRA_ObterValorCorrente(g);
+
+	if (aux != NULL)
+		printf("corrente apos criar c->a = %d\n", *aux);
+
+
+	GRA_IrVertice(g, &a);
+	aux = GRA_ObterValorCorrente(g);
+
+	if (aux != NULL)
+		printf("apos ir a = %d\n", *aux);
+	GRA_ExcluirAresta(g, &c);
+	aux = GRA_ObterValorCorrente(g);
+
+
+	GRA_DestruirGrafo(g);
+
 	return 0;
 }
 

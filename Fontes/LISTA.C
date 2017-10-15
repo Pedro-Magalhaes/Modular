@@ -481,7 +481,10 @@
    } /* Fim função: LIS  &Procurar elemento contendo valor */
 
    int LIS_ObtemTamanho(LIS_tppLista pLista)
-   {	  
+   {	
+#ifdef _DEBUG
+	   assert(pLista != NULL);
+#endif
 	   return pLista->numElem;
    }
 
