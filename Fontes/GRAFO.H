@@ -2,49 +2,49 @@
 #define GRAFO_
 /***************************************************************************
 *
-*  $MCD Módulo de definição: GRA  Grafo
+*  $MCD MÃ³dulo de definiÃ§Ã£o: GRA  Grafo
 *
 *  Arquivo gerado:              GRAFO.c
 *  Letras identificadoras:      GRA
 *
-*  Nome da base de software:    Arcabouço para a automação de testes de programas redigidos em C
+*  Nome da base de software:    ArcabouÃ§o para a automaÃ§Ã£o de testes de programas redigidos em C
 *  Arquivo da base de software: D:\AUTOTEST\PROJETOS\(a definir)
 *
-*  Projeto: INF 1301 / 1628 Automatização dos testes de módulos C
+*  Projeto: INF 1301 / 1628 AutomatizaÃ§Ã£o dos testes de mÃ³dulos C
 *  Gestor:  LES/DI/PUC-Rio
 *  Autores: Hfac & Pfm 
 *
-*  $HA Histórico de evolução:
-*     Versão  Autor			Data		 Observações
-*     1       Hfac & Pfm   13/out/2017	 início desenvolvimento
-*	  2		  Hfac & Pfm   14/out/2017   continuação do desenvolvimento
+*  $HA HistÃ³rico de evoluÃ§Ã£o:
+*     VersÃ£o  Autor			Data		 ObservaÃ§Ãµes
+*     1       Hfac & Pfm   13/out/2017	 inÃ­cio desenvolvimento
+*	  2		  Hfac & Pfm   14/out/2017   continuaÃ§Ã£o do desenvolvimento
 *
-*  $ED Descrição do módulo
-*     Implementa grafos com cabeça genéricos.
-*     Podem existir n grafos em operação simultaneamente.
-*     As grafos possuem uma cabeça encapsulando o seu estado.
+*  $ED DescriÃ§Ã£o do mÃ³dulo
+*     Implementa grafos com cabeÃ§a genÃ©ricos.
+*     Podem existir n grafos em operaÃ§Ã£o simultaneamente.
+*     As grafos possuem uma cabeÃ§a encapsulando o seu estado.
 *
-*     Cada grafo é homogênea quanto ao tipo dos dados que armazena.
-*     Cada elemento da grafo referencia o valor que contém.
+*     Cada grafo Ã© homogÃªnea quanto ao tipo dos dados que armazena.
+*     Cada elemento da grafo referencia o valor que contÃ©m.
 *
-*     Os ponteiros para os dados são copiados para elementos do grafo.
-*        Não é copiado o valor apontado por estes ponteiros.
+*     Os ponteiros para os dados sÃ£o copiados para elementos do grafo.
+*        NÃ£o Ã© copiado o valor apontado por estes ponteiros.
 *
-*     O controle da destruição do valor de um elemento a ser excluído
-*        é realizado por uma função fornecida pelo usuário.
+*     O controle da destruiÃ§Ã£o do valor de um elemento a ser excluÃ­do
+*        Ã© realizado por uma funÃ§Ã£o fornecida pelo usuÃ¡rio.
 *
-*     Cada grafo referencia uma função que determina como devem ser
+*     Cada grafo referencia uma funÃ§Ã£o que determina como devem ser
 *        desalocados os dados nela contidos.
 *
-*     A função de liberação dos valores contidos nos elementos deve
-*        assegurar a liberação de todos os espaços referênciados pelo
+*     A funÃ§Ã£o de liberaÃ§Ã£o dos valores contidos nos elementos deve
+*        assegurar a liberaÃ§Ã£o de todos os espaÃ§os referÃªnciados pelo
 *        valor contido em um elemento.
-*        Esta função é chamada antes de se desalocar um elemento
+*        Esta funÃ§Ã£o Ã© chamada antes de se desalocar um elemento
 *        de uma grafo.
-*        Caso não seja necessário desalocar o valor referenciado pelo
-*        elemento, o ponteiro para a função de liberação poderá ser NULL .
-*        Caso o elemento da grafo seja a única âncora do valor referenciado,
-*        esta função deve promover a destruição (free) desse valor e
+*        Caso nÃ£o seja necessÃ¡rio desalocar o valor referenciado pelo
+*        elemento, o ponteiro para a funÃ§Ã£o de liberaÃ§Ã£o poderÃ¡ ser NULL .
+*        Caso o elemento da grafo seja a Ãºnica Ã¢ncora do valor referenciado,
+*        esta funÃ§Ã£o deve promover a destruiÃ§Ã£o (free) desse valor e
 *        de todos os dados nele ancorados.L
 *
 ***************************************************************************/
@@ -57,20 +57,20 @@
 
 #include   "LISTA.H"
 
-/***** Declarações exportadas pelo módulo *****/
+/***** DeclaraÃ§Ãµes exportadas pelo mÃ³dulo *****/
 
-/* Tipo referência para uma grafo */
+/* Tipo referÃªncia para uma grafo */
 
 typedef struct GRA_tagGrafo * GRA_tppGrafo;
 
 
 /***********************************************************************
 *
-*  $TC Tipo de dados: GRA Condições de retorno
+*  $TC Tipo de dados: GRA CondiÃ§Ãµes de retorno
 *
 *
-*  $ED Descrição do tipo
-*     Condições de retorno das funções da grafo
+*  $ED DescriÃ§Ã£o do tipo
+*     CondiÃ§Ãµes de retorno das funÃ§Ãµes do grafo
 *
 ***********************************************************************/
 
@@ -80,46 +80,46 @@ typedef enum {
 	/* Concluiu corretamente */
 
 	GRA_CondRetGrafoVazia,
-	/* A grafo não contém elementos */
+	/* A grafo nÃ£o contÃ©m elementos */
 
 	GRA_CondRetFimGrafo,
 	/* Foi atingido o fim de grafo */
 
 	GRA_CondRetNaoAchou,
-	/* Não encontrou o valor procurado */
+	/* NÃ£o encontrou o valor procurado */
 
 	GRA_CondRetFaltouMemoria,
-	/* Faltou memória ao tentar criar um elemento de grafo */
+	/* Faltou memÃ³ria ao tentar criar um elemento de grafo */
 
 	GRA_CondRetGrafoNulo
-	/* Grafo é NULL */
+	/* Grafo Ã© NULL */
 
 } GRA_tpCondRet;
 
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Criar grafo
+*  $FC FunÃ§Ã£o: GRA  &Criar grafo
 *
-*  $ED Descrição da função
-*     Cria uma grafo genérica duplamente encadeada.
-*     Os possíveis tipos são desconhecidos a priori.
-*     A tipagem é implicita.
-*     Não existe identificador de tipo associado à grafo.
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
+*     Cria uma grafo genÃ©rica com cabeÃ§a.
+*     Os possÃ­veis tipos sÃ£o desconhecidos a priori.
+*     A tipagem Ã© implicita.
+*     NÃ£o existe identificador de tipo associado Ã  grafo.
 *
-*  $EP Parâmetros
-*     ExcluirValor  - ponteiro para a função que processa a
-*                     exclusão do valor referenciado pelo elemento
-*                     a ser excluído.
-*                     Ver descrição do módulo.
+*  $EP ParÃ¢metros
+*     ExcluirValor  - ponteiro para a funÃ§Ã£o que processa a
+*                     exclusÃ£o do valor referenciado pelo elemento
+*                     a ser excluÃ­do.
+*                     Ver descriÃ§Ã£o do mÃ³dulo.
 *
 *  $FV Valor retornado
 *     Se executou corretamente retorna o ponteiro para a grafo.
-*     Este ponteiro será utilizado pelas funções que manipulem esta grafo.
+*     Este ponteiro serÃ¡ utilizado pelas funÃ§Ãµes que manipulem esta grafo.
 *
-*     Se ocorreu algum erro, por exemplo falta de memória ou dados errados,
-*     a função retornará NULL.
-*     Não será dada mais informação quanto ao problema ocorrido.
+*     Se ocorreu algum erro, por exemplo falta de memÃ³ria ou dados errados,
+*     a funÃ§Ã£o retornarÃ¡ NULL.
+*     NÃ£o serÃ¡ dada mais informaÃ§Ã£o quanto ao problema ocorrido.
 *
 ***********************************************************************/
 
@@ -129,17 +129,20 @@ GRA_tppGrafo GRA_CriarGrafo(
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Destruir grafo
+*  $FC FunÃ§Ã£o: GRA  &Destruir grafo
 *
-*  $ED Descrição da função
-*     Destrói a grafo fornecida.
-*     O parâmetro ponteiro para a grafo não é modificado.
-*     Se ocorrer algum erro durante a destruição, a grafo resultará
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
+*     DestrÃ³i o grafo fornecido.
+*     O parÃ¢metro ponteiro para o grafo nÃ£o Ã© modificado.
+*     Se ocorrer algum erro durante a destruiÃ§Ã£o, o grafo resultarÃ¡
 *     estruturalmente incorreta.
-*     OBS. não existe previsão para possíveis falhas de execução.
+*     OBS. nÃ£o existe previsÃ£o para possÃ­veis falhas de execuÃ§Ã£o.
+*
+*  $EP ParÃ¢metros
+*     pGrafo - ponteiro para a grafo a ser esvaziada
 *
 *  $FV Valor retornado
-*     GRA_CondRetOK    - destruiu sem problemas
+*     NÃ£o possui condiÃ§Ã£o de retorno, assume-se que nada tenha dado errado
 *
 ***********************************************************************/
 
@@ -148,13 +151,16 @@ void GRA_DestruirGrafo(GRA_tppGrafo pGrafo);
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Esvaziar grafo
+*  $FC FunÃ§Ã£o: GRA  &Esvaziar grafo
 *
-*  $ED Descrição da função
-*     Elimina todos os elementos, sem contudo eliminar a grafo
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
+*     Elimina todos os elementos, sem contudo eliminar o grafo
 *
-*  $EP Parâmetros
+*  $EP ParÃ¢metros
 *     pGrafo - ponteiro para a grafo a ser esvaziada
+*
+*  $FV Valor retornado
+*     NÃ£o possui condiÃ§Ã£o de retorno, assume-se que nada tenha dado errado
 *
 ***********************************************************************/
 
@@ -163,14 +169,14 @@ void GRA_EsvaziarGrafo(GRA_tppGrafo pGrafo);
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Inserir vertice
+*  $FC FunÃ§Ã£o: GRA  &Inserir vertice
 *
-*  $ED Descrição da função
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
 *     Insere novo vertice.
 *     Caso a grafo esteja vazia, insere o primeiro elemento do grafo.
 *
-*  $EP Parâmetros
-*     Parâmetros
+*  $EP ParÃ¢metros
+*     ParÃ¢metros
 *        pGrafo - ponteiro para a grafo onde deve ser inserido o elemento
 *        pValor - ponteiro para o valor do novo elemento
 *                 Pode ser NULL
@@ -178,6 +184,7 @@ void GRA_EsvaziarGrafo(GRA_tppGrafo pGrafo);
 *
 *  $FV Valor retornado
 *     Valor retornado
+*	 GRA_CondRetGrafoNulo
 *        GRA_CondRetOK
 *        GRA_CondRetFaltouMemoria
 *
@@ -189,18 +196,19 @@ GRA_tpCondRet GRA_InserirVertice(GRA_tppGrafo pGrafo,
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Excluir vertice
+*  $FC FunÃ§Ã£o: GRA  &Excluir vertice
 *
-*  $ED Descrição da função
-*     Exclui o elemento corrente da grafo dada.
-*     Se existir o elemento aa esquerda do corrente será o novo corrente.
-*     Se não existir e existir o elemento à direita, este se tornará corrente.
-*     Se este também não existir a grafo tornou-se vazia.
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
+*     Exclui o elemento corrente do grafo dado.
+*     Se existir o elemento aa esquerda do corrente serÃ¡ o novo corrente.
+*     Se nÃ£o existir e existir o elemento Ã  direita, este se tornarÃ¡ corrente.
+*     Se este tambÃ©m nÃ£o existir o grafo tornou-se vazia.
 *
-*  $EP Parâmetros
+*  $EP ParÃ¢metros
 *     pGrafo    - ponteiro para a grafo na qual deve excluir.
 *
 *  $FV Valor retornado
+*     GRA_CondRetGrafoNulo
 *     GRA_CondRetOK
 *     GRA_CondRetGrafoVazia
 *
@@ -211,15 +219,15 @@ GRA_tpCondRet GRA_ExcluirVertice(GRA_tppGrafo pGrafo);
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Excluir Aresta
+*  $FC FunÃ§Ã£o: GRA  &Excluir Aresta
 *
-*  $ED Descrição da função
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
 *     Exclui o elemento corrente da grafo dada.
-*     Se existir o elemento aa esquerda do corrente será o novo corrente.
-*     Se não existir e existir o elemento à direita, este se tornará corrente.
-*     Se este também não existir a grafo tornou-se vazia.
+*     Se existir o elemento aa esquerda do corrente serÃ¡ o novo corrente.
+*     Se nÃ£o existir e existir o elemento Ã  direita, este se tornarÃ¡ corrente.
+*     Se este tambÃ©m nÃ£o existir a grafo tornou-se vazia.
 *
-*  $EP Parâmetros
+*  $EP ParÃ¢metros
 *     pGrafo    - ponteiro para a grafo na qual deve excluir.
 *	  valor	- Ponteiro para o valor contido no vertice cuja aresta deve ser excluida
 *
@@ -234,16 +242,16 @@ GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo, void* valor);
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Obter referência para o valor contido no elemento
+*  $FC FunÃ§Ã£o: GRA  &Obter referÃªncia para o valor contido no elemento
 *
-*  $ED Descrição da função
-*     Obtem a referência para o valor contido no elemento corrente da grafo
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
+*     Obtem a referÃªncia para o valor contido no elemento corrente da grafo
 *
-*  $EP Parâmetros
+*  $EP ParÃ¢metros
 *     pGrafo - ponteiro para a grafo de onde se quer o valor
 *
 *  $FV Valor retornado
-*     não NULL - se o elemento corrente existe
+*     nÃ£o NULL - se o elemento corrente existe
 *     NULL     - se a grafo estiver vazia
 *                Pode retornar NULL se o valor inserido no elemento for NULL.
 *
@@ -255,13 +263,13 @@ void* GRA_ObterValorCorrente(GRA_tppGrafo pGrafo);
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &CriarAresta
+*  $FC FunÃ§Ã£o: GRA  &CriarAresta
 *
-*  $ED Descrição da função
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
 *    cria uma aresta entre o vertice corrente e o vertice recebido como parametro
 *     
 *
-*  $EP Parâmetros
+*  $EP ParÃ¢metros
 *     pGrafo  - ponteiro para a grafo a ser manipulada
 *     valor - valor contido no vertice destino 
 *
@@ -269,7 +277,7 @@ void* GRA_ObterValorCorrente(GRA_tppGrafo pGrafo);
 *     CondRetOK         - se numElem elementos tiverem sido andados
 *     CondRetFimGrafo   - se encontrou o fim da grafo antes de andar numElem
 *                         elementos
-*     CondRetGrafoVazia - se a grafo está vazia
+*     CondRetGrafoVazia - se a grafo estÃ¡ vazia
 *
 ***********************************************************************/
 
@@ -279,24 +287,24 @@ GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &IrVertice elemento contendo valor
+*  $FC FunÃ§Ã£o: GRA  &IrVertice elemento contendo valor
 *
-*  $ED Descrição da função
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
 *     Procura o elemento que referencia o valor dado.
-*     A função compara ponteiro e não conteúdo apontado.
+*     A funÃ§Ã£o compara ponteiro e nÃ£o conteÃºdo apontado.
 *
-*  $EP Parâmetros
+*  $EP ParÃ¢metros
 *     pGrafo  - ponteiro para a grafo onde procura
 *     Valor  - ponteiro para o valor contido no vertice que se
 *				deseja chegar
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK  - se encontrou.
-*                      O elemento corrente é o primeiro elemento do
+*                      O elemento corrente Ã© o primeiro elemento do
 *                      elemento corrente inclusive para o fim da grafo
-*                      e que contém o ponteiro procurado
+*                      e que contÃ©m o ponteiro procurado
 *
-*     GRA_CondRetNaoEncontrou - se o ponteiro não foi encontrado
+*     GRA_CondRetNaoEncontrou - se o ponteiro nÃ£o foi encontrado
 *                      O elemento corrente continua o mesmo
 *     GRA_CondRetGrafoVazia   - se a grafo estiver vazia
 *
@@ -306,20 +314,20 @@ GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * valor);
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &QntVertices elemento contendo valor
+*  $FC FunÃ§Ã£o: GRA  &QntVertices elemento contendo valor
 *
-*  $ED Descrição da função
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
 *     Procura o elemento que referencia o valor dado.
-*     A função compara ponteiro e não conteúdo apontado.
+*     A funÃ§Ã£o compara ponteiro e nÃ£o conteÃºdo apontado.
 *
-*  $EP Parâmetros
+*  $EP ParÃ¢metros
 *     pGrafo  - ponteiro para a grafo onde procura
 *     
 *
 *  $FV Valor retornado
 *     int >= 0		  - se o grafo existe
 *
-*     int < 0		  - se o grafo é nulo
+*     int < 0		  - se o grafo Ã© nulo
 *
 ***********************************************************************/
 
@@ -329,7 +337,7 @@ int GRA_QntArestas(GRA_tppGrafo pGrafo);
 
 #undef GRAFO_EXT
 
-/********** Fim do módulo de definição: GRA  Grafo duplamente encadeada **********/
+/********** Fim do mÃ³dulo de definiÃ§Ã£o: GRA  Grafo duplamente encadeada **********/
 
 #else
 #endif
