@@ -10,9 +10,9 @@ h			= ..\Fontes
 c			= ..\Fontes
 
 [Modulos]
+TestLis
 Lista
-Grafo
-TesteGrafo
+
 
 [BuildInicio]
 /OUT:..\Produto\TesteGrafo.exe

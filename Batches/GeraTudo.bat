@@ -5,9 +5,6 @@ cls
 
 pushd  .
 
-cd ..\..\ferramnt
-
-gmake  /b..\grafo\Compos  /cTesteGrafo
-
+gmake  /b..\Compos  /cTesteGrafo
 
 popd

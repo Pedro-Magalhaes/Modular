@@ -47,7 +47,7 @@ INCLUDE = $(INCLUDE);$(PDEFAULT)
 ### Regras de geração
 
 all : limpa \
-   $(Fobj)\TestLis.obj   $(Fobj)\Lista.obj   $(Fobj)\Grafo.obj \
+   $(Fobj)\Lista.obj   $(Fobj)\Grafo.obj   $(Fobj)\TesteGrafo.obj \
    Construto
 
 ### Limpar arquivos
@@ -58,11 +58,6 @@ limpa :
 
 ### Dependências de módulos objeto a compilar
 
-$(Fobj)\TestLis.obj :  {$(Pc)}\TestLis.c \
-    {$(Ph)}Generico.h           {$(Ph)}LerParm.h            {$(Ph)}Lista.h              \
-    {$(Ph)}TST_Espc.h          
-   cl $(O) $(OPT) /Fo$(Fobj)\ $(Fc)\$(@B).c >> $(Ferr)\$(NOME).err
-
 $(Fobj)\Lista.obj :  {$(Pc)}\Lista.c \
     {$(Ph)}LISTA.h             
    cl $(O) $(OPT) /Fo$(Fobj)\ $(Fc)\$(@B).c >> $(Ferr)\$(NOME).err
@@ -71,11 +66,16 @@ $(Fobj)\Grafo.obj :  {$(Pc)}\Grafo.c \
     {$(Ph)}GRAFO.h              {$(PDEFAULT)}LISTA.H             
    cl $(O) $(OPT) /Fo$(Fobj)\ $(Fc)\$(@B).c >> $(Ferr)\$(NOME).err
 
+$(Fobj)\TesteGrafo.obj :  {$(Pc)}\TesteGrafo.c \
+    {$(Ph)}GRAFO.h              {$(Ph)}Generico.h           {$(PDEFAULT)}LISTA.H              \
+    {$(Ph)}LerParm.h            {$(Ph)}TST_Espc.h          
+   cl $(O) $(OPT) /Fo$(Fobj)\ $(Fc)\$(@B).c >> $(Ferr)\$(NOME).err
+
 
 ### Terminação
 
 Construto : \
-   $(Fobj)\TestLis.obj   $(Fobj)\Lista.obj   $(Fobj)\Grafo.obj
+   $(Fobj)\Lista.obj   $(Fobj)\Grafo.obj   $(Fobj)\TesteGrafo.obj
     cd $(Fobj)
     LINK $(L) @$(NOME).build >> $(Ferr)\$(NOME).err
 
