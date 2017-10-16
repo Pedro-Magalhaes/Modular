@@ -148,13 +148,13 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 #ifdef _DEBUG
 	 assert(pGrafo != NULL);
 #endif
-
+	 LIS_tppLista Elem = pGrafo->pOrigemGrafo;
+	 tpVerticeGrafo * atual;
 	 if (pGrafo == NULL)
 	 {
 		 return;
 	 }
-	 LIS_tppLista Elem= pGrafo->pOrigemGrafo;	 
-	 tpVerticeGrafo * atual; 
+
 
 
 	 LIS_IrInicioLista(Elem); //indo pro inicio da lista
@@ -197,13 +197,13 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 		 assert(pGrafo != NULL);
 	#endif
-
+	tpVerticeGrafo* pVerticeAux = NULL;
 	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo;  
 	}
 	
-	tpVerticeGrafo* pVerticeAux=NULL;
+
 	pVerticeAux = CriarElemento( pValor);
 	if (pVerticeAux==NULL)
 	{
@@ -235,12 +235,13 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  *  ****/
  GRA_tpCondRet GRA_ExcluirVertice(GRA_tppGrafo pGrafo)
  {
+	 tpVerticeGrafo *vizinho = LIS_ObterValor(pGrafo->pArestas);
 	 if (pGrafo == NULL || pGrafo->pVertice == NULL)
 	 {
 		 return GRA_CondRetGrafoNulo;
 	 }
 	 LIS_IrInicioLista(pGrafo->pArestas);//indo p/ o inicio das arestas
-	 tpVerticeGrafo *vizinho = LIS_ObterValor(pGrafo->pArestas);
+	 
 	 if (vizinho != NULL)
 	 {
 		 EfetuaExclusaoAresta(pGrafo->pVertice,vizinho);
@@ -285,13 +286,14 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 	 assert(pGrafo != NULL);
 	#endif
+	 GRA_tppGrafo gAux = pGrafo;
+	 tpVerticeGrafo* vAux = GRA_ProcurarValor(gAux->pOrigemGrafo, valor);
+	 GRA_tpCondRet ret = EfetuaExclusaoAresta(pGrafo->pVertice, vAux);
 	 if (pGrafo == NULL)
 	 {
 		 return GRA_CondRetGrafoNulo;  
 	 }
-	 GRA_tppGrafo gAux = pGrafo;
-	 tpVerticeGrafo* vAux = GRA_ProcurarValor(gAux->pOrigemGrafo, valor);
-	 GRA_tpCondRet ret = EfetuaExclusaoAresta(pGrafo->pVertice, vAux);
+	
 	 
 	 return ret;
  }
@@ -310,11 +312,12 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 		assert(pGrafo != NULL);
 	#endif
+	tpVerticeGrafo* aux;
 	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo;
 	}
-	tpVerticeGrafo* aux;
+	
 	aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo,valor);
 
 	if (aux==NULL)
@@ -362,13 +365,14 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 		 assert(pGrafo != NULL);
 	#endif
+		 tpVerticeGrafo *aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo, valor);
 	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo; 
 	}
 
 
-	tpVerticeGrafo *aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo, valor);
+	
 
 	 if (aux != NULL)
 	 {	
@@ -433,10 +437,11 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 #ifdef _DEBUG
 	 assert(pOrigemGrafo != NULL);
 #endif
-	 if (pOrigemGrafo == NULL)
-		 return NULL;
 	 LIS_tppLista Lisaux = pOrigemGrafo;
 	 tpVerticeGrafo *vertaux;
+	 if (pOrigemGrafo == NULL)
+		 return NULL;
+
 	 LIS_IrInicioLista(Lisaux);
 	 vertaux = LIS_ObterValor(Lisaux);
 	 if (vertaux == NULL)
@@ -509,11 +514,12 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
  static GRA_tpCondRet EfetuaExclusaoAresta(tpVerticeGrafo* vertice1, tpVerticeGrafo* vertice2)
  {
+	 LIS_tpCondRet retorno;
 	 if (vertice1 == NULL || vertice2 == NULL)
 	 {
 		 return GRA_CondRetGrafoNulo; 
 	 }
-	 LIS_tpCondRet retorno;
+	 
 	 LIS_IrInicioLista(vertice1->pVerticeArestas);
 	 retorno = LIS_ProcurarValor(vertice1->pVerticeArestas, vertice2);
 	 if (retorno == LIS_CondRetListaVazia)
