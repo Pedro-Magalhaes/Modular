@@ -1,22 +1,22 @@
 /***************************************************************************
-*  $MCI MÃ³dulo de implementaÃ§Ã£o: TLIS Teste grafo de sÃ­mbolos
+*  $MCI Módulo de implementação: TLIS Teste grafo de símbolos
 *
 *  Arquivo gerado:              TESTEGRAFO.c.c
 *  Letras identificadoras:      TGRA
 *
-*  Nome da base de software:    ArcabouÃ§o para a automaÃ§Ã£o de testes de programas redigidos em C
+*  Nome da base de software:    Arcabouço para a automação de testes de programas redigidos em C
 *  Arquivo da base de software: D:\AUTOTEST\PROJETOS\LISTA.BSW
 *
-*  Projeto: INF 1301 / 1628 AutomatizaÃ§Ã£o dos testes de mÃ³dulos C
+*  Projeto: INF 1301 / 1628 Automatização dos testes de módulos C
 *  Gestor:  LES/DI/PUC-Rio
 *  Autores: avs
 *
-*  $HA HistÃ³rico de evoluÃ§Ã£o:
-*     VersÃ£o  Autor    Data     ObservaÃ§Ãµes
-*     4       avs   01/fev/2006 criar linguagem script simbÃ³lica
-*     3       avs   08/dez/2004 uniformizaÃ§Ã£o dos exemplos
-*     2       avs   07/jul/2003 unificaÃ§Ã£o de todos os mÃ³dulos em um sÃ³ projeto
-*     1       avs   16/abr/2003 inÃ­cio desenvolvimento
+*  $HA Histórico de evolução:
+*     Versão  Autor    Data     Observações
+*     4       avs   01/fev/2006 criar linguagem script simbólica
+*     3       avs   08/dez/2004 uniformização dos exemplos
+*     2       avs   07/jul/2003 unificação de todos os módulos em um só projeto
+*     1       avs   16/abr/2003 início desenvolvimento
 *
 ***************************************************************************/
 
@@ -42,6 +42,8 @@ static const char EXC_ARESTA_CMD          [ ] = "=excaresta" ;
 static const char OBTER_CORRENTE_CMD      [ ] = "=obtervalorcorrente"    ;
 static const char CRIAR_ARESTA_CMD        [ ] = "=criararesta"       ;
 static const char IR_VERTICE_CMD          [ ] = "=irvertice"        ;
+static const char QNT_VERTICE_CMD         [ ] = "=qntvertice"        ;
+static const char QNT_ARESTA_CMD          [ ] = "=qntaresta"        ;
 
 
 
@@ -56,13 +58,13 @@ static const char IR_VERTICE_CMD          [ ] = "=irvertice"        ;
 
 GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
-/***** ProtÃ³tipos das funÃ§Ãµes encapuladas no mÃ³dulo *****/
+/***** Protótipos das funções encapuladas no módulo *****/
 
    static void DestruirValor( void * pValor ) ;
 
    static int ValidarInxLista( int inxLista , int Modo ) ;
 
-/*****  DefiniÃ§Ã£o da struct de teste  *****/
+/*****  Definição da struct de teste  *****/
 
    typedef struct no_teste 
    {
@@ -73,20 +75,20 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
    } no_teste;
 
 
-/*****  CÃ³digo das funÃ§Ãµes exportadas pelo mÃ³dulo  *****/
+/*****  Código das funções exportadas pelo módulo  *****/
 
 
 /***********************************************************************
 *
-*  $FC FunÃ§Ã£o: TLIS &Testar lista
+*  $FC Função: TLIS &Testar lista
 *
-*  $ED DescriÃ§Ã£o da funÃ§Ã£o
-*     Podem ser criadas atÃ© 10 listas, identificadas pelos Ã­ndices 0 a 10
+*  $ED Descrição da função
+*     Podem ser criadas até 10 listas, identificadas pelos índices 0 a 10
 *
-*     Comandos disponÃ­veis:
+*     Comandos disponíveis:
 *
 *     =resetteste
-*           - anula o vetor de listas. Provoca vazamento de memÃ³ria
+*           - anula o vetor de listas. Provoca vazamento de memória
 *     =criarlista                   inxLista
 *     =destruirlista                inxLista
 *     =esvaziarlista                inxLista
@@ -246,8 +248,6 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
          else if ( strcmp( ComandoTeste , CRIAR_ARESTA_CMD ) == 0 )
          {
 
-			 no_teste *ptemp;
-
              numLidos = LER_LerParametros( "issssi" ,
                        &inxgrafo , StringDado1, StringDado2, StringDado3, StringDado4 , &CondRetEsp ) ;
 
@@ -268,15 +268,6 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 			strcpy( pDado->email , StringDado3 ) ;
 			strcpy( pDado->cidade , StringDado4 ) ;
 
-			ptemp = (no_teste*) GRA_ObterValorCorrente(vtgrafos[inxgrafo]);
-			CondRet = (TST_tpCondRet) GRA_IrVertice(vtgrafos[inxgrafo], pDado);
-			if ( CondRet != GRA_CondRetOK )
-            {
-               return TST_CompararInt( CondRetEsp , CondRet ,
-                     "Condicao de retorno errada ao criar aresta."                   ) ;
-            } /* if */
-			pDado = (no_teste*) GRA_ObterValorCorrente(vtgrafos[inxgrafo]);
-			CondRet = (TST_tpCondRet) GRA_IrVertice(vtgrafos[inxgrafo], ptemp);
 
 
             CondRet = (TST_tpCondRet) GRA_CriarAresta( vtgrafos[ inxgrafo ] , pDado ) ;
@@ -307,7 +298,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
             return TST_CompararInt( CondRetEsp ,
                       GRA_ExcluirVertice( vtgrafos[ inxgrafo ] ) ,
-                     "CondiÃ§Ã£o de retorno errada ao excluir."   ) ;
+                     "Condição de retorno errada ao excluir."   ) ;
 
          } /* fim ativa: Testar excluir simbolo */
 
@@ -315,9 +306,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
          else if ( strcmp( ComandoTeste , OBTER_CORRENTE_CMD ) == 0 )
          {
-		
-	    int valobtido; 
-		 
+
             numLidos = LER_LerParametros( "issssi" ,
                        &inxgrafo, StringDado1, StringDado2, StringDado3, StringDado4, &ValEsp ) ;
 
@@ -332,7 +321,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
             if ( ValEsp == 0 )
             {
                return TST_CompararPonteiroNulo( 0 , pDado ,
-                         "Valor nÃ£o deveria existir." ) ;
+                         "Valor não deveria existir." ) ;
             } /* if */
 
             if ( pDado == NULL )
@@ -341,13 +330,11 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
                          "Dado tipo um deveria existir." ) ;
             } /* if */
 
-			valobtiod = (TST_CompararString( StringDado1 , pDado->nome ,
+			return (TST_tpCondRet) (TST_CompararString( StringDado1 , pDado->nome ,
                          "Valor do elemento errado." ) && TST_CompararString( StringDado2 , pDado->data_nasc ,
                          "Valor do elemento errado." ) && TST_CompararString( StringDado3 , pDado->email ,
                          "Valor do elemento errado." ) && TST_CompararString( StringDado4 , pDado->cidade ,
                          "Valor do elemento errado." )) ;
-		 return TST_CompararInt(ValEsp, valobtido,
-					"Obteve o valor errado");
 
          } /* fim ativa: Testar obter valor do elemento corrente */
 
@@ -355,8 +342,6 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
          else if ( strcmp( ComandoTeste , EXC_ARESTA_CMD ) == 0 )
          {
-
-			 no_teste* ptemp;
 
             numLidos = LER_LerParametros( "issssi" , &inxgrafo, StringDado1, StringDado2, StringDado3, StringDado4, &ValEsp ) ;
 
@@ -377,15 +362,6 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 			strcpy( pDado->email , StringDado3 ) ;
 			strcpy( pDado->cidade , StringDado4 ) ;
 
-			ptemp = (no_teste*) GRA_ObterValorCorrente(vtgrafos[inxgrafo]);
-			CondRet = (TST_tpCondRet) GRA_IrVertice(vtgrafos[inxgrafo], pDado);
-			if ( CondRet != GRA_CondRetOK )
-            {
-               return TST_CompararInt( CondRetEsp , CondRet ,
-                     "Condicao de retorno errada ao criar aresta."                   ) ;
-            } /* if */
-			pDado = (no_teste*) GRA_ObterValorCorrente(vtgrafos[inxgrafo]);
-			CondRet = (TST_tpCondRet) GRA_IrVertice(vtgrafos[inxgrafo], ptemp);
 
             CondRet = (TST_tpCondRet) GRA_ExcluirAresta( vtgrafos[ inxgrafo ] , pDado ) ;
 
@@ -425,19 +401,51 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
          } /* fim ativa: LIS  &Ir para o elemento final */
 
-      
+		 /*GRA &Ver quantidade de vertices*/
+
+		 else if ( strcmp( ComandoTeste , QNT_VERTICE_CMD ) == 0 )
+		 {
+			 numLidos = LER_LerParametros( "ii" , &inxgrafo, &ValEsp);
+
+			 if ( ( numLidos != 2 )
+              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+            {
+               return TST_CondRetParm ;
+            } /* if */
+
+			 return TST_CompararInt( ValEsp , GRA_QntVertices(vtgrafos[inxgrafo]) ,
+                     "Quantidade de vertices errada."                   ) ;
+
+		 }/* fim ativa: GRA &Ver quantidade de vertices */
+
+		 /*GRA &Ver quantidade de arestas do vertice corrente*/
+
+		  else if ( strcmp( ComandoTeste , QNT_ARESTA_CMD ) == 0 )
+		 {
+			 numLidos = LER_LerParametros( "ii" , &inxgrafo, &ValEsp);
+
+			 if ( ( numLidos != 2 )
+              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+            {
+               return TST_CondRetParm ;
+            } /* if */
+
+			 return TST_CompararInt( ValEsp , GRA_QntArestas(vtgrafos[inxgrafo]) ,
+                     "Quantidade de arestas errada."                   ) ;
+
+		 }/* fim ativa: GRA &Ver quantidade de arestas do vertice corrente */
 
       return TST_CondRetNaoConhec ;
 
-   } /* Fim funÃ§Ã£o: TGRA &Testar grafo */
+   } /* Fim função: TGRA &Testar grafo */
 
 
-/*****  CÃ³digo das funÃ§Ãµes encapsuladas no mÃ³dulo  *****/
+/*****  Código das funções encapsuladas no módulo  *****/
 
 
 /***********************************************************************
 *
-*  $FC FunÃ§Ã£o: TLIS -Destruir valor
+*  $FC Função: TLIS -Destruir valor
 *
 ***********************************************************************/
 
@@ -446,12 +454,12 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
       free( pValor ) ;
 
-   } /* Fim funÃ§Ã£o: TLIS -Destruir valor */
+   } /* Fim função: TLIS -Destruir valor */
 
 
 /***********************************************************************
 *
-*  $FC FunÃ§Ã£o: TLIS -Validar indice de lista
+*  $FC Função: TLIS -Validar indice de lista
 *
 ***********************************************************************/
 
@@ -480,7 +488,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
          
       return TRUE ;
 
-   } /* Fim funÃ§Ã£o: TLIS -Validar indice de lista */
+   } /* Fim função: TLIS -Validar indice de lista */
 
-/********** Fim do mÃ³dulo de implementaÃ§Ã£o: TLIS Teste lista de sÃ­mbolos **********/
+/********** Fim do módulo de implementação: TLIS Teste lista de símbolos **********/
 
