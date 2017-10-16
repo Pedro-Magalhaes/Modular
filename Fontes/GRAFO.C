@@ -127,20 +127,20 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
     #endif
 	  if (pGrafo == NULL)
 	  {//nada a ser feito
-		  return;
+	  return;
 	  }
-
-      GRA_EsvaziarGrafo( pGrafo );
+  
+    GRA_EsvaziarGrafo( pGrafo );
 	  	  
 	  free(pGrafo);
 	  
-
-   } /* Fim função: GRA  &Destruir grafo */
-
-	 /***************************************************************************
-	 *
-	 *  Função: GRA  &Esvaziar grafo
-	 *  ****/
+   }
+   /* Fim função: GRA  &Destruir grafo */
+  
+/*************************************************************************
+* 
+* função: GRA  &Esvaziar grafo
+*****/
 
  void GRA_EsvaziarGrafo(GRA_tppGrafo pGrafo)
  {
@@ -200,19 +200,19 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
 	if (pGrafo == NULL)
 	{
-		return GRA_CondRetGrafoVazia;  //***   Verificar se essa é a condição de retorno adequado pra um ponteiro de grafo NULL  ***//
+		return GRA_CondRetGrafoNulo;  
 	}
 	
 	tpVerticeGrafo* pVerticeAux=NULL;
 	pVerticeAux = CriarElemento( pValor);
 	if (pVerticeAux==NULL)
 	{
-		return GRA_CondRetFaltouMemoria; //a função só retorna OK ou Faltou memoria
+		return GRA_CondRetFaltouMemoria; 
 	}
 		
 	if (LIS_InserirElementoApos(pGrafo->pOrigemGrafo, pVerticeAux) != LIS_CondRetOK)
 	{
-		return GRA_CondRetFaltouMemoria; //a função só retorna OK ou Faltou memoria
+		return GRA_CondRetFaltouMemoria; 
 	}
 	if (pGrafo->pVertice == NULL) //se for o primeiro elemento inserido ele se torna o corrente
 	{
@@ -237,7 +237,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  {
 	 if (pGrafo == NULL || pGrafo->pVertice == NULL)
 	 {
-		 return GRA_CondRetGrafoVazia;
+		 return GRA_CondRetGrafoNulo;
 	 }
 	 LIS_IrInicioLista(pGrafo->pArestas);//indo p/ o inicio das arestas
 	 tpVerticeGrafo *vizinho = LIS_ObterValor(pGrafo->pArestas);
@@ -247,7 +247,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
 		 while (LIS_AvancarElementoCorrente(vizinho->pVerticeArestas,1)==LIS_CondRetOK)
 		 {
-			 vizinho= LIS_ObterValor(pGrafo->pArestas);
+			 vizinho = (tpVerticeGrafo)LIS_ObterValor(pGrafo->pArestas);
 			 EfetuaExclusaoAresta(pGrafo->pVertice, vizinho);
 		 }
 		 
@@ -287,7 +287,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#endif
 	 if (pGrafo == NULL)
 	 {
-		 return GRA_CondRetGrafoVazia;  //***   Verificar se essa é a condição de retorno adequado pra um ponteiro de grafo NULL  ***//
+		 return GRA_CondRetGrafoNulo;  
 	 }
 	 GRA_tppGrafo gAux = pGrafo;
 	 tpVerticeGrafo* vAux = GRA_ProcurarValor(gAux->pOrigemGrafo, valor);
@@ -312,7 +312,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#endif
 	if (pGrafo == NULL)
 	{
-		return GRA_CondRetGrafoVazia;  //***   Verificar se essa é a condição de retorno adequado pra um ponteiro de grafo NULL  ***//
+		return GRA_CondRetGrafoNulo;
 	}
 	tpVerticeGrafo* aux;
 	aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo,valor);
@@ -364,7 +364,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#endif
 	if (pGrafo == NULL)
 	{
-		return GRA_CondRetGrafoVazia;  //***   Verificar se essa é a condição de retorno adequado pra um ponteiro de grafo NULL  ***//
+		return GRA_CondRetGrafoNulo; 
 	}
 
 
@@ -382,7 +382,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 		 }
 		 else
 		 {
-			 return GRA_CondRetOK;   /******************************* NOVA CONDIÇãO? aresta já existe ***********************************/
+			 return GRA_CondRetOK;  
 		 }
 		 
 		 LIS_IrInicioLista(aux->pVerticeArestas);
@@ -405,16 +405,16 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  {
 	 if (pGrafo == NULL || pGrafo->pOrigemGrafo == NULL)
 	 {
-		 return -1;					//* RETORNAR -1 QUANDO O PONTEIRO É NULL?????? ********************************//
+		 return 5;					//* RETORNAR 5 por GRA_CondRetGrafoNulo ser um tipo enumerado igual 5*//
 	 }
-	 return LIS_ObtemTamanho(pGrafo->pOrigemGrafo);
+	 return LIS_ObtemTamanho(pGrafo->pOrigemGrafo); 
  }
 
  int GRA_QntArestas(GRA_tppGrafo pGrafo)
  {
 	 if (pGrafo == NULL)
 	 {
-		 return -1;
+		 return 5;					//* RETORNAR 5 por GRA_CondRetGrafoNulo ser um tipo enumerado igual 5*//
 	 }
 	 return LIS_ObtemTamanho(pGrafo->pArestas);
  }
@@ -511,7 +511,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  {
 	 if (vertice1 == NULL || vertice2 == NULL)
 	 {
-		 return GRA_CondRetGrafoVazia; //*************      MELHORAR ESSA CONDIÇÃO DE RETORNO, CRIAR UMA NOVA? COMO É INTERNA RETORNAR -1?? *******//
+		 return GRA_CondRetGrafoNulo; 
 	 }
 	 LIS_tpCondRet retorno;
 	 LIS_IrInicioLista(vertice1->pVerticeArestas);
@@ -551,4 +551,5 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 return;
  }
 
- /* Fim Função: GRA  &naoExclui */
+/* Fim Função: GRA  &naoExclui */
+

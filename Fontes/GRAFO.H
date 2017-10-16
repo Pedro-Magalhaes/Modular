@@ -88,8 +88,11 @@ typedef enum {
 	GRA_CondRetNaoAchou,
 	/* Não encontrou o valor procurado */
 
-	GRA_CondRetFaltouMemoria
+	GRA_CondRetFaltouMemoria,
 	/* Faltou memória ao tentar criar um elemento de grafo */
+
+	GRA_CondRetGrafoNulo
+	/* Grafo é NULL */
 
 } GRA_tpCondRet;
 
@@ -286,7 +289,6 @@ GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
 *     pGrafo  - ponteiro para a grafo onde procura
 *     Valor  - ponteiro para o valor contido no vertice que se
 *				deseja chegar
-
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK  - se encontrou.
