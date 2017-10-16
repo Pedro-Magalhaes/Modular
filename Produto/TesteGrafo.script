@@ -45,10 +45,12 @@
 
 == Inserir vertice em grafo nao vazio
 =insvertice     	 grafo0   str4   str5   str6   str7   OK
+=irvertice     	     grafo0   str4   str5   str6   str7   OK
 =obtervalorcorrente  grafo0   str4   str5   str6   str7   pNaoNULL
 
 == Inserir terceiro vertice
 =insvertice    		 grafo0   str8   str9   str10   str11   OK
+=irvertice    		 grafo0   str8   str9   str10   str11   OK
 =obtervalorcorrente  grafo0   str8   str9   str10   str11   pNaoNULL
 
 ==Obter quantidade de vertices
