@@ -2,6 +2,7 @@
 #include "LISTA.H"
 #include <stdio.h>
 #include <stdlib.h>
+#include <malloc.h>
 
 void excluir(void* dado);
 
@@ -62,6 +63,10 @@ int main(void)
 
 
 	//LIS_DestruirLista(lis);
+	typedef struct meuTipo {
+		int valor;
+		char letra;		
+	}MeuTipo;
 	int tam;
 	GRA_tppGrafo g = GRA_CriarGrafo(excluir);
 	puts("criei");
@@ -70,8 +75,12 @@ int main(void)
 		puts("erro ao criar \n");
 		return -1;
 	}
-	int a = 0, b = 1, c = 2, d = 3, e = 4;
-	GRA_tpCondRet retGra;
+	tam = GRA_QntVertices(g);
+	printf("Tam apos criar grafo vazio = %d\n", tam);
+
+	MeuTipo	a = { 0,'a'}, b = { 1,'b' }, c = { 2,'c' }, d = { 3,'d' }, e = { 4,'e' };
+	GRA_tpCondRet retGra;	
+
 	puts("inserindo a=0");
 	retGra = GRA_InserirVertice(g, &a);
 	if (retGra == GRA_CondRetFaltouMemoria)
@@ -80,39 +89,39 @@ int main(void)
 		exit(-1);
 	}
 	else
-		puts("ok\n");
+		puts("ok");
 	puts("inserindo b=1");
 	retGra = GRA_InserirVertice(g, &b);
 	if (retGra == GRA_CondRetFaltouMemoria)
 	{
-		puts("erro de memoria\n");
+		puts("erro de memoria");
 		exit(-1);
 	}
 	puts("inserindo c=2");
 	retGra = GRA_InserirVertice(g, &c);
 	if (retGra == GRA_CondRetFaltouMemoria)
 	{
-		puts("erro de memoria\n");
+		puts("erro de memoria");
 		exit(-1);
 	}
 	puts("inserindo d=3");
 	retGra = GRA_InserirVertice(g, &d);
 	if (retGra == GRA_CondRetFaltouMemoria)
 	{
-		puts("erro de memoria\n");
+		puts("erro de memoria");
 		exit(-1);
-	}
+	}	
 	puts("obentendo corrente");
-	int* aux = GRA_ObterValorCorrente(g);
+	MeuTipo* aux = GRA_ObterValorCorrente(g);
 	if (aux != NULL)
-		printf("retorno = %d\n", *aux);
+		printf("retorno = letra %c valor= %d \n", aux->letra,aux->valor);
 	retGra = GRA_IrVertice(g, &c);
 	if (retGra != GRA_CondRetNaoAchou)
 	{
 		aux= GRA_ObterValorCorrente(g);
 	}
 	if (aux != NULL)
-		printf("retorno apos busca por c(2) = %d\n", *aux);
+		printf("retorno apos busca por c(2) -> letra %c valor %d\n", aux->letra, aux->valor);
 
 	retGra = GRA_IrVertice(g, &b);
 	if (retGra != GRA_CondRetNaoAchou)
@@ -120,59 +129,81 @@ int main(void)
 		aux = GRA_ObterValorCorrente(g);
 	}
 	if (aux != NULL)
-		printf("retorno apos busca por b(1) = %d\n", *aux);
+		printf("retorno apos busca por b(1) -> letra %c valor %d\n", aux->letra, aux->valor);
 
 	retGra = GRA_IrVertice(g, &e);
 	
 	aux = GRA_ObterValorCorrente(g);
 	
 	if (aux != NULL)
-		printf("retorno apos busca por e(nao esta no grafo) = %d\n", *aux);
+		printf("retorno apos busca por e(nao esta no grafo) -> letra %c valor %d\n", aux->letra, aux->valor);
 
 	GRA_ExcluirVertice(g);
 	
 	aux = GRA_ObterValorCorrente(g);
 
 	if (aux != NULL)
-		printf("corrente apos deleção = %d\n", *aux);
+		printf("corrente apos deleção -> letra %c valor %d\n", aux->letra, aux->valor);
 
 	retGra = GRA_IrVertice(g, &b);
 
 	aux = GRA_ObterValorCorrente(g);
 
 	if (aux != NULL)
-		printf("retorno apos busca por b(deletado) = %d\n", *aux);
+		printf("retorno apos busca por b(deletado) -> letra %c valor %d\n", aux->letra, aux->valor);
 
 
 	GRA_IrVertice(g, &c);
 	aux = GRA_ObterValorCorrente(g);
 
 	if (aux != NULL)
-		printf("retorno apos ir c(2) = %d\n", *aux);
+		printf("retorno apos ir c(2) -> letra %c valor %d\n", aux->letra, aux->valor);
+
+	tam = GRA_QntArestas(g);
+	printf("\n\n\narestas de c %d\n", tam);
 
 	GRA_CriarAresta(g, &a);
 
+	tam = GRA_QntArestas(g);
+	printf("arestas de c apos criar %d\n\n", tam);
+
 	aux = GRA_ObterValorCorrente(g);
 
 	if (aux != NULL)
-		printf("corrente apos criar c->a = %d\n", *aux);
+		printf("corrente apos criar c->a = letra %c valor %d\n", aux->letra, aux->valor);
 
+	GRA_IrVertice(g, &c);
+
+	GRA_ExcluirVertice(g);
 
 	GRA_IrVertice(g, &a);
+	tam = GRA_QntArestas(g);
+	printf("arestas de a apos deletar c %d\n\n", tam);
 	aux = GRA_ObterValorCorrente(g);
 
 	if (aux != NULL)
-		printf("apos ir a = %d\n", *aux);
+		printf("apos ir a -> letra %c valor %d\n", aux->letra, aux->valor);
 	GRA_ExcluirAresta(g, &c);
 	aux = GRA_ObterValorCorrente(g);
+	tam = GRA_QntArestas(g);
+	printf("arestas de a apos destruir com c %d\n\n", tam);
 
+	tam = GRA_QntVertices(g);
+	printf("Tam antes destruir grafo = %d\n", tam);
 
 	GRA_DestruirGrafo(g);
 
+	//g = GRA_CriarGrafo(excluir);
+	
+
+
+	
 	return 0;
 }
 
 void excluir(void* dado)
 {
+	
+	//free(dado);
 	return;
 }

@@ -302,7 +302,28 @@ GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
 
 GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * valor);
 
-int GRA_QNTvertices(GRA_tppGrafo pGrafo);
+/***********************************************************************
+*
+*  $FC Função: GRA  &QntVertices elemento contendo valor
+*
+*  $ED Descrição da função
+*     Procura o elemento que referencia o valor dado.
+*     A função compara ponteiro e não conteúdo apontado.
+*
+*  $EP Parâmetros
+*     pGrafo  - ponteiro para a grafo onde procura
+*     
+*
+*  $FV Valor retornado
+*     int >= 0		  - se o grafo existe
+*
+*     int < 0		  - se o grafo é nulo
+*
+***********************************************************************/
+
+int GRA_QntVertices(GRA_tppGrafo pGrafo);
+
+int GRA_QntArestas(GRA_tppGrafo pGrafo);
 
 #undef GRAFO_EXT
 

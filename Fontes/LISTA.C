@@ -485,6 +485,8 @@
 #ifdef _DEBUG
 	   assert(pLista != NULL);
 #endif
+	   if (pLista == NULL)
+		   return -1;
 	   return pLista->numElem;
    }
 

@@ -130,9 +130,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 		  return;
 	  }
 
-      GRA_EsvaziarGrafo( pGrafo ) ;
-
-      free( pGrafo ) ;
+      GRA_EsvaziarGrafo( pGrafo );
+	  	  
+	  free(pGrafo);
+	  
 
    } /* Fim função: GRA  &Destruir grafo */
 
@@ -161,20 +162,26 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 if (atual != NULL)
 	 {
 		 LIS_DestruirLista(atual->pVerticeArestas); //DECIDIR SE QUEREMOS DELETAR TODOS OS NÓS OU NÃO E DEIXAR A LISTA VAZIA  (pra manter os vertices é só esvaziar suas listas de arestas ao invés de destruir)
+		 pGrafo->ExcluirValor(atual->valor);
+		 free(atual);
 	 }
 		
 	 	 	 
 	 while (LIS_AvancarElementoCorrente(Elem, 1) == LIS_CondRetOK)
 	 {
+		 
 		 //limpa as outras listas de arestas se existirem		 
 		 atual = LIS_ObterValor(Elem);
 		 LIS_IrInicioLista(atual->pVerticeArestas);
 		 LIS_DestruirLista(atual->pVerticeArestas);
+		 pGrafo->ExcluirValor(atual->valor);
+		 free(atual);
 	 }
 	 //limpa a lista de vertices
 	 LIS_EsvaziarLista(pGrafo->pOrigemGrafo);
 	 pGrafo->pArestas = NULL;
 	 pGrafo->pVertice = NULL;
+	 
 
 	 return;
 
@@ -297,7 +304,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  *
  *  Função: GRA  &IrVertice
  *  ****/
- GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * valor)
+ GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void *valor)
  {
 
 	#ifdef _DEBUG
@@ -359,31 +366,57 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	{
 		return GRA_CondRetGrafoVazia;  //***   Verificar se essa é a condição de retorno adequado pra um ponteiro de grafo NULL  ***//
 	}
-		 tpVerticeGrafo *aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo, valor);
+
+
+	tpVerticeGrafo *aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo, valor);
+
 	 if (aux != NULL)
 	 {	
-		 LIS_IrFinalLista(pGrafo->pArestas);
-		 LIS_InserirElementoApos(pGrafo->pArestas, aux );
+		 LIS_tpCondRet retBusca;
+		 LIS_IrInicioLista (pGrafo->pArestas);
+		 retBusca = LIS_ProcurarValor(pGrafo->pArestas, aux);
+		 if ( retBusca == LIS_CondRetNaoAchou || retBusca == LIS_CondRetListaVazia)
+		 {
+			 LIS_IrFinalLista(pGrafo->pArestas);
+			 LIS_InserirElementoApos(pGrafo->pArestas, aux);
+		 }
+		 else
+		 {
+			 return GRA_CondRetOK;   /******************************* NOVA CONDIÇãO? aresta já existe ***********************************/
+		 }
 		 
-		 LIS_IrFinalLista(aux->pVerticeArestas);
-		 LIS_InserirElementoApos(aux->pVerticeArestas,pGrafo->pVertice);
-
+		 LIS_IrInicioLista(aux->pVerticeArestas);
+		 retBusca=LIS_ProcurarValor(aux->pVerticeArestas, pGrafo->pVertice);
+		 if ( retBusca== LIS_CondRetNaoAchou || retBusca == LIS_CondRetListaVazia)
+		 {
+			 LIS_IrFinalLista(aux->pVerticeArestas);
+			 LIS_InserirElementoApos(aux->pVerticeArestas, pGrafo->pVertice);
+		 }
 		 return GRA_CondRetOK;
 	 }
-	 return GRA_CondRetNaoAchou;
+	 return GRA_CondRetNaoAchou; //não achou vertice
  }
 
  /* Fim Função: GRA  &CriarAresta */
 
  
 
- int GRA_QNTvertices(GRA_tppGrafo pGrafo)
+ int GRA_QntVertices(GRA_tppGrafo pGrafo)
  {
-	 if (pGrafo == NULL)
+	 if (pGrafo == NULL || pGrafo->pOrigemGrafo == NULL)
 	 {
 		 return -1;					//* RETORNAR -1 QUANDO O PONTEIRO É NULL?????? ********************************//
 	 }
 	 return LIS_ObtemTamanho(pGrafo->pOrigemGrafo);
+ }
+
+ int GRA_QntArestas(GRA_tppGrafo pGrafo)
+ {
+	 if (pGrafo == NULL)
+	 {
+		 return -1;
+	 }
+	 return LIS_ObtemTamanho(pGrafo->pArestas);
  }
 
 
