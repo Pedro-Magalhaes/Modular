@@ -489,6 +489,32 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
       return TRUE ;
 
    } /* Fim função: TLIS -Validar indice de lista */
+   
+   int ValidarInxLista( int inxgrafo , int Modo )
+   {
+	  if ( ( inxgrafo <  0 )
+			|| ( inxgrafo >= DIM_VT_GRAFO ))
+		  {
+			 return FALSE ;
+		  } /* if */
+         
+		  if ( Modo == VAZIO )
+		  {
+			 if ( vtgrafos[ inxgrafo ] != 0 )
+			 {
+				return FALSE ;
+			 } /* if */
+		  } else
+		  {
+			 if ( vtgrafos[ inxgrafo ] == 0 )
+			 {
+				return FALSE ;
+			 } /* if */
+		  } /* if */
+         
+	return TRUE ;
+
+   } /* Fim função: TLIS -Validar indice de lista */
 
 /********** Fim do módulo de implementação: TLIS Teste lista de símbolos **********/
 
