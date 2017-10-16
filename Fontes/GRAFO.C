@@ -247,7 +247,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
 		 while (LIS_AvancarElementoCorrente(vizinho->pVerticeArestas,1)==LIS_CondRetOK)
 		 {
-			 vizinho = (tpVerticeGrafo)LIS_ObterValor(pGrafo->pArestas);
+			 vizinho = LIS_ObterValor(pGrafo->pArestas);
 			 EfetuaExclusaoAresta(pGrafo->pVertice, vizinho);
 		 }
 		 
