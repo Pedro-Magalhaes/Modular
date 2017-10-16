@@ -1,22 +1,22 @@
 /***************************************************************************
-*  $MCI Módulo de implementação: TLIS Teste grafo de símbolos
+*  $MCI MÃ³dulo de implementaÃ§Ã£o: TLIS Teste grafo de sÃ­mbolos
 *
 *  Arquivo gerado:              TESTEGRAFO.c.c
 *  Letras identificadoras:      TGRA
 *
-*  Nome da base de software:    Arcabouço para a automação de testes de programas redigidos em C
+*  Nome da base de software:    ArcabouÃ§o para a automaÃ§Ã£o de testes de programas redigidos em C
 *  Arquivo da base de software: D:\AUTOTEST\PROJETOS\LISTA.BSW
 *
-*  Projeto: INF 1301 / 1628 Automatização dos testes de módulos C
+*  Projeto: INF 1301 / 1628 AutomatizaÃ§Ã£o dos testes de mÃ³dulos C
 *  Gestor:  LES/DI/PUC-Rio
 *  Autores: avs
 *
-*  $HA Histórico de evolução:
-*     Versão  Autor    Data     Observações
-*     4       avs   01/fev/2006 criar linguagem script simbólica
-*     3       avs   08/dez/2004 uniformização dos exemplos
-*     2       avs   07/jul/2003 unificação de todos os módulos em um só projeto
-*     1       avs   16/abr/2003 início desenvolvimento
+*  $HA HistÃ³rico de evoluÃ§Ã£o:
+*     VersÃ£o  Autor    Data     ObservaÃ§Ãµes
+*     4       avs   01/fev/2006 criar linguagem script simbÃ³lica
+*     3       avs   08/dez/2004 uniformizaÃ§Ã£o dos exemplos
+*     2       avs   07/jul/2003 unificaÃ§Ã£o de todos os mÃ³dulos em um sÃ³ projeto
+*     1       avs   16/abr/2003 inÃ­cio desenvolvimento
 *
 ***************************************************************************/
 
@@ -56,13 +56,13 @@ static const char IR_VERTICE_CMD          [ ] = "=irvertice"        ;
 
 GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
-/***** Protótipos das funções encapuladas no módulo *****/
+/***** ProtÃ³tipos das funÃ§Ãµes encapuladas no mÃ³dulo *****/
 
    static void DestruirValor( void * pValor ) ;
 
    static int ValidarInxLista( int inxLista , int Modo ) ;
 
-/*****  Definição da struct de teste  *****/
+/*****  DefiniÃ§Ã£o da struct de teste  *****/
 
    typedef struct no_teste 
    {
@@ -73,20 +73,20 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
    } no_teste;
 
 
-/*****  Código das funções exportadas pelo módulo  *****/
+/*****  CÃ³digo das funÃ§Ãµes exportadas pelo mÃ³dulo  *****/
 
 
 /***********************************************************************
 *
-*  $FC Função: TLIS &Testar lista
+*  $FC FunÃ§Ã£o: TLIS &Testar lista
 *
-*  $ED Descrição da função
-*     Podem ser criadas até 10 listas, identificadas pelos índices 0 a 10
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
+*     Podem ser criadas atÃ© 10 listas, identificadas pelos Ã­ndices 0 a 10
 *
-*     Comandos disponíveis:
+*     Comandos disponÃ­veis:
 *
 *     =resetteste
-*           - anula o vetor de listas. Provoca vazamento de memória
+*           - anula o vetor de listas. Provoca vazamento de memÃ³ria
 *     =criarlista                   inxLista
 *     =destruirlista                inxLista
 *     =esvaziarlista                inxLista
@@ -307,7 +307,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
             return TST_CompararInt( CondRetEsp ,
                       GRA_ExcluirVertice( vtgrafos[ inxgrafo ] ) ,
-                     "Condição de retorno errada ao excluir."   ) ;
+                     "CondiÃ§Ã£o de retorno errada ao excluir."   ) ;
 
          } /* fim ativa: Testar excluir simbolo */
 
@@ -315,7 +315,9 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
          else if ( strcmp( ComandoTeste , OBTER_CORRENTE_CMD ) == 0 )
          {
-
+		
+	    int valobtido; 
+		 
             numLidos = LER_LerParametros( "issssi" ,
                        &inxgrafo, StringDado1, StringDado2, StringDado3, StringDado4, &ValEsp ) ;
 
@@ -330,7 +332,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
             if ( ValEsp == 0 )
             {
                return TST_CompararPonteiroNulo( 0 , pDado ,
-                         "Valor não deveria existir." ) ;
+                         "Valor nÃ£o deveria existir." ) ;
             } /* if */
 
             if ( pDado == NULL )
@@ -339,11 +341,13 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
                          "Dado tipo um deveria existir." ) ;
             } /* if */
 
-			return (TST_tpCondRet) (TST_CompararString( StringDado1 , pDado->nome ,
+			valobtiod = (TST_CompararString( StringDado1 , pDado->nome ,
                          "Valor do elemento errado." ) && TST_CompararString( StringDado2 , pDado->data_nasc ,
                          "Valor do elemento errado." ) && TST_CompararString( StringDado3 , pDado->email ,
                          "Valor do elemento errado." ) && TST_CompararString( StringDado4 , pDado->cidade ,
                          "Valor do elemento errado." )) ;
+		 return TST_CompararInt(ValEsp, valobtido,
+					"Obteve o valor errado");
 
          } /* fim ativa: Testar obter valor do elemento corrente */
 
@@ -425,15 +429,15 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
       return TST_CondRetNaoConhec ;
 
-   } /* Fim função: TGRA &Testar grafo */
+   } /* Fim funÃ§Ã£o: TGRA &Testar grafo */
 
 
-/*****  Código das funções encapsuladas no módulo  *****/
+/*****  CÃ³digo das funÃ§Ãµes encapsuladas no mÃ³dulo  *****/
 
 
 /***********************************************************************
 *
-*  $FC Função: TLIS -Destruir valor
+*  $FC FunÃ§Ã£o: TLIS -Destruir valor
 *
 ***********************************************************************/
 
@@ -442,12 +446,12 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
       free( pValor ) ;
 
-   } /* Fim função: TLIS -Destruir valor */
+   } /* Fim funÃ§Ã£o: TLIS -Destruir valor */
 
 
 /***********************************************************************
 *
-*  $FC Função: TLIS -Validar indice de lista
+*  $FC FunÃ§Ã£o: TLIS -Validar indice de lista
 *
 ***********************************************************************/
 
@@ -476,7 +480,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
          
       return TRUE ;
 
-   } /* Fim função: TLIS -Validar indice de lista */
+   } /* Fim funÃ§Ã£o: TLIS -Validar indice de lista */
 
-/********** Fim do módulo de implementação: TLIS Teste lista de símbolos **********/
+/********** Fim do mÃ³dulo de implementaÃ§Ã£o: TLIS Teste lista de sÃ­mbolos **********/
 
