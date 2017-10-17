@@ -18,6 +18,8 @@
 *     Versão  Autor			Data		 Observações
 *     1       Hfac & Pfm   13/out/2017	 início desenvolvimento
 *	  2		  Hfac & Pfm   14/out/2017   continuação do desenvolvimento
+*	  3		  Pfm		   15/out/2017   continuação do desenvolvimento e Modulo pronto para etapa de testes
+*	  4		Hfac & Pfm	   16/out/2017   Finalização do modulo; Testes concluidos; Melhor definição das funçoes no .H
 *
 *  $ED Descrição do módulo
 *     Implementa grafos com cabeça genéricos.
@@ -102,7 +104,7 @@ typedef enum {
 *  $FC Função: GRA  &Criar grafo
 *
 *  $ED Descrição da função
-*     Cria uma grafo genérica com cabeça.
+*     Cria um grafo genérico com cabeça.
 *     Os possíveis tipos são desconhecidos a priori.
 *     A tipagem é implicita.
 *     Não existe identificador de tipo associado à grafo.
@@ -111,7 +113,6 @@ typedef enum {
 *     ExcluirValor  - ponteiro para a função que processa a
 *                     exclusão do valor referenciado pelo elemento
 *                     a ser excluído.
-*                     Ver descrição do módulo.
 *
 *  $FV Valor retornado
 *     Se executou corretamente retorna o ponteiro para a grafo.
@@ -320,10 +321,10 @@ GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * valor);
 *  $FC Função: GRA  &QntVertices
 *
 *  $ED Descrição da função
-*     Indica quantidade de vertice em determinado grafo.
+*     Indica quantidade de vertices armazenados em determinado grafo.
 *
 *  $EP Parâmetros
-*     pGrafo  - ponteiro para a grafo onde procura
+*     pGrafo  - ponteiro para a grafo onde procurar
 *     
 *
 *  $FV Valor retornado
@@ -343,7 +344,7 @@ int GRA_QntVertices(GRA_tppGrafo pGrafo);
 *     Indica quantidade de arestas do vertice corrente em determinado grafo.
 *
 *  $EP Parâmetros
-*     pGrafo  - ponteiro para a grafo onde procura
+*     pGrafo  - ponteiro para a grafo onde procurar
 *     
 *
 *  $FV Valor retornado

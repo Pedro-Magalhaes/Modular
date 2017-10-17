@@ -17,6 +17,7 @@
 *     1       Hfac & Pfm   13/out/2017	 início desenvolvimento
 *	  2		  Hfac & Pfm   14/out/2017   continuação do desenvolvimento
 *	  3		  Pfm		   15/out/2017   continuação do desenvolvimento e Modulo pronto para etapa de testes
+*	  4		Hfac & Pfm	   16/out/2017   Finalização do modulo; Testes concluidos; Melhor definição das funçoes no .H
 *
 ***************************************************************************/
 #include   <stdio.h>
