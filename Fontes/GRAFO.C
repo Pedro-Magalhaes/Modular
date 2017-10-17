@@ -413,7 +413,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  {
 	 if (pGrafo == NULL || pGrafo->pOrigemGrafo == NULL)
 	 {
-		 return 5;					//* RETORNAR 5 por GRA_CondRetGrafoNulo ser um tipo enumerado igual 5*//
+		 return -1;					//* RETORNAR 5 por GRA_CondRetGrafoNulo ser um tipo enumerado igual 5*//
 	 }
 	 return LIS_ObtemTamanho(pGrafo->pOrigemGrafo); 
  }
