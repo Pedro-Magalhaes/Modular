@@ -1,0 +1,9 @@
+﻿Data	Horas trabalhadas	Tipo de tarefa							Descrição da tarefa realizada 
+13/10	5			Estudar,  especificar os módulos, especificar as funções,	Junto ao integrante Pedro Felipe começamos a trabalhar no módulo grafo
+				revisar especificações, projetar, revisar projetos,
+				codificar módulo
+14/10	5			codificar módulo,  revisar código do módulo			Junto ao integrante Pedro Felipe continuamos a desenvolver o módulo
+16/10	8			codificar módulo,  revisar código do módulo			Junto ao integrante Pedro Felipe finalizamos o desenvolvimento do módulo
+17/10	1			revisar código do módulo,
+				diagnosticar e corrigir os problemas encontrados		Ultima busca por qualquer problema e resolução
+
