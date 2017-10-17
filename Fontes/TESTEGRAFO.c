@@ -62,7 +62,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
    static void DestruirValor( void * pValor ) ;
 
-   static int ValidarInxLista( int inxLista , int Modo ) ;
+   static int ValidarInxGrafo( int inxgrafo , int Modo ) ;
 
 /*****  Definição da struct de teste  *****/
 
@@ -74,7 +74,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 	   char cidade[31];
    } no_teste;
 
-
+	no_teste vtstructs [DIM_VT_GRAFO];
 /*****  Código das funções exportadas pelo módulo  *****/
 
 
@@ -107,7 +107,8 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
       int inxgrafo  = -1 ,
           numLidos   = -1 ,
-          CondRetEsp = -1  ;
+          ValEsp = -1 ,
+			inxstruct =-1;
 
       TST_tpCondRet CondRet ;
 
@@ -115,13 +116,11 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 	  char   StringDado2[  DIM_VALOR ] ;
 	  char   StringDado3[  DIM_VALOR ] ;
 	  char   StringDado4[  DIM_VALOR ] ;
-      no_teste * pDado ;
-
-      int ValEsp = -1 ;
+      no_teste * pDado ;   
 
       int i ;
 
-      int numElem = -1 ;
+      
 
       StringDado1[ 0 ] = 0 ;
 	  StringDado2[ 0 ] = 0 ;
@@ -136,13 +135,14 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
             for( i = 0 ; i < DIM_VT_GRAFO ; i++ )
             {
                vtgrafos[ i ] = NULL ;
+			   
             } /* for */
 
             return TST_CondRetOK ;
 
-         } /* fim ativa: Efetuar reset de teste de lista */
+         } /* fim ativa: Efetuar reset de teste de grafo */
 
-      /* Testar CriarLista */
+      /* Testar CriarGrafo */
 
          else if ( strcmp( ComandoTeste , CRIAR_GRAFO_CMD ) == 0 )
          {
@@ -164,7 +164,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
          } /* fim ativa: Testar Criar grafo */
 
-      /* Testar Esvaziar lista lista */
+      /* Testar Esvaziar grafo */
 
          else if ( strcmp( ComandoTeste , ESVAZIAR_GRAFO_CMD ) == 0 )
          {
@@ -184,7 +184,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
          } /* fim ativa: Testar Esvaziar grafo */
 
-      /* Testar Destruir lista */
+      /* Testar Destruir grafo */
 
          else if ( strcmp( ComandoTeste , DESTRUIR_GRAFO_CMD ) == 0 )
          {
@@ -205,40 +205,42 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
          } /* fim ativa: Testar Destruir grafo */
 
-      /* Testar inserir elemento antes */
+      /* Testar inserir elemento */
 
          else if ( strcmp( ComandoTeste , INS_VERTICE_CMD ) == 0 )
          {
 
-            numLidos = LER_LerParametros( "issssi" ,
-                       &inxgrafo , StringDado1, StringDado2, StringDado3, StringDado4 , &CondRetEsp ) ;
+            numLidos = LER_LerParametros( "iissssi" ,
+                       &inxgrafo , &inxstruct ,StringDado1, StringDado2, StringDado3, StringDado4 , &ValEsp ) ;
 
-            if ( ( numLidos != 6 )
-              || ( ! ValidarInxLista( inxgrafo , NAO_VAZIO )) )
+            if ( ( numLidos != 7 ) //6
+              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
+			
+			strcpy( vtstructs[ inxstruct ].nome , StringDado1 ) ;
+			strcpy( vtstructs[ inxstruct ].data_nasc , StringDado2 ) ;
+			strcpy( vtstructs[ inxstruct ].email , StringDado3 ) ;
+			strcpy( vtstructs[ inxstruct ].cidade , StringDado4 ) ;
 
-            pDado = ( no_teste * ) malloc( sizeof(no_teste) ) ;
+            pDado =  &vtstructs[ inxstruct ];  
             if ( pDado == NULL )
             {
                return TST_CondRetMemoria ;
             } /* if */
 
-			strcpy( pDado->nome , StringDado1 ) ;
-			strcpy( pDado->data_nasc , StringDado2 ) ;
-			strcpy( pDado->email , StringDado3 ) ;
-			strcpy( pDado->cidade , StringDado4 ) ;
+			
 
 
             CondRet = (TST_tpCondRet) GRA_InserirVertice( vtgrafos[ inxgrafo ] , pDado ) ;
 
             if ( CondRet != GRA_CondRetOK )
             {
-               free( pDado ) ;
+               //free( pDado ) ; //não foi alocado dinamicamente
             } /* if */
 
-            return TST_CompararInt( CondRetEsp , CondRet ,
+            return TST_CompararInt( ValEsp , CondRet ,
                      "Condicao de retorno errada ao inserir vertice.") ;
 
          } /* fim ativa: Testar inserir vertice */
@@ -248,47 +250,40 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
          else if ( strcmp( ComandoTeste , CRIAR_ARESTA_CMD ) == 0 )
          {
 
-             numLidos = LER_LerParametros( "issssi" ,
-                       &inxgrafo , StringDado1, StringDado2, StringDado3, StringDado4 , &CondRetEsp ) ;
+             numLidos = LER_LerParametros( "iii" ,
+                       &inxgrafo , &inxstruct , &ValEsp ) ;
 
-            if ( ( numLidos != 6 )
+            if ( ( numLidos != 3 ) //6
               || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
 
-            pDado = ( no_teste * ) malloc( sizeof(no_teste) ) ;
+            pDado =  &vtstructs[inxstruct]; //( no_teste * ) malloc( sizeof(no_teste) ) ;
             if ( pDado == NULL )
             {
                return TST_CondRetMemoria ;
             } /* if */
 
-			strcpy( pDado->nome , StringDado1 ) ;
-			strcpy( pDado->data_nasc , StringDado2 ) ;
-			strcpy( pDado->email , StringDado3 ) ;
-			strcpy( pDado->cidade , StringDado4 ) ;
-
-
-
             CondRet = (TST_tpCondRet) GRA_CriarAresta( vtgrafos[ inxgrafo ] , pDado ) ;
 
             if ( CondRet != GRA_CondRetOK )
             {
-               free( pDado ) ;
+               //free( pDado ) ;//não foi alocado dinamicamente
             } /* if */
 
-            return TST_CompararInt( CondRetEsp , CondRet ,
+            return TST_CompararInt( ValEsp , CondRet ,
                      "Condicao de retorno errada ao criar aresta."                   ) ;
 
          } /* fim ativa: Testar criar aresta */
 
-      /* Testar excluir simbolo */
+      /* Testar excluir vertice */
 
          else if ( strcmp( ComandoTeste , EXC_VERTICE_CMD ) == 0 )
          {
 
             numLidos = LER_LerParametros( "ii" ,
-                  &inxgrafo , &CondRetEsp ) ;
+                  &inxgrafo , &ValEsp ) ;
 
             if ( ( numLidos != 2 )
               || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
@@ -296,11 +291,11 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
                return TST_CondRetParm ;
             } /* if */
 
-            return TST_CompararInt( CondRetEsp ,
+            return TST_CompararInt( ValEsp ,
                       GRA_ExcluirVertice( vtgrafos[ inxgrafo ] ) ,
                      "Condição de retorno errada ao excluir."   ) ;
 
-         } /* fim ativa: Testar excluir simbolo */
+         } /* fim ativa: Testar excluir vertice */
 
       /* Testar obter valor do elemento corrente */
 
@@ -338,68 +333,59 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
          } /* fim ativa: Testar obter valor do elemento corrente */
 
-      /* Testar ir para o elemento inicial */
+      /* Testar excluir aresta entre o corrente e o pvalor recebido */
 
          else if ( strcmp( ComandoTeste , EXC_ARESTA_CMD ) == 0 )
          {
 
-            numLidos = LER_LerParametros( "issssi" , &inxgrafo, StringDado1, StringDado2, StringDado3, StringDado4, &ValEsp ) ;
+            numLidos = LER_LerParametros( "iii" , &inxgrafo, &inxstruct, &ValEsp ) ; //str1234
 
-            if ( ( numLidos != 6 )
+            if ( ( numLidos != 3 ) //6
               || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
 
-			 pDado = ( no_teste * ) malloc( sizeof(no_teste) ) ;
+			 pDado = &vtstructs[inxstruct];//( no_teste * ) malloc( sizeof(no_teste) ) ;
             if ( pDado == NULL )
             {
                return TST_CondRetMemoria ;
             } /* if */
 
-			strcpy( pDado->nome , StringDado1 ) ;
-			strcpy( pDado->data_nasc , StringDado2 ) ;
-			strcpy( pDado->email , StringDado3 ) ;
-			strcpy( pDado->cidade , StringDado4 ) ;
-
-
             CondRet = (TST_tpCondRet) GRA_ExcluirAresta( vtgrafos[ inxgrafo ] , pDado ) ;
 
-            return TST_CompararInt( CondRetEsp , CondRet ,
+            return TST_CompararInt( ValEsp , CondRet ,
                      "Condicao de retorno errada ao excluir aresta."                   ) ;
 
-         } /* fim ativa: Testar ir para o elemento inicial */
+         } /* fim ativa: Testar excluir aresta */
 
-      /* LIS  &Ir para o elemento final */
+      /* GRA  &Ir para o elemento com endereço do valor passado */
 
          else if ( strcmp( ComandoTeste , IR_VERTICE_CMD ) == 0 )
          {
 
-            numLidos = LER_LerParametros( "issssi" , &inxgrafo, StringDado1, StringDado2, StringDado3, StringDado4, &ValEsp ) ;
+            numLidos = LER_LerParametros( "iii" , &inxgrafo, &inxstruct, &ValEsp ) ;
 
-            if ( ( numLidos != 6 )
+            if ( ( numLidos != 3 )
               || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
 
-			 pDado = ( no_teste * ) malloc( sizeof(no_teste) ) ;
+			 pDado = &vtstructs[ inxstruct ];//( no_teste * ) malloc( sizeof(no_teste) ) ;
+			 
             if ( pDado == NULL )
             {
                return TST_CondRetMemoria ;
             } /* if */
 
-			strcpy( pDado->nome , StringDado1 ) ;
-			strcpy( pDado->data_nasc , StringDado2 ) ;
-			strcpy( pDado->email , StringDado3 ) ;
-			strcpy( pDado->cidade , StringDado4 ) ;
 
             CondRet = (TST_tpCondRet) GRA_IrVertice(vtgrafos[inxgrafo], pDado);
 
-           return TST_CompararInt( CondRetEsp , CondRet ,
+           return TST_CompararInt( ValEsp , CondRet ,
                      "Condicao de retorno errada ao ir para vertice."                   ) ;
 
-         } /* fim ativa: LIS  &Ir para o elemento final */
+         } /* fim ativa: GRA  &Ir para o elemento */
 
 		 /*GRA &Ver quantidade de vertices*/
 
@@ -445,21 +431,21 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
 /***********************************************************************
 *
-*  $FC Função: TLIS -Destruir valor
+*  $FC Função: TGRA -Destruir valor
 *
 ***********************************************************************/
 
    void DestruirValor( void * pValor )
    {
 
-      free( pValor ) ;
+      //free( pValor ) ; Não foi alocado dinamicamente, para testes com memoria dinamica descomentar
 
    } /* Fim função: TLIS -Destruir valor */
 
 
 /***********************************************************************
 *
-*  $FC Função: TLIS -Validar indice de lista
+*  $FC Função: TGRA -Validar indice do Grafo
 *
 ***********************************************************************/
 
@@ -488,32 +474,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
          
       return TRUE ;
 
-   } /* Fim função: TLIS -Validar indice de lista */
-   
-   int ValidarInxLista( int inxgrafo , int Modo )
-   {
-	  if ( ( inxgrafo <  0 )
-			|| ( inxgrafo >= DIM_VT_GRAFO ))
-		  {
-			 return FALSE ;
-		  } /* if */
-         
-		  if ( Modo == VAZIO )
-		  {
-			 if ( vtgrafos[ inxgrafo ] != 0 )
-			 {
-				return FALSE ;
-			 } /* if */
-		  } else
-		  {
-			 if ( vtgrafos[ inxgrafo ] == 0 )
-			 {
-				return FALSE ;
-			 } /* if */
-		  } /* if */
-         
-	return TRUE ;
+   } /* Fim função: TGRA -Validar indice do Grafo */
 
-   } /* Fim função: TLIS -Validar indice de lista */
 
 /********** Fim do módulo de implementação: TLIS Teste lista de símbolos **********/

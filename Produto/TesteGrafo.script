@@ -9,6 +9,11 @@
 =declararparm   grafo1  int 1
 =declararparm   grafo2  int 2
 
+=declararparm	struct0 int 0
+=declararparm	struct1 int 1
+=declararparm	struct2 int 2
+=declararparm	struct3 int 3
+
 =declararparm   str0    string  "Ansem"
 =declararparm   str1    string  "30/02/2036"
 =declararparm   str2    string  "diz@heartmail.com"
@@ -28,7 +33,7 @@
 =declararparm   FimGrafo       int  2
 =declararparm   NaoAchou       int  3
 =declararparm   FaltouMemoria  int  4
-=declararparm   GrafoNulo      int  4
+=declararparm   GrafoNulo      int  5
 
 =declararparm   pNULL          int  0
 =declararparm   pNaoNULL       int  1
@@ -40,32 +45,38 @@
 =obtervalorcorrente  grafo0   "???"   "???"   "???"   "???"     pNULL
 
 == Inserir vertice em grafo vazio
-=insvertice    	 	 grafo0   str0   str1   str2   str3   OK
+=insvertice    	 	 grafo0   struct0 str0   str1   str2   str3   OK
 =obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
 
 == Inserir vertice em grafo nao vazio
-=insvertice     	 grafo0   str4   str5   str6   str7   OK
-=obtervalorcorrente  grafo0   str4   str5   str6   str7   pNaoNULL
+=insvertice     	 grafo0   struct1 str4   str5   str6   str7   OK
+=obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
 
 == Inserir terceiro vertice
-=insvertice    		 grafo0   str8   str9   str10   str11   OK
-=obtervalorcorrente  grafo0   str8   str9   str10   str11   pNaoNULL
+=insvertice    		 grafo0   struct2 str8   str9   str10   str11   OK
+=obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
 
 ==Obter quantidade de vertices
 =qntvertice 	 grafo0   3
 
+
 == Excluir ultimo vertice
-=irvertice  	 grafo0   str8   str9   str10   str11   pNaoNULL
+=irvertice  	 grafo0   struct2   OK
+=obtervalorcorrente  grafo0   str8   str9   str10   str11   pNaoNULL
 =excvertice  	 grafo0   OK
 =qntvertice 	 grafo0   2
 
-== Excluir vertice do início
-=irvertice  	 grafo0   str0   str1   str2   str3   pNaoNULL
+
+== Excluir vertice do inicio
+=irvertice  	 grafo0   struct0   OK
+=obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
 =excvertice  	 grafo0             OK
 =qntvertice 	 grafo0   1
 
-== Excluir vertice final, único 
-=irvertice  	 grafo0   str4   str5   str6   str7   pNaoNULL
+
+== Excluir vertice final, unico 
+=irvertice  	 grafo0   struct1   OK
+=obtervalorcorrente  grafo0   str4   str5   str6   str7   pNaoNULL
 =excvertice  	 grafo0             OK
 =qntvertice 	 grafo0   0
 
@@ -74,8 +85,8 @@
 
 == Criar um grafo com dois vertices
 =criargrafo     grafo1 
-=insvertice     grafo1   str0   str1   str2   str3   OK
-=insvertice     grafo1   str4   str5   str6   str7   OK
+=insvertice     grafo1   struct0 str0   str1   str2   str3   OK
+=insvertice     grafo1   struct1 str4   str5   str6   str7   OK
 =qntvertice 	grafo1   2
 
 == Esvazior o grafo e ver se ficou vazio
@@ -87,40 +98,40 @@
 
 == Criar um grafo com quatro vertices
 =criargrafo     grafo2 
-=insvertice     grafo2   str0   str1   str2   str3   OK
-=insvertice     grafo2   str4   str5   str6   str7   OK
-=insvertice     grafo2   str8   str9   str10   str11   OK
-=insvertice     grafo2   str4   str9   str2   str7   OK
+=insvertice     grafo2   struct0 str0   str1   str2   str3   OK
+=insvertice     grafo2   struct1 str4   str5   str6   str7   OK
+=insvertice     grafo2   struct2 str8   str9   str10   str11   OK
+=insvertice     grafo2   struct3 str4   str9   str2   str7   OK
 =qntvertice 	grafo2   4
 
 == Criar arestas entre o primeiro e os demais vertices
-=irvertice     grafo2   str0   str1   str2   str3   OK
-=criararesta   grafo2   str4   str5   str6   str7   OK
+=irvertice     grafo2   struct0   OK
+=criararesta   grafo2   struct1   OK
 =qntaresta     grafo2   1
-=irvertice     grafo2   str4   str5   str6   str7   OK
+=irvertice     grafo2   struct1   OK
 =qntaresta     grafo2   1
-=irvertice     grafo2   str0   str1   str2   str3   OK
-=criararesta   grafo2   str8   str9   str10   str11   OK
-=criararesta   grafo2   str4   str9   str2    str7    OK
+=irvertice     grafo2   struct0   OK
+=criararesta   grafo2   struct2   OK
+=criararesta   grafo2   struct3    OK
 =qntaresta     grafo2   3
 
 == Excluir aresta entre o primeiro e quarto vertices
-=excaresta   grafo2   str4   str9   str2    str7    OK
+=excaresta   grafo2   struct3    OK
 =qntaresta   grafo2   2
-=irvertice   grafo2   str4   str9   str2    str7   OK
+=irvertice   grafo2   struct3   OK
 =qntaresta   grafo2   0
-=irvertice   grafo2   str0   str1   str2   str3   OK
+=irvertice   grafo2   struct0   OK
 
 == Criar e excluir aresta do primeiro vertice com ele mesmo
-=criararesta   grafo2   str0   str1   str2   str3   OK
+=criararesta   grafo2   struct0   OK
 =qntaresta     grafo2   3
-=excaresta     grafo2   str0   str1   str2   str3   OK
+=excaresta     grafo2   struct0   OK
 =qntaresta     grafo2   2
 
 == Excluir vertice que tem aresta
-=irvertice    grafo2   str8   str9   str10   str11   OK
+=irvertice    grafo2   struct2   OK
 =excvertice   grafo2   OK
-=irvertice    grafo2   str0   str1   str2   str3   OK
+=irvertice    grafo2   struct0   OK
 =qntaresta    grafo2   1
 
 == Destruir o grafo

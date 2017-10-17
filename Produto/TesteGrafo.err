@@ -2,8 +2,7 @@ Lista.c
 Grafo.c
 ..\Fontes\Grafo.c(555) : warning C4100: 'pDado' : unreferenced formal parameter
 TesteGrafo.c
-..\Fontes\TesteGrafo.c(154) : warning C4013: 'ValidarInxGrafo' undefined; assuming extern returning int
-..\Fontes\TesteGrafo.c(124) : warning C4189: 'numElem' : local variable is initialized but not referenced
+..\Fontes\TesteGrafo.c(438) : warning C4100: 'pValor' : unreferenced formal parameter
 Microsoft (R) Incremental Linker Version 10.00.40219.01
 Copyright (C) Microsoft Corporation.  All rights reserved.
 

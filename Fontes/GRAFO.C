@@ -209,7 +209,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	{
 		return GRA_CondRetFaltouMemoria; 
 	}
-		
+	LIS_IrFinalLista(pGrafo->pOrigemGrafo);
 	if (LIS_InserirElementoApos(pGrafo->pOrigemGrafo, pVerticeAux) != LIS_CondRetOK)
 	{
 		return GRA_CondRetFaltouMemoria; 

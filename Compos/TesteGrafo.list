@@ -44,9 +44,9 @@ Estatísticas do construto
 
    Estatísticas do arquivo: Grafo.c
       Total linhas:             561
-      Linhas de código:         313
+      Linhas de código:         314
       Linhas de comentário:     139
-      Linhas em branco:         125
+      Linhas em branco:         124
    Arquivos de inclusão de que necessita
       GRAFO.h
       LISTA.H
@@ -95,9 +95,9 @@ Estatísticas do construto
       TesteGrafo.c
 
    Estatísticas do arquivo: TesteGrafo.c
-      Total linhas:             519
-      Linhas de código:         305
-      Linhas de comentário:      87
+      Total linhas:             522
+      Linhas de código:         293
+      Linhas de comentário:     107
       Linhas em branco:         143
    Arquivos de inclusão de que necessita
       GRAFO.h
@@ -137,17 +137,17 @@ Totais por tipo de arquivo
          Arquivos deste tipo:          1
 
   Tipo: c        Path: ..\Fontes
-         Total linhas do tipo:      1650
-         Linhas de código:           915
-         Linhas de comentário:       362
-         Linhas em branco:           423
+         Total linhas do tipo:      1653
+         Linhas de código:           904
+         Linhas de comentário:       382
+         Linhas em branco:           422
          Arquivos deste tipo:          3
 
 Totais para todo o construto TesteGrafo
 
-   Total linhas:              3929
-   Linhas de código:          1137
-   Linhas de comentário:      2091
-   Linhas em branco:           751
+   Total linhas:              3932
+   Linhas de código:          1126
+   Linhas de comentário:      2111
+   Linhas em branco:           750
    Arquivos processados:         9
 
