@@ -1,22 +1,22 @@
 /***************************************************************************
-*  $MCI MÛdulo de implementaÁ„o: GRA  Grafo
+*  $MCI M√≥dulo de implementa√ß√£o: GRA  Grafo
 *
 *  Arquivo gerado:              GRAFO.c
 *  Letras identificadoras:      GRA
 *
-*  Nome da base de software:    ArcabouÁo para a automaÁ„o de testes de programas redigidos em C
+*  Nome da base de software:    Arcabou√ßo para a automa√ß√£o de testes de programas redigidos em C
 *  Arquivo da base de software: D:\AUTOTEST\PROJETOS\(a definir)
 *
-*  Projeto: INF 1301 / 1628 AutomatizaÁ„o dos testes de mÛdulos C
+*  Projeto: INF 1301 / 1628 Automatiza√ß√£o dos testes de m√≥dulos C
 *  Gestor:  LES/DI/PUC-Rio
 *  Autores: Hfac
 *			Pfm
 *
-*  $HA HistÛrico de evoluÁ„o:
-*     Vers„o  Autor			Data		 ObservaÁıes
-*     1       Hfac & Pfm   13/out/2017	 inÌcio desenvolvimento
-*	  2		  Hfac & Pfm   14/out/2017   continuaÁ„o do desenvolvimento
-*	  3		  Pfm		   15/out/2017   continuaÁ„o do desenvolvimento e Modulo pronto para etapa de testes
+*  $HA Hist√≥rico de evolu√ß√£o:
+*     Vers√£o  Autor			Data		 Observa√ß√µes
+*     1       Hfac & Pfm   13/out/2017	 in√≠cio desenvolvimento
+*	  2		  Hfac & Pfm   14/out/2017   continua√ß√£o do desenvolvimento
+*	  3		  Pfm		   15/out/2017   continua√ß√£o do desenvolvimento e Modulo pronto para etapa de testes
 *
 ***************************************************************************/
 #include   <stdio.h>
@@ -50,7 +50,7 @@ typedef struct tagVerticeGrafo {
 
 /***********************************************************************
 *
-*  $TC Tipo de dados: GRA Descritor da cabeÁa de grafo
+*  $TC Tipo de dados: GRA Descritor da cabe√ßa de grafo
 *
 *
 ***********************************************************************/
@@ -67,11 +67,11 @@ typedef struct GRA_tagGrafo {
 	/* Ponteiro para arestas do vertice corrente */
 
 	void(*ExcluirValor) (void * pValor);
-	/* Ponteiro para a funÁ„o de destruiÁ„o do valor contido em um elemento */
+	/* Ponteiro para a fun√ß√£o de destrui√ß√£o do valor contido em um elemento */
 
 } GRA_tpGrafo;
 
-/***** ProtÛtipos das funÁıes encapuladas no mÛdulo *****/
+/***** Prot√≥tipos das fun√ß√µes encapuladas no m√≥dulo *****/
 
 /*static void LiberarElemento(LIS_tppLista   pLista,
 	tpElemLista  * pElem);*/
@@ -86,11 +86,11 @@ static void LimparCabeca(GRA_tppGrafo pGrafo);  /* por enquanto nao foi utilizad
 
 static void naoExclui(void * pDado);
 
-/*****  CÛdigo das funÁıes exportadas pelo mÛdulo  *****/
+/*****  C√≥digo das fun√ß√µes exportadas pelo m√≥dulo  *****/
 
 /***************************************************************************
 *
-*  FunÁ„o: GRA  &Criar grafo
+*  Fun√ß√£o: GRA  &Criar grafo
 *  ****/
 
 GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
@@ -112,11 +112,11 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	return pGrafo;
 }
 
-/* Fim funÁ„o: GRA  &Criar grafo */
+/* Fim fun√ß√£o: GRA  &Criar grafo */
 
 /***************************************************************************
 *
-*  FunÁ„o: GRA  &Destruir grafo
+*  Fun√ß√£o: GRA  &Destruir grafo
 *  ****/
 
  void GRA_DestruirGrafo( GRA_tppGrafo pGrafo )
@@ -135,11 +135,11 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	  free(pGrafo);
 	  
    }
-   /* Fim funÁ„o: GRA  &Destruir grafo */
+   /* Fim fun√ß√£o: GRA  &Destruir grafo */
   
 /*************************************************************************
 * 
-* funÁ„o: GRA  &Esvaziar grafo
+* fun√ß√£o: GRA  &Esvaziar grafo
 *****/
 
  void GRA_EsvaziarGrafo(GRA_tppGrafo pGrafo)
@@ -161,7 +161,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 atual = LIS_ObterValor(Elem);//pegando o primeiro valor
 	 if (atual != NULL)
 	 {
-		 LIS_DestruirLista(atual->pVerticeArestas); //DECIDIR SE QUEREMOS DELETAR TODOS OS N”S OU N√O E DEIXAR A LISTA VAZIA  (pra manter os vertices È sÛ esvaziar suas listas de arestas ao invÈs de destruir)
+		 LIS_DestruirLista(atual->pVerticeArestas); //DECIDIR SE QUEREMOS DELETAR TODOS OS N√ìS OU N√ÉO E DEIXAR A LISTA VAZIA  (pra manter os vertices √© s√≥ esvaziar suas listas de arestas ao inv√©s de destruir)
 		 pGrafo->ExcluirValor(atual->valor);
 		 free(atual);
 	 }
@@ -185,11 +185,11 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
 	 return;
 
- } /* Fim funÁ„o: GRA  &Esvaziar grafo */
+ } /* Fim fun√ß√£o: GRA  &Esvaziar grafo */
 
    /***************************************************************************
    *
-   *  FunÁ„o: GRA  &InserirVertice
+   *  Fun√ß√£o: GRA  &InserirVertice
    *  ****/
 
  GRA_tpCondRet GRA_InserirVertice(GRA_tppGrafo pGrafo, void* pValor)
@@ -223,13 +223,13 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
 	return GRA_CondRetOK;
  }
- /* Fim funÁ„o: GRA  &InserirVertice */
+ /* Fim fun√ß√£o: GRA  &InserirVertice */
 
  
 
  /***************************************************************************
  *
- *  FunÁ„o: GRA  &Excluir Vertice
+ *  Fun√ß√£o: GRA  &Excluir Vertice
 	
 	exclui o corrente
  *  ****/
@@ -273,12 +273,12 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
  }
 
- /* Fim FunÁ„o: GRA  &Excluir Vertice */
+ /* Fim Fun√ß√£o: GRA  &Excluir Vertice */
 
 
  /***************************************************************************
  *
- *  FunÁ„o: GRA  &ExcluirAresta
+ *  Fun√ß√£o: GRA  &ExcluirAresta
 	exclui do vertice corrente para o vertice recebido e do recebido para o corrente
  *  ****/
  GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo, void * valor)
@@ -298,13 +298,13 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 return ret;
  }
 
- /* Fim FunÁ„o: GRA  &ExcluirAresta */
+ /* Fim Fun√ß√£o: GRA  &ExcluirAresta */
 
 
 
  /***************************************************************************
  *
- *  FunÁ„o: GRA  &IrVertice
+ *  Fun√ß√£o: GRA  &IrVertice
  *  ****/
  GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void *valor)
  {
@@ -333,13 +333,13 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
 }
 
- /* Fim FunÁ„o: GRA  &IrVertice */
+ /* Fim Fun√ß√£o: GRA  &IrVertice */
 
 
 
  /***************************************************************************
  *
- *  FunÁ„o: GRA  &ObterCorrente
+ *  Fun√ß√£o: GRA  &ObterCorrente
  *  ****/
 
  void* GRA_ObterValorCorrente(GRA_tppGrafo pGrafo)
@@ -352,12 +352,12 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 return NULL;
  }
 
- /* Fim FunÁ„o: GRA  &ObterCorrente */
+ /* Fim Fun√ß√£o: GRA  &ObterCorrente */
 
 
  /***************************************************************************
  *
- *  FunÁ„o: GRA  &CriarAresta
+ *  Fun√ß√£o: GRA  &CriarAresta
  *  ****/
 
  GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo, void* valor)
@@ -398,12 +398,15 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 		 }
 		 return GRA_CondRetOK;
 	 }
-	 return GRA_CondRetNaoAchou; //n„o achou vertice
+	 return GRA_CondRetNaoAchou; //n√£o achou vertice
  }
 
- /* Fim FunÁ„o: GRA  &CriarAresta */
+ /* Fim Fun√ß√£o: GRA  &CriarAresta */
 
- 
+   /***************************************************************************
+  *
+  *  Fun√ß√£o: GRA  &QntVertices
+  *  ****/
 
  int GRA_QntVertices(GRA_tppGrafo pGrafo)
  {
@@ -413,6 +416,13 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 }
 	 return LIS_ObtemTamanho(pGrafo->pOrigemGrafo); 
  }
+ /* Fim Fun√ß√£o: GRA  &QntVertices */
+
+
+  /***************************************************************************
+  *
+  *  Fun√ß√£o: GRA  &QntArestas
+  *  ****/
 
  int GRA_QntArestas(GRA_tppGrafo pGrafo)
  {
@@ -423,13 +433,11 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 return LIS_ObtemTamanho(pGrafo->pArestas);
  }
 
-
-  /*****  CÛdigo das funÁıes encapsuladas no mÛdulo  *****/
-
+ /* Fim Fun√ß√£o: GRA  &QntArestas */
 
   /***************************************************************************
   *
-  *  FunÁ„o: GRA  &ProcurarValor
+  *  Fun√ß√£o: GRA  &ProcurarValor
   *  ****/
 
  static tpVerticeGrafo* GRA_ProcurarValor(LIS_tppLista pOrigemGrafo, void* pValor)
@@ -465,13 +473,13 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 return NULL;
  }
 
- /* Fim FunÁ„o: GRA  &ProcurarValor */
+ /* Fim Fun√ß√£o: GRA  &ProcurarValor */
 
 
 
   /******************************************************
   *
-  *  FunÁ„o: GRA  &LimparCabeca
+  *  Fun√ß√£o: GRA  &LimparCabeca
   *  ****/
 
  static void LimparCabeca(GRA_tppGrafo pGrafo)
@@ -482,12 +490,12 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 pGrafo->pOrigemGrafo = NULL;
 	 pGrafo->pVertice = NULL;
  }
- /* Fim funÁ„o: GRA  &LimparCabeca */
+ /* Fim fun√ß√£o: GRA  &LimparCabeca */
 
 
  /*******************************************************
  *
- *  FunÁ„o: GRA  &CriarElemento
+ *  Fun√ß√£o: GRA  &CriarElemento
  *  ****/
  static tpVerticeGrafo* CriarElemento( void* pValor)
  {
@@ -498,18 +506,18 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 }
 	 pVertice->valor = pValor;
 
-	 //criando a lista de arestas com a funÁ„o que nao desaloca os vertices
+	 //criando a lista de arestas com a fun√ß√£o que nao desaloca os vertices
 	 pVertice->pVerticeArestas = LIS_CriarLista(naoExclui);
 
 	 return pVertice;
 
  }
 
- /* Fim FunÁ„o: GRA  &CriarElemento */
+ /* Fim Fun√ß√£o: GRA  &CriarElemento */
 
  /*******************************************************
  *
- *  FunÁ„o: GRA  &EfetuaExclusaoAresta
+ *  Fun√ß√£o: GRA  &EfetuaExclusaoAresta
  *  ****/
 
  static GRA_tpCondRet EfetuaExclusaoAresta(tpVerticeGrafo* vertice1, tpVerticeGrafo* vertice2)
@@ -527,7 +535,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 		 return GRA_CondRetGrafoVazia;
 	 }
 	 if (retorno == LIS_CondRetNaoAchou)
-	 {	//nao possui aresta, nao h· o que deletar
+	 {	//nao possui aresta, nao h√° o que deletar
 		 return GRA_CondRetOK;
 	 }
 	 //agora com certeza achou o vertice
@@ -536,7 +544,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 LIS_IrInicioLista(vertice2->pVerticeArestas);
 	 retorno = LIS_ProcurarValor(vertice2->pVerticeArestas, vertice1);
 	 if (retorno == LIS_CondRetNaoAchou)
-	 {	//nao possui aresta, nao h· o que deletar(aqui seria um erro na inclusao de arestas)
+	 {	//nao possui aresta, nao h√° o que deletar(aqui seria um erro na inclusao de arestas)
 		 return GRA_CondRetOK;
 	 }
 	 LIS_ExcluirElemento(vertice2->pVerticeArestas);//excluimos no segundo	 
@@ -544,18 +552,18 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 return GRA_CondRetOK;
  }
 
- /* Fim FunÁ„o: GRA  &EfetuaExclusaoAresta */
+ /* Fim Fun√ß√£o: GRA  &EfetuaExclusaoAresta */
 
  /*******************************************************
  *
- *  FunÁ„o: GRA  &naoExclui
- *	funÁ„o para criar a lista de arestas dos vertices sem que ao deletar alguma aresta
- *	o vertice n„o seja desalocado
+ *  Fun√ß√£o: GRA  &naoExclui
+ *	fun√ß√£o para criar a lista de arestas dos vertices sem que ao deletar alguma aresta
+ *	o vertice n√£o seja desalocado
  *  ****/
  static void naoExclui (void * pDado)
  {
 	 return;
  }
 
-/* Fim FunÁ„o: GRA  &naoExclui */
+/* Fim Fun√ß√£o: GRA  &naoExclui */
 

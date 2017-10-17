@@ -139,7 +139,7 @@ GRA_tppGrafo GRA_CriarGrafo(
 *     OBS. não existe previsão para possíveis falhas de execução.
 *
 *  $EP Parâmetros
-*     pGrafo - ponteiro para a grafo a ser esvaziada
+*     pGrafo - ponteiro para a grafo a ser destruido
 *
 *  $FV Valor retornado
 *     Não possui condição de retorno, assume-se que nada tenha dado errado
@@ -205,7 +205,7 @@ GRA_tpCondRet GRA_InserirVertice(GRA_tppGrafo pGrafo,
 *     Se este também não existir o grafo tornou-se vazia.
 *
 *  $EP Parâmetros
-*     pGrafo    - ponteiro para a grafo na qual deve excluir.
+*     pGrafo    - ponteiro para a grafo na qual deve excluir o vertice corrente.
 *
 *  $FV Valor retornado
 *     GRA_CondRetGrafoNulo
@@ -222,16 +222,16 @@ GRA_tpCondRet GRA_ExcluirVertice(GRA_tppGrafo pGrafo);
 *  $FC Função: GRA  &Excluir Aresta
 *
 *  $ED Descrição da função
-*     Exclui o elemento corrente da grafo dada.
-*     Se existir o elemento aa esquerda do corrente será o novo corrente.
-*     Se não existir e existir o elemento à direita, este se tornará corrente.
-*     Se este também não existir a grafo tornou-se vazia.
+*     Exclui a aresta entre o vertice corrente e do vertice cujo valor foi dado.
+*     A exclusão irá ocorrer em ambos os vertices.
+*     Se não existir a aresta a ser excluida o programa ira retornar que tudo deu certo.
 *
 *  $EP Parâmetros
-*     pGrafo    - ponteiro para a grafo na qual deve excluir.
-*	  valor	- Ponteiro para o valor contido no vertice cuja aresta deve ser excluida
+*     pGrafo    - ponteiro para a grafo na qual deve excluir a aresta do vertice corrente.
+*     valor	- Ponteiro para o valor cujo vertice (nao corrente) possui.
 *
 *  $FV Valor retornado
+*     GRA_CondRetGrafoNulo
 *     GRA_CondRetOK
 *     GRA_CondRetGrafoVazia
 *
@@ -248,7 +248,7 @@ GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo, void* valor);
 *     Obtem a referência para o valor contido no elemento corrente da grafo
 *
 *  $EP Parâmetros
-*     pGrafo - ponteiro para a grafo de onde se quer o valor
+*     pGrafo - ponteiro para a grafo de onde se quer o valor do vertice corrente
 *
 *  $FV Valor retornado
 *     não NULL - se o elemento corrente existe
@@ -266,18 +266,19 @@ void* GRA_ObterValorCorrente(GRA_tppGrafo pGrafo);
 *  $FC Função: GRA  &CriarAresta
 *
 *  $ED Descrição da função
-*    cria uma aresta entre o vertice corrente e o vertice recebido como parametro
+*    Cria uma aresta entre o vertice corrente e o vertice recebido como parametro
 *     
 *
 *  $EP Parâmetros
-*     pGrafo  - ponteiro para a grafo a ser manipulada
-*     valor - valor contido no vertice destino 
+*     pGrafo	- ponteiro para a grafo a ser manipulada
+*     valor	- valor contido no vertice destino 
 *
 *  $FV Valor retornado
-*     CondRetOK         - se numElem elementos tiverem sido andados
-*     CondRetFimGrafo   - se encontrou o fim da grafo antes de andar numElem
+*     GRA_CondRetGrafoNulo  - se grafo enviado for nulo
+*     GRA_CondRetOK         - se numElem elementos tiverem sido andados
+*     GRA_CondRetFimGrafo   - se encontrou o fim da grafo antes de andar numElem
 *                         elementos
-*     CondRetGrafoVazia - se a grafo está vazia
+*     GRA_CondRetGrafoVazia - se a grafo está vazia
 *
 ***********************************************************************/
 
@@ -299,6 +300,8 @@ GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
 *				deseja chegar
 *
 *  $FV Valor retornado
+*     GRA_CondRetGrafoNulo - se grafo mandado for nulo
+*
 *     GRA_CondRetOK  - se encontrou.
 *                      O elemento corrente é o primeiro elemento do
 *                      elemento corrente inclusive para o fim da grafo
@@ -314,11 +317,10 @@ GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * valor);
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &QntVertices elemento contendo valor
+*  $FC Função: GRA  &QntVertices
 *
 *  $ED Descrição da função
-*     Procura o elemento que referencia o valor dado.
-*     A função compara ponteiro e não conteúdo apontado.
+*     Indica quantidade de vertice em determinado grafo.
 *
 *  $EP Parâmetros
 *     pGrafo  - ponteiro para a grafo onde procura
@@ -333,11 +335,29 @@ GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * valor);
 
 int GRA_QntVertices(GRA_tppGrafo pGrafo);
 
+/***********************************************************************
+*
+*  $FC Função: GRA  &QntArestas
+*
+*  $ED Descrição da função
+*     Indica quantidade de arestas do vertice corrente em determinado grafo.
+*
+*  $EP Parâmetros
+*     pGrafo  - ponteiro para a grafo onde procura
+*     
+*
+*  $FV Valor retornado
+*     int >= 0		  - se o grafo existe
+*
+*     int < 0		  - se o grafo é nulo
+*
+***********************************************************************/
+
 int GRA_QntArestas(GRA_tppGrafo pGrafo);
 
 #undef GRAFO_EXT
 
-/********** Fim do módulo de definição: GRA  Grafo duplamente encadeada **********/
+/********** Fim do módulo de definição: GRA  Grafo com cabeça **********/
 
 #else
 #endif
