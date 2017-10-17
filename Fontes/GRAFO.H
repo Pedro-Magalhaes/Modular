@@ -8,7 +8,6 @@
 *  Letras identificadoras:      GRA
 *
 *  Nome da base de software:    Arcabouço para a automação de testes de programas redigidos em C
-*  Arquivo da base de software: D:\AUTOTEST\PROJETOS\(a definir)
 *
 *  Projeto: INF 1301 / 1628 Automatização dos testes de módulos C
 *  Gestor:  LES/DI/PUC-Rio
@@ -42,12 +41,12 @@
 *        assegurar a liberação de todos os espaços referênciados pelo
 *        valor contido em um elemento.
 *        Esta função é chamada antes de se desalocar um elemento
-*        de uma grafo.
+*        de um grafo.
 *        Caso não seja necessário desalocar o valor referenciado pelo
 *        elemento, o ponteiro para a função de liberação poderá ser NULL .
 *        Caso o elemento da grafo seja a única âncora do valor referenciado,
 *        esta função deve promover a destruição (free) desse valor e
-*        de todos os dados nele ancorados.L
+*        de todos os dados nele ancorados.
 *
 ***************************************************************************/
 
@@ -136,7 +135,7 @@ GRA_tppGrafo GRA_CriarGrafo(
 *     Destrói o grafo fornecido.
 *     O parâmetro ponteiro para o grafo não é modificado.
 *     Se ocorrer algum erro durante a destruição, o grafo resultará
-*     estruturalmente incorreta.
+*     estruturalmente incorreto.
 *     OBS. não existe previsão para possíveis falhas de execução.
 *
 *  $EP Parâmetros
@@ -174,7 +173,7 @@ void GRA_EsvaziarGrafo(GRA_tppGrafo pGrafo);
 *
 *  $ED Descrição da função
 *     Insere novo vertice.
-*     Caso a grafo esteja vazia, insere o primeiro elemento do grafo.
+*     Caso a grafo esteja vazia, insere o primeiro elemento do grafo E mesmo torna-se o vertice corrente.
 *
 *  $EP Parâmetros
 *     Parâmetros
@@ -201,9 +200,7 @@ GRA_tpCondRet GRA_InserirVertice(GRA_tppGrafo pGrafo,
 *
 *  $ED Descrição da função
 *     Exclui o elemento corrente do grafo dado.
-*     Se existir o elemento aa esquerda do corrente será o novo corrente.
-*     Se não existir e existir o elemento à direita, este se tornará corrente.
-*     Se este também não existir o grafo tornou-se vazia.
+*     Se não existir outro vertice o grafo tornou-se vazio.
 *
 *  $EP Parâmetros
 *     pGrafo    - ponteiro para a grafo na qual deve excluir o vertice corrente.
@@ -211,7 +208,6 @@ GRA_tpCondRet GRA_InserirVertice(GRA_tppGrafo pGrafo,
 *  $FV Valor retornado
 *     GRA_CondRetGrafoNulo
 *     GRA_CondRetOK
-*     GRA_CondRetGrafoVazia
 *
 ***********************************************************************/
 
@@ -229,7 +225,7 @@ GRA_tpCondRet GRA_ExcluirVertice(GRA_tppGrafo pGrafo);
 *
 *  $EP Parâmetros
 *     pGrafo    - ponteiro para a grafo na qual deve excluir a aresta do vertice corrente.
-*     valor	- Ponteiro para o valor cujo vertice (nao corrente) possui.
+*     valor	- Ponteiro para o valor cujo vertice possui.
 *
 *  $FV Valor retornado
 *     GRA_CondRetGrafoNulo
@@ -275,11 +271,10 @@ void* GRA_ObterValorCorrente(GRA_tppGrafo pGrafo);
 *     valor	- valor contido no vertice destino 
 *
 *  $FV Valor retornado
-*     GRA_CondRetGrafoNulo  - se grafo enviado for nulo
-*     GRA_CondRetOK         - se numElem elementos tiverem sido andados
-*     GRA_CondRetFimGrafo   - se encontrou o fim da grafo antes de andar numElem
-*                         elementos
-*     GRA_CondRetGrafoVazia - se a grafo está vazia
+*     GRA_CondRetGrafoNulo  
+*     GRA_CondRetOK         
+*     GRA_CondRetNaoAchou   
+*      
 *
 ***********************************************************************/
 
@@ -301,16 +296,9 @@ GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
 *				deseja chegar
 *
 *  $FV Valor retornado
-*     GRA_CondRetGrafoNulo - se grafo mandado for nulo
-*
-*     GRA_CondRetOK  - se encontrou.
-*                      O elemento corrente é o primeiro elemento do
-*                      elemento corrente inclusive para o fim da grafo
-*                      e que contém o ponteiro procurado
-*
-*     GRA_CondRetNaoEncontrou - se o ponteiro não foi encontrado
-*                      O elemento corrente continua o mesmo
-*     GRA_CondRetGrafoVazia   - se a grafo estiver vazia
+*     GRA_CondRetGrafoNulo
+*     GRA_CondRetOK  
+*     GRA_CondRetNaoEncontrou 
 *
 ***********************************************************************/
 
@@ -324,7 +312,7 @@ GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * valor);
 *     Indica quantidade de vertices armazenados em determinado grafo.
 *
 *  $EP Parâmetros
-*     pGrafo  - ponteiro para a grafo onde procurar
+*     pGrafo  - ponteiro para a grafo onde deseja-se saber quantos vertices existem
 *     
 *
 *  $FV Valor retornado
@@ -344,7 +332,7 @@ int GRA_QntVertices(GRA_tppGrafo pGrafo);
 *     Indica quantidade de arestas do vertice corrente em determinado grafo.
 *
 *  $EP Parâmetros
-*     pGrafo  - ponteiro para a grafo onde procurar
+*     pGrafo  - ponteiro para a grafo onde procurar o numero de arestas do vertice corrente
 *     
 *
 *  $FV Valor retornado
