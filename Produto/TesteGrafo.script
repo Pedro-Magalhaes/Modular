@@ -40,6 +40,8 @@
 
 == Criar o grafo 0
 =criargrafo      grafo0 
+== Criar aresta em grafo vazio 
+=criararesta   	 grafo0   struct1   NaoAchou
 
 == Verificar ObterValor relativo o grafo vazio
 =obtervalorcorrente  grafo0   "???"   "???"   "???"   "???"     pNULL
@@ -54,6 +56,10 @@
 
 == Inserir terceiro vertice
 =insvertice    		 grafo0   struct2 str8   str9   str10   str11   OK
+=obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
+
+== Inserir vertice ja adicionado
+=insvertice    	 	 grafo0   struct0 str0   str1   str2   str3   GrafoNulo
 =obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
 
 ==Obter quantidade de vertices

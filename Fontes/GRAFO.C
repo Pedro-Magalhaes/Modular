@@ -204,6 +204,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 		return GRA_CondRetGrafoNulo;  
 	}
 	
+	if (GRA_ProcurarValor(pGrafo->pOrigemGrafo, pValor) != NULL)
+	{
+		return GRA_CondRetGrafoNulo; //ALTERAR!!!!!!
+	}
 
 	pVerticeAux = CriarElemento( pValor);
 	if (pVerticeAux==NULL)
@@ -370,10 +374,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo; 
-	}
-
-
-	
+	}	
 
 	 if (aux != NULL)
 	 {	
@@ -413,7 +414,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  {
 	 if (pGrafo == NULL || pGrafo->pOrigemGrafo == NULL)
 	 {
-		 return 5;					//* RETORNAR 5 por GRA_CondRetGrafoNulo ser um tipo enumerado igual 5*//
+		 return -1;					
 	 }
 	 return LIS_ObtemTamanho(pGrafo->pOrigemGrafo); 
  }
@@ -422,23 +423,50 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
   /***************************************************************************
   *
-  *  Função: GRA  &QntArestas
+  $FC  Função: GRA  &QntArestas
+  *
+  *		$ED Descrição da função
+  *			Retorna a quantidade de elementos na lista de arestas do vertice corrente
+  *
+  *  $EP Parâmetros
+  *     pOrigemGrafo  - Origem da lista de vertices do grafo
+
+  *  $FV Valor retornado
+  *     Retorna um intero positivo correspondendo ao numero de elementos na lista de arestas.
+*		Caso a lista passada seja NULL retorna -1
   *  ****/
 
  int GRA_QntArestas(GRA_tppGrafo pGrafo)
  {
 	 if (pGrafo == NULL)
 	 {
-		 return 5;					//* RETORNAR 5 por GRA_CondRetGrafoNulo ser um tipo enumerado igual 5*//
+		 return -1;					
 	 }
 	 return LIS_ObtemTamanho(pGrafo->pArestas);
  }
 
  /* Fim Função: GRA  &QntArestas */
 
+
+ /***** ******************** Código das funções encapsuladas no módulo  ****************************/
+
   /***************************************************************************
   *
-  *  Função: GRA  &ProcurarValor
+  $FC Função: GRA  &ProcurarValor
+  *
+  *  $ED Descrição da função
+  *     Busca por um elemento com determinado endereço do valor passado na lista de vertices ou de arestas,
+  *		retornando esse valor já transformardo em tipo vertice se ele existir, retorna null do contrario
+  *
+  *  $EP Parâmetros
+  *     pOrigemGrafo  - Origem da lista de vertices onde deseja-se buscar (pode ser a de arestas tambem)
+  *
+  *  $FV Valor retornado
+  *     Se encontrado, retorna o endereço para o elemento
+  *
+  *     Se não encontrar o elemento ou se o ponteiro para a lista pe NULL, retorna NULL.
+  *     Não será dada mais informação quanto ao problema ocorrido.
+  *
   *  ****/
 
  static tpVerticeGrafo* GRA_ProcurarValor(LIS_tppLista pOrigemGrafo, void* pValor)

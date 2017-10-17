@@ -79,8 +79,7 @@ int main(void)
 	printf("Tam apos criar grafo vazio = %d\n", tam);
 
 	MeuTipo	a = { 0,'a'}, b = { 1,'b' }, c = { 2,'c' }, d = { 3,'d' }, e = { 4,'e' };
-	GRA_tpCondRet retGra;	
-
+	GRA_tpCondRet retGra;
 	puts("inserindo a=0");
 	retGra = GRA_InserirVertice(g, &a);
 	if (retGra == GRA_CondRetFaltouMemoria)
@@ -104,6 +103,21 @@ int main(void)
 		puts("erro de memoria");
 		exit(-1);
 	}
+
+	puts("inserindo a=0");
+	retGra = GRA_InserirVertice(g, &a);
+	if (retGra == GRA_CondRetFaltouMemoria)
+	{
+		puts("erro de memoria");
+		exit(-1);
+	}
+	else if (retGra == GRA_CondRetGrafoNulo)
+	{
+		puts("nao aceitou a inserção");
+	}
+	tam = GRA_QntVertices(g);
+	printf("Tam deveria ser 3 e eh %d\n", tam);
+
 	puts("inserindo d=3");
 	retGra = GRA_InserirVertice(g, &d);
 	if (retGra == GRA_CondRetFaltouMemoria)
