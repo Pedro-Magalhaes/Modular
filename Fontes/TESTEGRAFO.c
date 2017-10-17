@@ -1,22 +1,22 @@
 /***************************************************************************
-*  $MCI Módulo de implementação: TLIS Teste grafo de símbolos
+*  $MCI MÃ³dulo de implementaÃ§Ã£o: TLIS Teste grafo de sÃ­mbolos
 *
 *  Arquivo gerado:              TESTEGRAFO.c.c
 *  Letras identificadoras:      TGRA
 *
-*  Nome da base de software:    Arcabouço para a automação de testes de programas redigidos em C
+*  Nome da base de software:    ArcabouÃ§o para a automaÃ§Ã£o de testes de programas redigidos em C
 *  Arquivo da base de software: D:\AUTOTEST\PROJETOS\LISTA.BSW
 *
-*  Projeto: INF 1301 / 1628 Automatização dos testes de módulos C
+*  Projeto: INF 1301 / 1628 AutomatizaÃ§Ã£o dos testes de mÃ³dulos C
 *  Gestor:  LES/DI/PUC-Rio
 *  Autores: avs
 *
-*  $HA Histórico de evolução:
-*     Versão  Autor    Data     Observações
-*     4       avs   01/fev/2006 criar linguagem script simbólica
-*     3       avs   08/dez/2004 uniformização dos exemplos
-*     2       avs   07/jul/2003 unificação de todos os módulos em um só projeto
-*     1       avs   16/abr/2003 início desenvolvimento
+*  $HA HistÃ³rico de evoluÃ§Ã£o:
+*     VersÃ£o  Autor    Data     ObservaÃ§Ãµes
+*     4       avs   01/fev/2006 criar linguagem script simbÃ³lica
+*     3       avs   08/dez/2004 uniformizaÃ§Ã£o dos exemplos
+*     2       avs   07/jul/2003 unificaÃ§Ã£o de todos os mÃ³dulos em um sÃ³ projeto
+*     1       avs   16/abr/2003 inÃ­cio desenvolvimento
 *
 ***************************************************************************/
 
@@ -58,13 +58,13 @@ static const char QNT_ARESTA_CMD          [ ] = "=qntaresta"        ;
 
 GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
-/***** Protótipos das funções encapuladas no módulo *****/
+/***** ProtÃ³tipos das funÃ§Ãµes encapuladas no mÃ³dulo *****/
 
    static void DestruirValor( void * pValor ) ;
 
    static int ValidarInxGrafo( int inxgrafo , int Modo ) ;
 
-/*****  Definição da struct de teste  *****/
+/*****  DefiniÃ§Ã£o da struct de teste  *****/
 
    typedef struct no_teste 
    {
@@ -75,31 +75,31 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
    } no_teste;
 
 	no_teste vtstructs [DIM_VT_GRAFO];
-/*****  Código das funções exportadas pelo módulo  *****/
+/*****  CÃ³digo das funÃ§Ãµes exportadas pelo mÃ³dulo  *****/
 
 
 /***********************************************************************
 *
-*  $FC Função: TLIS &Testar lista
+*  $FC FunÃ§Ã£o: TGRA &Testar grafo
 *
-*  $ED Descrição da função
-*     Podem ser criadas até 10 listas, identificadas pelos índices 0 a 10
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
+*     Podem ser criados atÃ© 10 grafos, identificados pelos Ã­ndices 0 a 10
 *
-*     Comandos disponíveis:
+*     Comandos disponÃ­veis:
 *
 *     =resetteste
-*           - anula o vetor de listas. Provoca vazamento de memória
-*     =criarlista                   inxLista
-*     =destruirlista                inxLista
-*     =esvaziarlista                inxLista
-*     =inselemantes                 inxLista  string  CondRetEsp
-*     =inselemapos                  inxLista  string  CondRetEsp
-*     =obtervalorelem               inxLista  string  CondretPonteiro
-*     =excluirelem                  inxLista  CondRetEsp
-*     =irinicio                     inxLista
-*     =irfinal                      inxLista
-*     =avancarelem                  inxLista  numElem CondRetEsp
-*
+*           - anula o vetor de grafos. Provoca vazamento de memÃ³ria
+*     =criargrafo                   inxgrafo     CondRetEsp
+*     =destruirgrafo                inxgrafo     CondRetEsp
+*     =esvaziargrafo                inxgrafo     CondRetEsp
+*     =insvertice                   inxgrafo  string1 string2 string3 string4  CondRetEsp
+*     =excvertice                   inxgrafo   CondRetEsp
+*     =excaresta               	    inxgrafo  indstruct  CondretPonteiro
+*     =obtervalorcorrente           inxgrafo  string1 string2 string3 string4   CondRetEsp
+*     =criararesta                  inxgrafo   inxstruct   CondRetEsp
+*     =irvertice                    inxgrafo   inxstruct   ValEsp
+*     =qntvertice                   inxgrafo  ValEsp
+*     =qntaresta                    inxgrafo  ValEsp
 ***********************************************************************/
 
    TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
@@ -205,7 +205,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
          } /* fim ativa: Testar Destruir grafo */
 
-      /* Testar inserir elemento */
+      /* Testar inserir vertice */
 
          else if ( strcmp( ComandoTeste , INS_VERTICE_CMD ) == 0 )
          {
@@ -237,7 +237,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
             if ( CondRet != GRA_CondRetOK )
             {
-               //free( pDado ) ; //não foi alocado dinamicamente
+               //free( pDado ) ; //nÃ£o foi alocado dinamicamente
             } /* if */
 
             return TST_CompararInt( ValEsp , CondRet ,
@@ -245,7 +245,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
          } /* fim ativa: Testar inserir vertice */
 
-      /* Testar inserir elemento apos */
+      /* Testar criar aresta */
 
          else if ( strcmp( ComandoTeste , CRIAR_ARESTA_CMD ) == 0 )
          {
@@ -269,7 +269,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
             if ( CondRet != GRA_CondRetOK )
             {
-               //free( pDado ) ;//não foi alocado dinamicamente
+               //free( pDado ) ;//nÃ£o foi alocado dinamicamente
             } /* if */
 
             return TST_CompararInt( ValEsp , CondRet ,
@@ -293,11 +293,11 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
             return TST_CompararInt( ValEsp ,
                       GRA_ExcluirVertice( vtgrafos[ inxgrafo ] ) ,
-                     "Condição de retorno errada ao excluir."   ) ;
+                     "CondiÃ§Ã£o de retorno errada ao excluir."   ) ;
 
          } /* fim ativa: Testar excluir vertice */
 
-      /* Testar obter valor do elemento corrente */
+      /* Testar obter valor do vertice corrente */
 
          else if ( strcmp( ComandoTeste , OBTER_CORRENTE_CMD ) == 0 )
          {
@@ -316,7 +316,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
             if ( ValEsp == 0 )
             {
                return TST_CompararPonteiroNulo( 0 , pDado ,
-                         "Valor não deveria existir." ) ;
+                         "Valor nÃ£o deveria existir." ) ;
             } /* if */
 
             if ( pDado == NULL )
@@ -331,7 +331,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
                          "Valor do elemento errado." ) && TST_CompararString( StringDado4 , pDado->cidade ,
                          "Valor do elemento errado." )) ;
 
-         } /* fim ativa: Testar obter valor do elemento corrente */
+         } /* fim ativa: Testar obter valor do vertice corrente */
 
       /* Testar excluir aresta entre o corrente e o pvalor recebido */
 
@@ -359,7 +359,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
          } /* fim ativa: Testar excluir aresta */
 
-      /* GRA  &Ir para o elemento com endereço do valor passado */
+      /* GRA  &Ir para o vertice com o indice passado */
 
          else if ( strcmp( ComandoTeste , IR_VERTICE_CMD ) == 0 )
          {
@@ -385,7 +385,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
            return TST_CompararInt( ValEsp , CondRet ,
                      "Condicao de retorno errada ao ir para vertice."                   ) ;
 
-         } /* fim ativa: GRA  &Ir para o elemento */
+         } /* fim ativa: GRA  &Ir para o vertice */
 
 		 /*GRA &Ver quantidade de vertices*/
 
@@ -423,29 +423,29 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
       return TST_CondRetNaoConhec ;
 
-   } /* Fim função: TGRA &Testar grafo */
+   } /* Fim funÃ§Ã£o: TGRA &Testar grafo */
 
 
-/*****  Código das funções encapsuladas no módulo  *****/
+/*****  CÃ³digo das funÃ§Ãµes encapsuladas no mÃ³dulo  *****/
 
 
 /***********************************************************************
 *
-*  $FC Função: TGRA -Destruir valor
+*  $FC FunÃ§Ã£o: TGRA -Destruir valor
 *
 ***********************************************************************/
 
    void DestruirValor( void * pValor )
    {
 
-      //free( pValor ) ; Não foi alocado dinamicamente, para testes com memoria dinamica descomentar
+      //free( pValor ) ; NÃ£o foi alocado dinamicamente, para testes com memoria dinamica descomentar
 
-   } /* Fim função: TLIS -Destruir valor */
+   } /* Fim funÃ§Ã£o: TLIS -Destruir valor */
 
 
 /***********************************************************************
 *
-*  $FC Função: TGRA -Validar indice do Grafo
+*  $FC FunÃ§Ã£o: TGRA -Validar indice do Grafo
 *
 ***********************************************************************/
 
@@ -474,7 +474,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
          
       return TRUE ;
 
-   } /* Fim função: TGRA -Validar indice do Grafo */
+   } /* Fim funÃ§Ã£o: TGRA -Validar indice do Grafo */
 
 
-/********** Fim do módulo de implementação: TLIS Teste lista de símbolos **********/
+/********** Fim do mÃ³dulo de implementaÃ§Ã£o: TLIS Teste lista de sÃ­mbolos **********/
