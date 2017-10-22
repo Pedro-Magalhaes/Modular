@@ -32,23 +32,12 @@ del *.log
 del *.exe
 del *.err
 
-cd ..\Projeto
-del *.bak
 
-cd ..\Tabelas
-del *.bak
 
 cd ..\Scripts
 del *.bak
 del *.estat
 
-cd ..\..\Documentos
-del *.bak
-
-cd ..\Ferramnt
-del *.bak
-del *.err
-del *.obj
 
 
 popd

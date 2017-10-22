@@ -1,0 +1,26 @@
+O Modulo grafo está dividido em pastas:
+Batches: Tem os arquivos .bat que geram as diretivas e compilam os executáveis
+Compos: os arquivos de composição
+ETC: Arquivos relacionados ao trabalho como nossos relatorios e o modelo fisico
+Fontes: Os arquivos de codigo .c e .h 
+Objetos: Biblioteca de teste do arcabouço e os obj e build dos executáveis
+Produto: Os executáveis e os *err
+Scripts: os scripts de teste e estatistica
+
+O modulo gera dois executaveis que são testados separadamente, São eles TesteLista e TesteGrafo. 
+Basicamente, para compilar e executar bastar rodar o Tudo.bat dentro da pasta
+Batches, ele vai gerar os arquivos de diretiva make (na pasta Compos), 
+vai compilar gerando os EXE em Produto juntamente com o *err da compilação, em seguida vai realizar os 
+testes dos dois modulos em separado, utilizando os scrips TestaLista.script e TestaGrafo.script. 
+Tambem é gerado um log com o resultado dos testes na pasta scripts.
+Mantive outros arquivos na Pasta batches como os de geração, compilação e testes individuais. 
+Mantive também o vsvars32.bat e um atalho para o CMD que executa automaticamente 
+o vsvars32 e seta a variavel de ambiente. Os arquivos executaveis gerados estao sendo enviados como exe.txt.
+obs. Para testar individualmente os modulos:
+$ Testa.bat TesteLista TesteLista   
+$ Testa.bat TesteGrafo TesteGrafo
+
+Grupo:
+Hugo Cunha- Hfac - 1610565,
+Pedro Felipe - Pfm - 1611074,
+Yan Cunha- Yan- 1610886.

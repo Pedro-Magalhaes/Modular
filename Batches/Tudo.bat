@@ -9,7 +9,6 @@ goto sai
 cls
 
 Call LimpaTudo
-Call CriaLib
 Call GeraTudo
 Call CompilaTudo
 Call TestaTudo
