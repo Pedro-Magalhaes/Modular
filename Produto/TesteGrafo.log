@@ -1,0 +1,46 @@
+
+!!! Inicio dos testes
+!!!      Construto sob teste: ..\produto\TesteGrafo
+!!!      Script de teste:     ..\scripts\TesteGrafo.script
+
+!!!    0  Linha:     1  // Script:    TesteGrafo.script 
+!!!    0  Linha:     2  // Autor:     Yan Gurevitz 
+!!!    0  Linha:     3  // Data:      16/outubro/2017 
+!!!    0  Linha:     4  // Propósito: Testar superficialmente o módulo grafo 
+!!!    0  Linha:     5  // 
+    7  == Inicializar valores
+   42  == Criar o grafo 0
+   44  == Criar aresta em grafo vazio
+   47  == Verificar ObterValor relativo o grafo vazio
+   50  ==Ir para vertice em grafo Vazio
+   53  == Inserir vertice em grafo vazio
+   57  == Inserir vertice em grafo nao vazio
+   61  == Inserir terceiro vertice
+   65  ==Obter quantidade de vertices
+   68  == Inserir vertice ja adicionado
+   72  ==Obter quantidade de vertices
+   75  == Criar arestas para vertice inexistente
+   79  == Excluir ultimo vertice
+   86  == Excluir vertice do inicio
+   93  == Excluir vertice final, unico
+   99  == Destruir o grafo
+  102  == Criar um grafo com dois vertices
+  108  == Esvazior o grafo e ver se ficou vazio
+  112  == Destruir o grafo
+  115  == Criar um grafo com quatro vertices
+  123  == Criar arestas entre o primeiro e os demais vertices
+  134  == Excluir aresta entre o primeiro e quarto vertices
+  141  == Criar e excluir aresta do primeiro vertice com ele mesmo
+  147  == Excluir vertice que tem aresta
+  153  == Destruir o grafo
+!!!    0  Linha:   156  // fim 
+
+!!! Número de linhas lidas:         156
+!!! Número de casos de teste:        25
+!!! Número comandos corretos:        92
+!!! Número de falhas encontradas:     0
+
+!!! Não foram encontrados problemas
+
+
+!!! Numero de espacos ainda alocados: 0

@@ -1,6 +1,6 @@
 Lista.c
 Grafo.c
-..\Fontes\Grafo.c(555) : warning C4100: 'pDado' : unreferenced formal parameter
+..\Fontes\Grafo.c(606) : warning C4100: 'pDado' : unreferenced formal parameter
 TesteGrafo.c
 ..\Fontes\TesteGrafo.c(438) : warning C4100: 'pValor' : unreferenced formal parameter
 Microsoft (R) Incremental Linker Version 10.00.40219.01
@@ -10,5 +10,15 @@ Copyright (C) Microsoft Corporation.  All rights reserved.
 /INCREMENTAL:NO 
 /MACHINE:IX86 
 Lista.obj Grafo.obj TesteGrafo.obj 
+ArcaboucoTeste.lib 
+TestLis.c
+Lista.c
+Microsoft (R) Incremental Linker Version 10.00.40219.01
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/OUT:..\Produto\TesteLista.exe 
+/INCREMENTAL:NO 
+/MACHINE:IX86 
+TestLis.obj Lista.obj 
 ArcaboucoTeste.lib 
 

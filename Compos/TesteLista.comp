@@ -2,7 +2,7 @@
 # Este exemplo utiliza o arcabouço completo 
 
 [Diretorios]
-Nome        = TesteGrafo
+Nome        = TesteLista
 PathDefault = ..\Fontes
 err         = ..\Produto
 obj			= ..\Objetos
@@ -15,7 +15,7 @@ Lista
 
 
 [BuildInicio]
-/OUT:..\Produto\TesteGrafo.exe
+/OUT:..\Produto\TesteLista.exe
 /INCREMENTAL:NO
 /MACHINE:IX86
 

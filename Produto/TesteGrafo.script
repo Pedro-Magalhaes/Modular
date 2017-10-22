@@ -28,12 +28,13 @@
 =declararparm   str11    string  "Jacarai das Aguas Quentes"
 
 
-=declararparm   OK             int  0
-=declararparm   GrafoVazio     int  1
-=declararparm   FimGrafo       int  2
-=declararparm   NaoAchou       int  3
-=declararparm   FaltouMemoria  int  4
-=declararparm   GrafoNulo      int  5
+=declararparm   OK              int  0
+=declararparm   GrafoVazio      int  1
+=declararparm   FimGrafo        int  2
+=declararparm   NaoAchou        int  3
+=declararparm   FaltouMemoria   int  4
+=declararparm   GrafoNulo       int  5
+=declararparm	VerticeJaExiste	int  6
 
 =declararparm   pNULL          int  0
 =declararparm   pNaoNULL       int  1
@@ -45,6 +46,9 @@
 
 == Verificar ObterValor relativo o grafo vazio
 =obtervalorcorrente  grafo0   "???"   "???"   "???"   "???"     pNULL
+
+==Ir para vertice em grafo Vazio
+=irvertice  	 grafo0   struct2	NaoAchou
 
 == Inserir vertice em grafo vazio
 =insvertice    	 	 grafo0   struct0 str0   str1   str2   str3   OK
@@ -58,12 +62,18 @@
 =insvertice    		 grafo0   struct2 str8   str9   str10   str11   OK
 =obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
 
+==Obter quantidade de vertices
+=qntvertice 	 grafo0   3
+
 == Inserir vertice ja adicionado
-=insvertice    	 	 grafo0   struct0 str0   str1   str2   str3   GrafoNulo
+=insvertice    	 	 grafo0   struct0 str0   str1   str2   str3   VerticeJaExiste
 =obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
 
 ==Obter quantidade de vertices
 =qntvertice 	 grafo0   3
+
+== Criar arestas para vertice inexistente
+=criararesta   grafo0   struct3   NaoAchou
 
 
 == Excluir ultimo vertice

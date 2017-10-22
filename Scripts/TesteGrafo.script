@@ -1,0 +1,156 @@
+// Script:    TesteGrafo.script
+// Autor:     Yan Gurevitz
+// Data:      16/outubro/2017
+// Propósito: Testar superficialmente o módulo grafo
+//
+
+== Inicializar valores
+=declararparm   grafo0  int 0
+=declararparm   grafo1  int 1
+=declararparm   grafo2  int 2
+
+=declararparm	struct0 int 0
+=declararparm	struct1 int 1
+=declararparm	struct2 int 2
+=declararparm	struct3 int 3
+
+=declararparm   str0    string  "Ansem"
+=declararparm   str1    string  "30/02/2036"
+=declararparm   str2    string  "diz@heartmail.com"
+=declararparm   str3    string  "Radiant Garden"
+=declararparm   str4    string  "Faker"
+=declararparm   str5    string  "06/06/1666"
+=declararparm   str6    string  "fakergod@leaguemail.com"
+=declararparm   str7    string  "Summoner's Rift"
+=declararparm   str8    string  "Papaco"
+=declararparm   str9    string  "02/05/1970"
+=declararparm   str10    string  "papaco@ytpbrmail.com"
+=declararparm   str11    string  "Jacarai das Aguas Quentes"
+
+
+=declararparm   OK              int  0
+=declararparm   GrafoVazio      int  1
+=declararparm   FimGrafo        int  2
+=declararparm   NaoAchou        int  3
+=declararparm   FaltouMemoria   int  4
+=declararparm   GrafoNulo       int  5
+=declararparm	VerticeJaExiste	int  6
+
+=declararparm   pNULL          int  0
+=declararparm   pNaoNULL       int  1
+
+== Criar o grafo 0
+=criargrafo      grafo0 
+== Criar aresta em grafo vazio 
+=criararesta   	 grafo0   struct1   NaoAchou
+
+== Verificar ObterValor relativo o grafo vazio
+=obtervalorcorrente  grafo0   "???"   "???"   "???"   "???"     pNULL
+
+==Ir para vertice em grafo Vazio
+=irvertice  	 grafo0   struct2	NaoAchou
+
+== Inserir vertice em grafo vazio
+=insvertice    	 	 grafo0   struct0 str0   str1   str2   str3   OK
+=obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
+
+== Inserir vertice em grafo nao vazio
+=insvertice     	 grafo0   struct1 str4   str5   str6   str7   OK
+=obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
+
+== Inserir terceiro vertice
+=insvertice    		 grafo0   struct2 str8   str9   str10   str11   OK
+=obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
+
+==Obter quantidade de vertices
+=qntvertice 	 grafo0   3
+
+== Inserir vertice ja adicionado
+=insvertice    	 	 grafo0   struct0 str0   str1   str2   str3   VerticeJaExiste
+=obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
+
+==Obter quantidade de vertices
+=qntvertice 	 grafo0   3
+
+== Criar arestas para vertice inexistente
+=criararesta   grafo0   struct3   NaoAchou
+
+
+== Excluir ultimo vertice
+=irvertice  	 grafo0   struct2   OK
+=obtervalorcorrente  grafo0   str8   str9   str10   str11   pNaoNULL
+=excvertice  	 grafo0   OK
+=qntvertice 	 grafo0   2
+
+
+== Excluir vertice do inicio
+=irvertice  	 grafo0   struct0   OK
+=obtervalorcorrente  grafo0   str0   str1   str2   str3   pNaoNULL
+=excvertice  	 grafo0             OK
+=qntvertice 	 grafo0   1
+
+
+== Excluir vertice final, unico 
+=irvertice  	 grafo0   struct1   OK
+=obtervalorcorrente  grafo0   str4   str5   str6   str7   pNaoNULL
+=excvertice  	 grafo0             OK
+=qntvertice 	 grafo0   0
+
+== Destruir o grafo
+=destruirgrafo   grafo0
+
+== Criar um grafo com dois vertices
+=criargrafo     grafo1 
+=insvertice     grafo1   struct0 str0   str1   str2   str3   OK
+=insvertice     grafo1   struct1 str4   str5   str6   str7   OK
+=qntvertice 	grafo1   2
+
+== Esvazior o grafo e ver se ficou vazio
+=esvaziargrafo   grafo1
+=qntvertice 	 grafo1   0
+
+== Destruir o grafo
+=destruirgrafo   grafo1
+
+== Criar um grafo com quatro vertices
+=criargrafo     grafo2 
+=insvertice     grafo2   struct0 str0   str1   str2   str3   OK
+=insvertice     grafo2   struct1 str4   str5   str6   str7   OK
+=insvertice     grafo2   struct2 str8   str9   str10   str11   OK
+=insvertice     grafo2   struct3 str4   str9   str2   str7   OK
+=qntvertice 	grafo2   4
+
+== Criar arestas entre o primeiro e os demais vertices
+=irvertice     grafo2   struct0   OK
+=criararesta   grafo2   struct1   OK
+=qntaresta     grafo2   1
+=irvertice     grafo2   struct1   OK
+=qntaresta     grafo2   1
+=irvertice     grafo2   struct0   OK
+=criararesta   grafo2   struct2   OK
+=criararesta   grafo2   struct3    OK
+=qntaresta     grafo2   3
+
+== Excluir aresta entre o primeiro e quarto vertices
+=excaresta   grafo2   struct3    OK
+=qntaresta   grafo2   2
+=irvertice   grafo2   struct3   OK
+=qntaresta   grafo2   0
+=irvertice   grafo2   struct0   OK
+
+== Criar e excluir aresta do primeiro vertice com ele mesmo
+=criararesta   grafo2   struct0   OK
+=qntaresta     grafo2   3
+=excaresta     grafo2   struct0   OK
+=qntaresta     grafo2   2
+
+== Excluir vertice que tem aresta
+=irvertice    grafo2   struct2   OK
+=excvertice   grafo2   OK
+=irvertice    grafo2   struct0   OK
+=qntaresta    grafo2   1
+
+== Destruir o grafo
+=destruirgrafo   grafo2
+
+// fim

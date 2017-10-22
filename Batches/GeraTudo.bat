@@ -7,4 +7,5 @@ pushd  .
 
 gmake  /b..\Compos  /cTesteGrafo
 
+gmake  /b..\Compos  /cTesteLista
 popd

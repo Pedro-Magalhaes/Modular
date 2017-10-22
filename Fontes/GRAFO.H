@@ -92,8 +92,10 @@ typedef enum {
 	GRA_CondRetFaltouMemoria,
 	/* Faltou memória ao tentar criar um elemento de grafo */
 
-	GRA_CondRetGrafoNulo
+	GRA_CondRetGrafoNulo,
 	/* Grafo é NULL */
+	GRA_CondRetVerticeJaExiste
+	/*vertice já existe ao tentar inserir na lista de vertices ou na lista de arestas*/
 
 } GRA_tpCondRet;
 

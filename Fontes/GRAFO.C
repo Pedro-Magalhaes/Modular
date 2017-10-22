@@ -102,7 +102,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	if (pGrafo == NULL)
 	{
 		return NULL;
-	}
+	}/*if*/
 	pGrafo->ExcluirValor = ExcluirValor;
 	pGrafo->pArestas = NULL;
 	pGrafo->pOrigemGrafo = LIS_CriarLista(ExcluirValor); //criando uma lista vazia
@@ -129,7 +129,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	  if (pGrafo == NULL)
 	  {//nada a ser feito
 	  return;
-	  }
+	  }/*if*/
   
     GRA_EsvaziarGrafo( pGrafo );
 	  	  
@@ -154,31 +154,35 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 if (pGrafo == NULL)
 	 {
 		 return;
-	 }
+	 }/*if*/
 
 
 
 	 LIS_IrInicioLista(Elem); //indo pro inicio da lista
 	 atual = LIS_ObterValor(Elem);//pegando o primeiro valor
 	 if (atual != NULL)
-	 {
-		 LIS_DestruirLista(atual->pVerticeArestas); //DECIDIR SE QUEREMOS DELETAR TODOS OS NÓS OU NÃO E DEIXAR A LISTA VAZIA  (pra manter os vertices é só esvaziar suas listas de arestas ao invés de destruir)
+	 {//limpando a lista de arestas
+		 LIS_DestruirLista(atual->pVerticeArestas); 
 		 pGrafo->ExcluirValor(atual->valor);
 		 free(atual);
-	 }
+	 }/*if*/
+	 else
+	 {//nao há o que fazer, lista de vertices vazia
+		 return;
+	 }/*else*/
 		
 	 	 	 
 	 while (LIS_AvancarElementoCorrente(Elem, 1) == LIS_CondRetOK)
-	 {
-		 
+	 {		 
 		 //limpa as outras listas de arestas se existirem		 
 		 atual = LIS_ObterValor(Elem);
 		 LIS_IrInicioLista(atual->pVerticeArestas);
 		 LIS_DestruirLista(atual->pVerticeArestas);
 		 pGrafo->ExcluirValor(atual->valor);
 		 free(atual);
-	 }
-	 //limpa a lista de vertices
+	 }/*while*/
+
+	 //limpando a lista de vertices
 	 LIS_EsvaziarLista(pGrafo->pOrigemGrafo);
 	 pGrafo->pArestas = NULL;
 	 pGrafo->pVertice = NULL;
@@ -205,26 +209,29 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	}
 	
 	if (GRA_ProcurarValor(pGrafo->pOrigemGrafo, pValor) != NULL)
-	{
-		return GRA_CondRetGrafoNulo; //ALTERAR!!!!!!
-	}
+	{//valor já existe
+		return GRA_CondRetVerticeJaExiste; 
+	}/*if*/
 
 	pVerticeAux = CriarElemento( pValor);
 	if (pVerticeAux==NULL)
 	{
 		return GRA_CondRetFaltouMemoria; 
-	}
+	}/*if*/
+
 	LIS_IrFinalLista(pGrafo->pOrigemGrafo);
+
 	if (LIS_InserirElementoApos(pGrafo->pOrigemGrafo, pVerticeAux) != LIS_CondRetOK)
 	{
 		return GRA_CondRetFaltouMemoria; 
-	}
+	}/*if*/
+
 	if (pGrafo->pVertice == NULL) //se for o primeiro elemento inserido ele se torna o corrente
 	{
 		
 		pGrafo->pVertice = pVerticeAux;
 		pGrafo->pArestas = pGrafo->pVertice->pVerticeArestas;
-	}
+	}/*if*/
 
 	return GRA_CondRetOK;
  }
@@ -244,36 +251,38 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 if (pGrafo == NULL || pGrafo->pVertice == NULL)
 	 {
 		 return GRA_CondRetGrafoNulo;
-	 }
+	 }/*if*/
 	 LIS_IrInicioLista(pGrafo->pArestas);//indo p/ o inicio das arestas
 	 
 	 if (vizinho != NULL)
-	 {
+	 {//percorre as arestas efetuando a exclusao mutua das arestas
 		 EfetuaExclusaoAresta(pGrafo->pVertice,vizinho);
 
 		 while (LIS_AvancarElementoCorrente(vizinho->pVerticeArestas,1)==LIS_CondRetOK)
 		 {
 			 vizinho = LIS_ObterValor(pGrafo->pArestas);
 			 EfetuaExclusaoAresta(pGrafo->pVertice, vizinho);
-		 }
+		 }/*while*/
 		 
-	 }
+	 }/*if*/
 	 
 	LIS_DestruirLista(pGrafo->pArestas);
 	LIS_IrInicioLista(pGrafo->pOrigemGrafo);
-	LIS_ProcurarValor(pGrafo->pOrigemGrafo, pGrafo->pVertice);
-	LIS_ExcluirElemento(pGrafo->pOrigemGrafo);
+	if (LIS_ProcurarValor(pGrafo->pOrigemGrafo, pGrafo->pVertice) == LIS_CondRetOK)
+	{
+		LIS_ExcluirElemento(pGrafo->pOrigemGrafo);
+	}/*if*/
 	vizinho = LIS_ObterValor(pGrafo->pOrigemGrafo);
 	if (vizinho != NULL)
 	{
 		pGrafo->pVertice = vizinho;
 		pGrafo->pArestas = vizinho->pVerticeArestas;
-	}
+	}/*if*/
 	else
 	{
 		pGrafo->pVertice = NULL;
 		pGrafo->pArestas = NULL;
-	}
+	}/*else*/
 	return GRA_CondRetOK;
 
  }
@@ -293,14 +302,14 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#endif
 	 GRA_tppGrafo gAux = pGrafo;
 	 tpVerticeGrafo* vAux = GRA_ProcurarValor(gAux->pOrigemGrafo, valor);
-	 GRA_tpCondRet ret = EfetuaExclusaoAresta(pGrafo->pVertice, vAux);
+	 GRA_tpCondRet CondRet = EfetuaExclusaoAresta(pGrafo->pVertice, vAux);
 	 if (pGrafo == NULL)
 	 {
 		 return GRA_CondRetGrafoNulo;  
-	 }
+	 }/*if*/
 	
 	 
-	 return ret;
+	 return CondRet;
  }
 
  /* Fim Função: GRA  &ExcluirAresta */
@@ -317,20 +326,20 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 		assert(pGrafo != NULL);
 	#endif
-	tpVerticeGrafo* aux;
+	tpVerticeGrafo* vertAux;
 	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo;
-	}
+	}/*if*/
 	
-	aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo,valor);
+	vertAux = GRA_ProcurarValor(pGrafo->pOrigemGrafo,valor);
 
-	if (aux==NULL)
+	if (vertAux==NULL)
 	 {
 		return GRA_CondRetNaoAchou;
-	 }	
+	 }/*if*/
 	//pGrafo->pVertice = LIS_ObterValor(pGrafo->pOrigemGrafo);
-	pGrafo->pVertice = aux;
+	pGrafo->pVertice = vertAux;
 	pGrafo->pArestas = pGrafo->pVertice->pVerticeArestas;
 
 	return GRA_CondRetOK;
@@ -352,8 +361,11 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 	 assert(pGrafo != NULL);
 	#endif
-	 if(pGrafo!=NULL && pGrafo->pVertice != NULL)
-		return pGrafo->pVertice->valor;
+	 if (pGrafo != NULL && pGrafo->pVertice != NULL)
+	 {
+		 return pGrafo->pVertice->valor;
+	 }/*if*/
+		
 	 return NULL;
  }
 
@@ -370,11 +382,13 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 		 assert(pGrafo != NULL);
 	#endif
+
 		 tpVerticeGrafo *aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo, valor);
+
 	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo; 
-	}	
+	}/*if*/
 
 	 if (aux != NULL)
 	 {	
@@ -384,20 +398,26 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 		 if ( retBusca == LIS_CondRetNaoAchou || retBusca == LIS_CondRetListaVazia)
 		 {
 			 LIS_IrFinalLista(pGrafo->pArestas);
-			 LIS_InserirElementoApos(pGrafo->pArestas, aux);
-		 }
+			 if (LIS_InserirElementoApos(pGrafo->pArestas, aux) == LIS_CondRetFaltouMemoria)
+			 {
+				 return GRA_CondRetFaltouMemoria;
+			 }/*if*/
+		 }/*if*/
 		 else
 		 {
 			 return GRA_CondRetOK;  
-		 }
+		 }/*else*/
 		 
 		 LIS_IrInicioLista(aux->pVerticeArestas);
 		 retBusca=LIS_ProcurarValor(aux->pVerticeArestas, pGrafo->pVertice);
 		 if ( retBusca== LIS_CondRetNaoAchou || retBusca == LIS_CondRetListaVazia)
 		 {
 			 LIS_IrFinalLista(aux->pVerticeArestas);
-			 LIS_InserirElementoApos(aux->pVerticeArestas, pGrafo->pVertice);
-		 }
+			 if (LIS_InserirElementoApos(aux->pVerticeArestas, pGrafo->pVertice) == LIS_CondRetFaltouMemoria)
+			 {
+				 return GRA_CondRetFaltouMemoria;
+			 }/*if*/
+		 }/*if*/
 		 return GRA_CondRetOK;
 	 }
 	 return GRA_CondRetNaoAchou; //não achou vertice
@@ -415,33 +435,23 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 if (pGrafo == NULL || pGrafo->pOrigemGrafo == NULL)
 	 {
 		 return -1;					
-	 }
+	 }/*if*/
 	 return LIS_ObtemTamanho(pGrafo->pOrigemGrafo); 
  }
  /* Fim Função: GRA  &QntVertices */
 
 
-  /***************************************************************************
-  *
-  $FC  Função: GRA  &QntArestas
-  *
-  *		$ED Descrição da função
-  *			Retorna a quantidade de elementos na lista de arestas do vertice corrente
-  *
-  *  $EP Parâmetros
-  *     pOrigemGrafo  - Origem da lista de vertices do grafo
-
-  *  $FV Valor retornado
-  *     Retorna um intero positivo correspondendo ao numero de elementos na lista de arestas.
-*		Caso a lista passada seja NULL retorna -1
-  *  ****/
+ /***************************************************************************
+ *
+ *  Função: GRA  &QntArestas
+ *  ****/
 
  int GRA_QntArestas(GRA_tppGrafo pGrafo)
  {
 	 if (pGrafo == NULL)
 	 {
 		 return -1;					
-	 }
+	 }/*if*/
 	 return LIS_ObtemTamanho(pGrafo->pArestas);
  }
 
@@ -477,26 +487,29 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 LIS_tppLista Lisaux = pOrigemGrafo;
 	 tpVerticeGrafo *vertaux;
 	 if (pOrigemGrafo == NULL)
+	 {
 		 return NULL;
+	 }/*if*/
+		 
 
 	 LIS_IrInicioLista(Lisaux);
 	 vertaux = LIS_ObterValor(Lisaux);
 	 if (vertaux == NULL)
 	 {
 		 return NULL;
-	 }
+	 }/*if*/
 	 if (vertaux->valor == pValor)
 	 {
 		 return vertaux;
-	 }
+	 }/*if*/
 	 while (LIS_AvancarElementoCorrente(Lisaux,1)==LIS_CondRetOK)
 	 {
 		 vertaux = LIS_ObterValor(Lisaux);
 		 if (vertaux != NULL && vertaux->valor == pValor)
 		 {
 			 return vertaux;
-		 }
-	 }
+		 }/*if*/
+	 }/*while*/
 
 
 	 return NULL;
@@ -532,10 +545,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 if (pVertice == NULL)
 	 {
 		 return NULL;
-	 }
+	 }/*if*/
 	 pVertice->valor = pValor;
 
-	 //criando a lista de arestas com a função que nao desaloca os vertices
+	 //criando a lista de arestas com a função que nao desaloca os vertices(ao exluir arestas nao queremos desalocar vertices) 
 	 pVertice->pVerticeArestas = LIS_CriarLista(naoExclui);
 
 	 return pVertice;
@@ -555,18 +568,19 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 if (vertice1 == NULL || vertice2 == NULL)
 	 {
 		 return GRA_CondRetGrafoNulo; 
-	 }
+	 }/*if*/
 	 
 	 LIS_IrInicioLista(vertice1->pVerticeArestas);
 	 retorno = LIS_ProcurarValor(vertice1->pVerticeArestas, vertice2);
 	 if (retorno == LIS_CondRetListaVazia)
 	 {
 		 return GRA_CondRetGrafoVazia;
-	 }
+	 }/*if*/
 	 if (retorno == LIS_CondRetNaoAchou)
 	 {	//nao possui aresta, nao há o que deletar
 		 return GRA_CondRetOK;
-	 }
+	 }/*if*/
+
 	 //agora com certeza achou o vertice
 	 LIS_ExcluirElemento(vertice1->pVerticeArestas);//excluimos do primeiro
 
@@ -575,7 +589,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 if (retorno == LIS_CondRetNaoAchou)
 	 {	//nao possui aresta, nao há o que deletar(aqui seria um erro na inclusao de arestas)
 		 return GRA_CondRetOK;
-	 }
+	 }/*if*/
 	 LIS_ExcluirElemento(vertice2->pVerticeArestas);//excluimos no segundo	 
 
 	 return GRA_CondRetOK;
@@ -587,7 +601,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  *
  *  Função: GRA  &naoExclui
  *	função para criar a lista de arestas dos vertices sem que ao deletar alguma aresta
- *	o vertice não seja desalocado
+ *	o vertice seja desalocado
  *  ****/
  static void naoExclui (void * pDado)
  {

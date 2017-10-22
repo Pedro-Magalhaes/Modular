@@ -1,36 +1,24 @@
 GERADOR DE SCRIPT DE DIRETIVAS PARA MAKE
    LES / Informática / PUC-Rio    Versão 6.00 (c) 2005
 
-Composição do construto: TesteGrafo.comp
+Composição do construto: TesteLista.comp
 
-   Nome do Construto:           TesteGrafo
+   Nome do Construto:           TesteLista
    Diretório base:              C:\Users\pfsma\Desktop\PUC\Modular\grafo\Compos
 
-   Arquivo composição:          TesteGrafo.comp
+   Arquivo composição:          TesteLista.comp
    Arquivo plataforma:          gmake.parm
 
-   Arquivo diretivas MAKE:      TesteGrafo.make
-   Arquivo diretivas LINK:      TesteGrafo.build
-   Arquivo listagem:            TesteGrafo.list
+   Arquivo diretivas MAKE:      TesteLista.make
+   Arquivo diretivas LINK:      TesteLista.build
+   Arquivo listagem:            TesteLista.list
 
-Módulos do construto: TesteGrafo.comp
+Módulos do construto: TesteLista.comp
 
+   TestLis.c
    Lista.c
-   Grafo.c
-   TesteGrafo.c
 
 Estatísticas do construto
-
-   Estatísticas do arquivo: GRAFO.h
-      Total linhas:             354
-      Linhas de código:          35
-      Linhas de comentário:     269
-      Linhas em branco:          50
-   Arquivos de inclusão de que necessita
-      LISTA.H
-   Arquivos em que é incluído
-      Grafo.c
-      TesteGrafo.c
 
    Estatísticas do arquivo: Generico.h
       Total linhas:             713
@@ -40,26 +28,7 @@ Estatísticas do construto
    Arquivos de inclusão de que necessita
       TST_Espc.h
    Arquivos em que é incluído
-      TesteGrafo.c
-
-   Estatísticas do arquivo: Grafo.c
-      Total linhas:             612
-      Linhas de código:         334
-      Linhas de comentário:     165
-      Linhas em branco:         130
-   Arquivos de inclusão de que necessita
-      GRAFO.h
-      LISTA.H
-
-   Estatísticas do arquivo: LISTA.H
-      Total linhas:             352
-      Linhas de código:          35
-      Linhas de comentário:     262
-      Linhas em branco:          55
-   Arquivos em que é incluído
-      GRAFO.h
-      Grafo.c
-      TesteGrafo.c
+      TestLis.c
 
    Estatísticas do arquivo: LISTA.h
       Total linhas:             352
@@ -75,7 +44,7 @@ Estatísticas do construto
       Linhas de comentário:     188
       Linhas em branco:          67
    Arquivos em que é incluído
-      TesteGrafo.c
+      TestLis.c
 
    Estatísticas do arquivo: Lista.c
       Total linhas:             570
@@ -85,6 +54,14 @@ Estatísticas do construto
    Arquivos de inclusão de que necessita
       LISTA.h
 
+   Estatísticas do arquivo: Lista.h
+      Total linhas:             352
+      Linhas de código:          35
+      Linhas de comentário:     262
+      Linhas em branco:          55
+   Arquivos em que é incluído
+      TestLis.c
+
    Estatísticas do arquivo: TST_Espc.h
       Total linhas:             228
       Linhas de código:          23
@@ -92,27 +69,26 @@ Estatísticas do construto
       Linhas em branco:          20
    Arquivos em que é incluído
       Generico.h
-      TesteGrafo.c
+      TestLis.c
 
-   Estatísticas do arquivo: TesteGrafo.c
-      Total linhas:             480
-      Linhas de código:         268
-      Linhas de comentário:      92
-      Linhas em branco:         138
+   Estatísticas do arquivo: TestLis.c
+      Total linhas:             426
+      Linhas de código:         231
+      Linhas de comentário:      83
+      Linhas em branco:         126
    Arquivos de inclusão de que necessita
-      GRAFO.h
       Generico.h
-      LISTA.H
       LerParm.h
+      Lista.h
       TST_Espc.h
 
 Totais por tipo de arquivo
 
   Tipo: h        Path: ..\Fontes
-         Total linhas do tipo:      1938
+         Total linhas do tipo:      1936
          Linhas de código:           188
-         Linhas de comentário:      1476
-         Linhas em branco:           274
+         Linhas de comentário:      1469
+         Linhas em branco:           279
          Arquivos deste tipo:          5
 
   Tipo: obj      Path: ..\Objetos
@@ -130,24 +106,24 @@ Totais por tipo de arquivo
          Arquivos deste tipo:          0
 
   Tipo: DEFAULT  Path: ..\Fontes
-         Total linhas do tipo:       352
-         Linhas de código:            35
-         Linhas de comentário:       262
-         Linhas em branco:            55
-         Arquivos deste tipo:          1
+         Total linhas do tipo:         0
+         Linhas de código:             0
+         Linhas de comentário:         0
+         Linhas em branco:             0
+         Arquivos deste tipo:          0
 
   Tipo: c        Path: ..\Fontes
-         Total linhas do tipo:      1662
-         Linhas de código:           899
-         Linhas de comentário:       393
-         Linhas em branco:           423
-         Arquivos deste tipo:          3
+         Total linhas do tipo:       996
+         Linhas de código:           528
+         Linhas de comentário:       219
+         Linhas em branco:           281
+         Arquivos deste tipo:          2
 
-Totais para todo o construto TesteGrafo
+Totais para todo o construto TesteLista
 
-   Total linhas:              3952
-   Linhas de código:          1122
-   Linhas de comentário:      2131
-   Linhas em branco:           752
-   Arquivos processados:         9
+   Total linhas:              2932
+   Linhas de código:           716
+   Linhas de comentário:      1688
+   Linhas em branco:           560
+   Arquivos processados:         7
 
