@@ -1,0 +1,24 @@
+06/10/2017   
+3:00
+Estudar
+Usei o tempo para estudar o funcionamento do arcabouuço e estrutura do módulo TESTELIS.C e do script de teste de lista.
+
+11/10/2017
+3:00
+redigir script de teste/ realizar os testes
+Adicionei mais casos de teste ao script de teste de listas e realizei os testes para uma lista de strings.
+
+14/10/2017
+5:00
+codificar modulo/ redigir script de teste/ realizar os teste
+Alterei o modulo TESTELIS.C para aceitar uma lista de uma struct de 4 strings(nome, data de nascimento, email, cidade) e modifiquei o script de teste para usar tal struct. Depois testei o modulo lista com o novo script e controlador de teste.
+
+15/10/2017
+3:30
+Codificar modulo
+Criei o modulo TesteGrafo.c para servir d econtrolador de teste para o modulo grafo.
+
+16/10/2017
+9:00
+Revisar código do módulo/ redigir script de teste/ revisar script de teste/ realizar os testes
+Criei o script de teste para o modulo grafo, depois revisei o modulo testegrafo.c, corrigindo os eventuais erros, depois revisei o script criado no diae, por fim, realizei os testes do modulo grafo, auxiliando na correção dos erros.
