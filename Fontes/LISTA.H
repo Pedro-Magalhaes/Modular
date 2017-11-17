@@ -2,51 +2,52 @@
 #define LISTA_
 /***************************************************************************
 *
-*  $MCD Módulo de definição: LIS  Lista duplamente encadeada
+*  $MCD Mï¿½dulo de definiï¿½ï¿½o: LIS  Lista duplamente encadeada
 *
 *  Arquivo gerado:              LISTA.h
 *  Letras identificadoras:      LIS
 *
-*  Nome da base de software:    Arcabouço para a automação de testes de programas redigidos em C
+*  Nome da base de software:    Arcabouï¿½o para a automaï¿½ï¿½o de testes de programas redigidos em C
 *  Arquivo da base de software: D:\AUTOTEST\PROJETOS\LISTA.BSW
 *
-*  Projeto: INF 1301 / 1628 Automatização dos testes de módulos C
+*  Projeto: INF 1301 / 1628 Automatizaï¿½ï¿½o dos testes de mï¿½dulos C
 *  Gestor:  LES/DI/PUC-Rio
 *  Autores: avs
 *
-*  $HA Histórico de evolução:
-*     Versão  Autor    Data     Observações
-*     4       avs   01/fev/2006 criar linguagem script simbólica
-*     3       avs   08/dez/2004 uniformização dos exemplos
-*     2       avs   07/jul/2003 unificação de todos os módulos em um só projeto
-*     1       avs   16/abr/2003 início desenvolvimento
+*  $HA Histï¿½rico de evoluï¿½ï¿½o:
+*     Versï¿½o  Autor    Data     Observaï¿½ï¿½es
+*     5       pfs   16/10/2017  Criada a funÃ§Ã£o para retornar o tamanho da lista
+*     4       avs   01/fev/2006 criar linguagem script simbï¿½lica
+*     3       avs   08/dez/2004 uniformizaï¿½ï¿½o dos exemplos
+*     2       avs   07/jul/2003 unificaï¿½ï¿½o de todos os mï¿½dulos em um sï¿½ projeto
+*     1       avs   16/abr/2003 inï¿½cio desenvolvimento
 *
-*  $ED Descrição do módulo
-*     Implementa listas genéricas duplamente encadeadas.
-*     Podem existir n listas em operação simultaneamente.
-*     As listas possuem uma cabeça encapsulando o seu estado.
+*  $ED Descriï¿½ï¿½o do mï¿½dulo
+*     Implementa listas genï¿½ricas duplamente encadeadas.
+*     Podem existir n listas em operaï¿½ï¿½o simultaneamente.
+*     As listas possuem uma cabeï¿½a encapsulando o seu estado.
 *
-*     Cada lista é homogênea quanto ao tipo dos dados que armazena.
-*     Cada elemento da lista referencia o valor que contém.
+*     Cada lista ï¿½ homogï¿½nea quanto ao tipo dos dados que armazena.
+*     Cada elemento da lista referencia o valor que contï¿½m.
 *
-*     Os ponteiros para os dados são copiados para elementos da lista.
-*        Não é copiado o valor apontado por estes ponteiros.
+*     Os ponteiros para os dados sï¿½o copiados para elementos da lista.
+*        Nï¿½o ï¿½ copiado o valor apontado por estes ponteiros.
 *
-*     O controle da destruição do valor de um elemento a ser excluído
-*        é realizado por uma função fornecida pelo usuário.
+*     O controle da destruiï¿½ï¿½o do valor de um elemento a ser excluï¿½do
+*        ï¿½ realizado por uma funï¿½ï¿½o fornecida pelo usuï¿½rio.
 *
-*     Cada lista referencia uma função que determina como devem ser
+*     Cada lista referencia uma funï¿½ï¿½o que determina como devem ser
 *        desalocados os dados nela contidos.
 *
-*     A função de liberação dos valores contidos nos elementos deve
-*        assegurar a liberação de todos os espaços referênciados pelo
+*     A funï¿½ï¿½o de liberaï¿½ï¿½o dos valores contidos nos elementos deve
+*        assegurar a liberaï¿½ï¿½o de todos os espaï¿½os referï¿½nciados pelo
 *        valor contido em um elemento.
-*        Esta função é chamada antes de se desalocar um elemento
+*        Esta funï¿½ï¿½o ï¿½ chamada antes de se desalocar um elemento
 *        de uma lista.
-*        Caso não seja necessário desalocar o valor referenciado pelo
-*        elemento, o ponteiro para a função de liberação poderá ser NULL .
-*        Caso o elemento da lista seja a única âncora do valor referenciado,
-*        esta função deve promover a destruição (free) desse valor e
+*        Caso nï¿½o seja necessï¿½rio desalocar o valor referenciado pelo
+*        elemento, o ponteiro para a funï¿½ï¿½o de liberaï¿½ï¿½o poderï¿½ ser NULL .
+*        Caso o elemento da lista seja a ï¿½nica ï¿½ncora do valor referenciado,
+*        esta funï¿½ï¿½o deve promover a destruiï¿½ï¿½o (free) desse valor e
 *        de todos os dados nele ancorados.
 *
 ***************************************************************************/
@@ -57,20 +58,20 @@
    #define LISTA_EXT extern
 #endif
 
-/***** Declarações exportadas pelo módulo *****/
+/***** Declaraï¿½ï¿½es exportadas pelo mï¿½dulo *****/
 
-/* Tipo referência para uma lista */
+/* Tipo referï¿½ncia para uma lista */
 
 typedef struct LIS_tagLista * LIS_tppLista ;
 
 
 /***********************************************************************
 *
-*  $TC Tipo de dados: LIS Condições de retorno
+*  $TC Tipo de dados: LIS Condiï¿½ï¿½es de retorno
 *
 *
-*  $ED Descrição do tipo
-*     Condições de retorno das funções da lista
+*  $ED Descriï¿½ï¿½o do tipo
+*     Condiï¿½ï¿½es de retorno das funï¿½ï¿½es da lista
 *
 ***********************************************************************/
 
@@ -80,43 +81,43 @@ typedef struct LIS_tagLista * LIS_tppLista ;
                /* Concluiu corretamente */
 
          LIS_CondRetListaVazia ,
-               /* A lista não contém elementos */
+               /* A lista nï¿½o contï¿½m elementos */
 
          LIS_CondRetFimLista ,
                /* Foi atingido o fim de lista */
 
          LIS_CondRetNaoAchou ,
-               /* Não encontrou o valor procurado */
+               /* Nï¿½o encontrou o valor procurado */
 
          LIS_CondRetFaltouMemoria
-               /* Faltou memória ao tentar criar um elemento de lista */
+               /* Faltou memï¿½ria ao tentar criar um elemento de lista */
 
    } LIS_tpCondRet ;
 
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Criar lista
+*  $FC Funï¿½ï¿½o: LIS  &Criar lista
 *
-*  $ED Descrição da função
-*     Cria uma lista genérica duplamente encadeada.
-*     Os possíveis tipos são desconhecidos a priori.
-*     A tipagem é implicita.
-*     Não existe identificador de tipo associado à lista.
+*  $ED Descriï¿½ï¿½o da funï¿½ï¿½o
+*     Cria uma lista genï¿½rica duplamente encadeada.
+*     Os possï¿½veis tipos sï¿½o desconhecidos a priori.
+*     A tipagem ï¿½ implicita.
+*     Nï¿½o existe identificador de tipo associado ï¿½ lista.
 *
-*  $EP Parâmetros
-*     ExcluirValor  - ponteiro para a função que processa a
-*                     exclusão do valor referenciado pelo elemento
-*                     a ser excluído.
-*                     Ver descrição do módulo.
+*  $EP Parï¿½metros
+*     ExcluirValor  - ponteiro para a funï¿½ï¿½o que processa a
+*                     exclusï¿½o do valor referenciado pelo elemento
+*                     a ser excluï¿½do.
+*                     Ver descriï¿½ï¿½o do mï¿½dulo.
 *
 *  $FV Valor retornado
 *     Se executou corretamente retorna o ponteiro para a lista.
-*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
+*     Este ponteiro serï¿½ utilizado pelas funï¿½ï¿½es que manipulem esta lista.
 *
-*     Se ocorreu algum erro, por exemplo falta de memória ou dados errados,
-*     a função retornará NULL.
-*     Não será dada mais informação quanto ao problema ocorrido.
+*     Se ocorreu algum erro, por exemplo falta de memï¿½ria ou dados errados,
+*     a funï¿½ï¿½o retornarï¿½ NULL.
+*     Nï¿½o serï¿½ dada mais informaï¿½ï¿½o quanto ao problema ocorrido.
 *
 ***********************************************************************/
 
@@ -126,14 +127,14 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Destruir lista
+*  $FC Funï¿½ï¿½o: LIS  &Destruir lista
 *
-*  $ED Descrição da função
-*     Destrói a lista fornecida.
-*     O parâmetro ponteiro para a lista não é modificado.
-*     Se ocorrer algum erro durante a destruição, a lista resultará
+*  $ED Descriï¿½ï¿½o da funï¿½ï¿½o
+*     Destrï¿½i a lista fornecida.
+*     O parï¿½metro ponteiro para a lista nï¿½o ï¿½ modificado.
+*     Se ocorrer algum erro durante a destruiï¿½ï¿½o, a lista resultarï¿½
 *     estruturalmente incorreta.
-*     OBS. não existe previsão para possíveis falhas de execução.
+*     OBS. nï¿½o existe previsï¿½o para possï¿½veis falhas de execuï¿½ï¿½o.
 *
 *  $FV Valor retornado
 *     LIS_CondRetOK    - destruiu sem problemas
@@ -145,12 +146,12 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Esvaziar lista
+*  $FC Funï¿½ï¿½o: LIS  &Esvaziar lista
 *
-*  $ED Descrição da função
+*  $ED Descriï¿½ï¿½o da funï¿½ï¿½o
 *     Elimina todos os elementos, sem contudo eliminar a lista
 *
-*  $EP Parâmetros
+*  $EP Parï¿½metros
 *     pLista - ponteiro para a lista a ser esvaziada
 *
 ***********************************************************************/
@@ -160,13 +161,13 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Inserir elemento antes
+*  $FC Funï¿½ï¿½o: LIS  &Inserir elemento antes
 *
-*  $ED Descrição da função
+*  $ED Descriï¿½ï¿½o da funï¿½ï¿½o
 *     Insere novo elemento antes do elemento corrente.
 *     Caso a lista esteja vazia, insere o primeiro elemento da lista.
 *
-*  $EP Parâmetros
+*  $EP Parï¿½metros
 *     pLista - ponteiro para a lista onde deve ser inserido o elemento
 *     pValor - ponteiro para o valor do novo elemento
 *              Pode ser NULL
@@ -183,14 +184,14 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Inserir elemento após
+*  $FC Funï¿½ï¿½o: LIS  &Inserir elemento apï¿½s
 *
-*  $ED Descrição da função
-*     Insere novo elemento apás o elemento corrente.
+*  $ED Descriï¿½ï¿½o da funï¿½ï¿½o
+*     Insere novo elemento apï¿½s o elemento corrente.
 *     Caso a lista esteja vazia, insere o primeiro elemento da lista.
 *
-*  $EP Parâmetros
-*     Parâmetros
+*  $EP Parï¿½metros
+*     Parï¿½metros
 *        pLista - ponteiro para a lista onde deve ser inserido o elemento
 *        pValor - ponteiro para o valor do novo elemento
 *                 Pode ser NULL
@@ -209,15 +210,15 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Excluir elemento
+*  $FC Funï¿½ï¿½o: LIS  &Excluir elemento
 *
-*  $ED Descrição da função
+*  $ED Descriï¿½ï¿½o da funï¿½ï¿½o
 *     Exclui o elemento corrente da lista dada.
-*     Se existir o elemento aa esquerda do corrente será o novo corrente.
-*     Se não existir e existir o elemento à direita, este se tornará corrente.
-*     Se este também não existir a lista tornou-se vazia.
+*     Se existir o elemento aa esquerda do corrente serï¿½ o novo corrente.
+*     Se nï¿½o existir e existir o elemento ï¿½ direita, este se tornarï¿½ corrente.
+*     Se este tambï¿½m nï¿½o existir a lista tornou-se vazia.
 *
-*  $EP Parâmetros
+*  $EP Parï¿½metros
 *     pLista    - ponteiro para a lista na qual deve excluir.
 *
 *  $FV Valor retornado
@@ -232,16 +233,16 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Obter referência para o valor contido no elemento
+*  $FC Funï¿½ï¿½o: LIS  &Obter referï¿½ncia para o valor contido no elemento
 *
-*  $ED Descrição da função
-*     Obtem a referência para o valor contido no elemento corrente da lista
+*  $ED Descriï¿½ï¿½o da funï¿½ï¿½o
+*     Obtem a referï¿½ncia para o valor contido no elemento corrente da lista
 *
-*  $EP Parâmetros
+*  $EP Parï¿½metros
 *     pLista - ponteiro para a lista de onde se quer o valor
 *
 *  $FV Valor retornado
-*     não NULL - se o elemento corrente existe
+*     nï¿½o NULL - se o elemento corrente existe
 *     NULL     - se a lista estiver vazia
 *                Pode retornar NULL se o valor inserido no elemento for NULL.
 *
@@ -252,13 +253,13 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Ir para o elemento inicial
+*  $FC Funï¿½ï¿½o: LIS  &Ir para o elemento inicial
 *
-*  $ED Descrição da função
+*  $ED Descriï¿½ï¿½o da funï¿½ï¿½o
 *     Torna corrente o primeiro elemento da lista.
-*     Faz nada se a lista está vazia.
+*     Faz nada se a lista estï¿½ vazia.
 *
-*  $EP Parâmetros
+*  $EP Parï¿½metros
 *     pLista - ponteiro para a lista a manipular
 *
 ***********************************************************************/
@@ -268,13 +269,13 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Ir para o elemento final
+*  $FC Funï¿½ï¿½o: LIS  &Ir para o elemento final
 *
-*  $ED Descrição da função
+*  $ED Descriï¿½ï¿½o da funï¿½ï¿½o
 *     Torna corrente o elemento final da lista.
-*     Faz nada se a lista está vazia.
+*     Faz nada se a lista estï¿½ vazia.
 *
-*  $EP Parâmetros
+*  $EP Parï¿½metros
 *     pLista - ponteiro para a lista a manipular
 *
 ***********************************************************************/
@@ -284,25 +285,25 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Avançar elemento
+*  $FC Funï¿½ï¿½o: LIS  &Avanï¿½ar elemento
 *
-*  $ED Descrição da função
-*     Avança o elemento corrente numElem elementos na lista
-*     Se numElem for positivo avança em direção ao final
-*     Se numElem for negativo avança em direção ao início
-*     numElem pode ser maior do que o númro de elementos existentes na
-*               direção desejada
-*     Se numElem for zero somente verifica se a lista está vazia
+*  $ED Descriï¿½ï¿½o da funï¿½ï¿½o
+*     Avanï¿½a o elemento corrente numElem elementos na lista
+*     Se numElem for positivo avanï¿½a em direï¿½ï¿½o ao final
+*     Se numElem for negativo avanï¿½a em direï¿½ï¿½o ao inï¿½cio
+*     numElem pode ser maior do que o nï¿½mro de elementos existentes na
+*               direï¿½ï¿½o desejada
+*     Se numElem for zero somente verifica se a lista estï¿½ vazia
 *
-*  $EP Parâmetros
+*  $EP Parï¿½metros
 *     pLista  - ponteiro para a lista a ser manipulada
-*     numElem - o número de elementos a andar
+*     numElem - o nï¿½mero de elementos a andar
 *
 *  $FV Valor retornado
 *     CondRetOK         - se numElem elementos tiverem sido andados
 *     CondRetFimLista   - se encontrou o fim da lista antes de andar numElem
 *                         elementos
-*     CondRetListaVazia - se a lista está vazia
+*     CondRetListaVazia - se a lista estï¿½ vazia
 *
 ***********************************************************************/
 
@@ -312,24 +313,24 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Procurar elemento contendo valor
+*  $FC Funï¿½ï¿½o: LIS  &Procurar elemento contendo valor
 *
-*  $ED Descrição da função
+*  $ED Descriï¿½ï¿½o da funï¿½ï¿½o
 *     Procura o elemento que referencia o valor dado.
-*     A função compara ponteiro e não conteúdo apontado.
+*     A funï¿½ï¿½o compara ponteiro e nï¿½o conteï¿½do apontado.
 *
-*  $EP Parâmetros
+*  $EP Parï¿½metros
 *     pLista  - ponteiro para a lista onde procura
 *     pValor  - ponteiro para o valor procurado
 *               Pode ser NULL
 *
 *  $FV Valor retornado
 *     LIS_CondRetOK  - se encontrou.
-*                      O elemento corrente é o primeiro elemento do
+*                      O elemento corrente ï¿½ o primeiro elemento do
 *                      elemento corrente inclusive para o fim da lista
-*                      e que contém o ponteiro procurado
+*                      e que contï¿½m o ponteiro procurado
 *
-*     LIS_CondRetNaoEncontrou - se o ponteiro não foi encontrado
+*     LIS_CondRetNaoEncontrou - se o ponteiro nï¿½o foi encontrado
 *                      O elemento corrente continua o mesmo
 *     LIS_CondRetListaVazia   - se a lista estiver vazia
 *
@@ -338,7 +339,22 @@ typedef struct LIS_tagLista * LIS_tppLista ;
    LIS_tpCondRet LIS_ProcurarValor( LIS_tppLista pLista ,
                                     void * pValor        ) ;
 
-
+/***********************************************************************
+*
+*  $FC Funï¿½ï¿½o: LIS  &ObtemTamanho
+*
+*  $ED Descriï¿½ï¿½o da funï¿½ï¿½o
+*     A funÃ§Ã£o retorna para o usuÃ¡rio no nÃºmero de elementos da lista
+*     recebida como parametro
+*
+*  $EP Parï¿½metros
+*     pLista  - ponteiro para a lista que deseja obter o numero de elementos
+*
+*  $FV Valor retornado
+*     >= 0 - inteiro representando o nÃºmero de elemetos contidos na lista
+*     -1   - se o ponteiro para lista for nulo
+*
+***********************************************************************/
 
    int LIS_ObtemTamanho(LIS_tppLista pLista);
 
@@ -346,7 +362,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 #undef LISTA_EXT
 
-/********** Fim do módulo de definição: LIS  Lista duplamente encadeada **********/
+/********** Fim do mï¿½dulo de definiï¿½ï¿½o: LIS  Lista duplamente encadeada **********/
 
 #else
 #endif
