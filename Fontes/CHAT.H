@@ -41,7 +41,7 @@
 
 /* Tipo referência para uma lista */
 
-typedef struct CHA_tagLista * CHA_tppLista ;
+typedef struct CHA_tagChat * CHA_tppChat ;
 
 
 /***********************************************************************
@@ -76,19 +76,13 @@ typedef struct CHA_tagLista * CHA_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Criar lista
+*  $FC Função: LIS  &Criar Chat
 *
 *  $ED Descrição da função
-*     Cria uma lista genérica duplamente encadeada.
-*     Os possíveis tipos são desconhecidos a priori.
-*     A tipagem é implicita.
-*     Não existe identificador de tipo associado à lista.
+*     
 *
 *  $EP Parâmetros
-*     ExcluirValor  - ponteiro para a função que processa a
-*                     exclusão do valor referenciado pelo elemento
-*                     a ser excluído.
-*                     Ver descrição do módulo.
+*     XXXXXXXXXXXX  - 
 *
 *  $FV Valor retornado
 *     Se executou corretamente retorna o ponteiro para a lista.
@@ -98,10 +92,102 @@ typedef struct CHA_tagLista * CHA_tppLista ;
 *     a função retornará NULL.
 *     Não será dada mais informação quanto ao problema ocorrido.
 *
-***********************************************************************/
+***********************************************************************/  
 
-   CHA_tppLista CHA_CriarChat(
+   CHA_tppChat CHA_CriaChat(
              void   ( * ExcluirValor ) ( void * pDado ) ) ;
+
+/***********************************************************************
+*
+*  $FC Função: LIS  &Envia Mensagem
+*
+*  $ED Descrição da função
+*     
+*
+*  $EP Parâmetros
+*     XXXXXXXXXXXX  - 
+*
+*  $FV Valor retornado
+*     Se executou corretamente retorna o ponteiro para a lista.
+*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
+*
+*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
+*     a função retornará NULL.
+*     Não será dada mais informação quanto ao problema ocorrido.
+*
+***********************************************************************/  
+
+   CHA_tppChat CHA_EnviaMensagem(
+             void   ( * ExcluirValor ) ( void * pDado ) ) ;  
+
+/***********************************************************************
+*
+*  $FC Função: LIS  &Sair Chat
+*
+*  $ED Descrição da função
+*     
+*
+*  $EP Parâmetros
+*     XXXXXXXXXXXX  - 
+*
+*  $FV Valor retornado
+*     Se executou corretamente retorna o ponteiro para a lista.
+*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
+*
+*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
+*     a função retornará NULL.
+*     Não será dada mais informação quanto ao problema ocorrido.
+*
+***********************************************************************/  
+
+   CHA_tppChat CHA_SairChat(
+             void   ( * ExcluirValor ) ( void * pDado ) ) ;  
+
+/***********************************************************************
+*
+*  $FC Função: LIS  &Deletar Chat
+*
+*  $ED Descrição da função
+*     
+*
+*  $EP Parâmetros
+*     XXXXXXXXXXXX  - 
+*
+*  $FV Valor retornado
+*     Se executou corretamente retorna o ponteiro para a lista.
+*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
+*
+*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
+*     a função retornará NULL.
+*     Não será dada mais informação quanto ao problema ocorrido.
+*
+***********************************************************************/  
+
+   CHA_tppChat CHA_DeletarChat(
+             void   ( * ExcluirValor ) ( void * pDado ) ) ;  
+
+/***********************************************************************
+*
+*  $FC Função: LIS  &Deletar Mensagem
+*
+*  $ED Descrição da função
+*     
+*
+*  $EP Parâmetros
+*     XXXXXXXXXXXX  - 
+*
+*  $FV Valor retornado
+*     Se executou corretamente retorna o ponteiro para a lista.
+*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
+*
+*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
+*     a função retornará NULL.
+*     Não será dada mais informação quanto ao problema ocorrido.
+*
+***********************************************************************/  
+
+   CHA_tppChat CHA_DeletarMensagem(
+             void   ( * ExcluirValor ) ( void * pDado ) ) ;                                             
 
 
 #undef CHAT_EXT

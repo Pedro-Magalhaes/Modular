@@ -1,0 +1,2 @@
+Data	Horas trabalhadas	Tipo de tarefa							Descrição da tarefa realizada 
+17/11   4                   Criando base do T4                      Criei o Módulo Usuário e Chat, estruturei as funções

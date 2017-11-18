@@ -76,7 +76,7 @@ typedef struct USU_tagLista * USU_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Criar lista
+*  $FC Função: LIS  &Criar Usuário
 *
 *  $ED Descrição da função
 *     Cria uma lista genérica duplamente encadeada.
@@ -100,9 +100,118 @@ typedef struct USU_tagLista * USU_tppLista ;
 *
 ***********************************************************************/
 
-   USU_tppLista USU_CriarLista(
+   USU_tppLista USU_CriaUsuario(
              void   ( * ExcluirValor ) ( void * pDado ) ) ;
 
+/***********************************************************************
+*
+*  $FC Função: LIS  &Adicionar Amigo
+*
+*  $ED Descrição da função
+*     
+*
+*  $EP Parâmetros
+*     XXXXXXXXXXXX  - 
+*
+*  $FV Valor retornado
+*     Se executou corretamente retorna o ponteiro para a lista.
+*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
+*
+*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
+*     a função retornará NULL.
+*     Não será dada mais informação quanto ao problema ocorrido.
+*
+***********************************************************************/    
+      USU_tpCondRet USU_AdicionaAmigo(
+             void   ( * ExcluirValor ) ( void * pDado ) ) ;
+
+/***********************************************************************
+*
+*  $FC Função: LIS  &Remover Amigo
+*
+*  $ED Descrição da função
+*     
+*
+*  $EP Parâmetros
+*     XXXXXXXXXXXX  - 
+*
+*  $FV Valor retornado
+*     Se executou corretamente retorna o ponteiro para a lista.
+*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
+*
+*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
+*     a função retornará NULL.
+*     Não será dada mais informação quanto ao problema ocorrido.
+*
+***********************************************************************/   
+      USU_tpCondRet USU_AdicionaAmigo(
+             void   ( * ExcluirValor ) ( void * pDado ) ) ;             
+
+/***********************************************************************
+*
+*  $FC Função: LIS  &Editar Perfil
+*
+*  $ED Descrição da função
+*     
+*
+*  $EP Parâmetros
+*     XXXXXXXXXXXX  - 
+*
+*  $FV Valor retornado
+*     Se executou corretamente retorna o ponteiro para a lista.
+*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
+*
+*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
+*     a função retornará NULL.
+*     Não será dada mais informação quanto ao problema ocorrido.
+*
+***********************************************************************/   
+      USU_tpCondRet USU_EditarPerfil(
+             void   ( * ExcluirValor ) ( void * pDado ) ) ; 
+
+/***********************************************************************
+*
+*  $FC Função: LIS  &Adicionar Usúario
+*
+*  $ED Descrição da função
+*     
+*
+*  $EP Parâmetros
+*     XXXXXXXXXXXX  - 
+*
+*  $FV Valor retornado
+*     Se executou corretamente retorna o ponteiro para a lista.
+*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
+*
+*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
+*     a função retornará NULL.
+*     Não será dada mais informação quanto ao problema ocorrido.
+*
+***********************************************************************/   
+      USU_tpCondRet USU_AdicionaUsuario(
+             void   ( * ExcluirValor ) ( void * pDado ) ) ;     
+
+/***********************************************************************
+*
+*  $FC Função: LIS  &Deletar Usuario
+*
+*  $ED Descrição da função
+*     
+*
+*  $EP Parâmetros
+*     XXXXXXXXXXXX  - 
+*
+*  $FV Valor retornado
+*     Se executou corretamente retorna o ponteiro para a lista.
+*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
+*
+*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
+*     a função retornará NULL.
+*     Não será dada mais informação quanto ao problema ocorrido.
+*
+***********************************************************************/   
+      USU_tpCondRet USU_DeletarUsuario(
+             void   ( * ExcluirValor ) ( void * pDado ) ) ;   
 
 #undef USUARIO_EXT
 

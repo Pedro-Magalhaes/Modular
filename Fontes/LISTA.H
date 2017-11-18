@@ -17,7 +17,7 @@
 *  $HA Histórico de evolução:
 *     Versão  Autor    Data     Observações
 *     5       pfs   16/10/2017  Criada a função para retornar o tamanho da lista
-*     4       avs   01/fev/2006 criar linguagem script simb�lica
+*     4       avs   01/fev/2006 criar linguagem script simbólica
 *     3       avs   08/dez/2004 uniformização dos exemplos
 *     2       avs   07/jul/2003 unificação de todos os módulos em um só projeto
 *     1       avs   16/abr/2003 início desenvolvimento
@@ -362,7 +362,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 #undef LISTA_EXT
 
-/********** Fim do m�dulo de definição: LIS  Lista duplamente encadeada **********/
+/********** Fim do módulo de definição: LIS  Lista duplamente encadeada **********/
 
 #else
 #endif
