@@ -2,7 +2,7 @@
 #define CHAT_
 /***************************************************************************
 *
-*  $MCD M�dulo de defini��o: CHA  Usuário da rede de relacionamentos
+*  $MCD Módulo de definição: CHA  Chat da rede de relacionamentos
 *
 *  Arquivo gerado:              CHAT.h
 *  Letras identificadoras:      CHA
@@ -14,11 +14,11 @@
 *  Gestor:  LES/DI/PUC-Rio
 *  Autores: pfs, hfac , yan
 *
-*  $HA Hist�rico de evolu��o:
-*     Vers�o  Autor    Data     Observa��es*     
-*     1       pfs   17/11/2017 in�cio desenvolvimento
+*  $HA Histórico de evolução:
+*     Versão  Autor    Data     Observações*     
+*     1       pfs   17/11/2017 início desenvolvimento
 *
-*  $ED Descri��o do m�dulo
+*  $ED Descrição do módulo
 *     Implementa o módulo usuário da rede de relacionamentos, contém os
 *     dados dos usuarios, como seu perfil. Possui os métodos de interação
 *     do usuário com a rede. Faz uso do módulo Grafo e do Módulo Chat 
@@ -37,20 +37,20 @@
    #define CHAT_EXT extern
 #endif
 
-/***** Declara��es exportadas pelo m�dulo *****/
+/***** Declarações exportadas pelo módulo *****/
 
-/* Tipo refer�ncia para uma lista */
+/* Tipo referência para uma lista */
 
 typedef struct CHA_tagLista * CHA_tppLista ;
 
 
 /***********************************************************************
 *
-*  $TC Tipo de dados: LIS Condi��es de retorno
+*  $TC Tipo de dados: CHA Condições de retorno
 *
 *
-*  $ED Descri��o do tipo
-*     Condi��es de retorno das fun��es da lista
+*  $ED Descrição do tipo
+*     Condições de retorno das funções do CHAT
 *
 ***********************************************************************/
 
@@ -76,27 +76,27 @@ typedef struct CHA_tagLista * CHA_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Fun��o: LIS  &Criar lista
+*  $FC Função: LIS  &Criar lista
 *
-*  $ED Descri��o da fun��o
-*     Cria uma lista gen�rica duplamente encadeada.
-*     Os poss�veis tipos s�o desconhecidos a priori.
-*     A tipagem � implicita.
-*     N�o existe identificador de tipo associado � lista.
+*  $ED Descrição da função
+*     Cria uma lista genérica duplamente encadeada.
+*     Os possíveis tipos são desconhecidos a priori.
+*     A tipagem é implicita.
+*     Não existe identificador de tipo associado à lista.
 *
-*  $EP Par�metros
-*     ExcluirValor  - ponteiro para a fun��o que processa a
-*                     exclus�o do valor referenciado pelo elemento
-*                     a ser exclu�do.
-*                     Ver descri��o do m�dulo.
+*  $EP Parâmetros
+*     ExcluirValor  - ponteiro para a função que processa a
+*                     exclusão do valor referenciado pelo elemento
+*                     a ser excluído.
+*                     Ver descrição do módulo.
 *
 *  $FV Valor retornado
 *     Se executou corretamente retorna o ponteiro para a lista.
-*     Este ponteiro ser� utilizado pelas fun��es que manipulem esta lista.
+*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
 *
 *     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
-*     a fun��o retornar� NULL.
-*     N�o ser� dada mais informa��o quanto ao problema ocorrido.
+*     a função retornará NULL.
+*     Não será dada mais informação quanto ao problema ocorrido.
 *
 ***********************************************************************/
 
@@ -106,7 +106,7 @@ typedef struct CHA_tagLista * CHA_tppLista ;
 
 #undef CHAT_EXT
 
-/********** Fim do m�dulo de defini��o: CHA  Usuário **********/
+/********** Fim do módulo de definição: CHA  Chat **********/
 
 #else
 #endif
