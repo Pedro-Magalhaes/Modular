@@ -116,6 +116,39 @@ USU_tpCondRet USU_CriaUsuario(char * nome , int idade , char genero )
 
 /* Fim função: USU  &Cria Usuario */
 
+/***************************************************************************
+*
+*  Função: USU  &Cria Usuario
+*  ****/
+
+USU_tpCondRet USU_AdicionaAmigo( int id_usuario ) ;
+
+
+/* Fim função: USU  &Cria Usuario */
+
+/***************************************************************************
+*
+*  Função: USU  &Cria Usuario
+*  ****/
+
+ USU_tpCondRet USU_EditarPerfil() ;
+
+/* Fim função: USU  &Cria Usuario */
+
+
+
+
+/***************************************************************************
+*
+*  Função: USU  &Cria Usuario
+*  ****/
+
+USU_tpCondRet USU_AdicionaUsuario() ;     
+
+
+/* Fim função: USU  &Cria Usuario */
+
+
 
 
 /****** Fim funções exportadas pelo modulo USU ******/

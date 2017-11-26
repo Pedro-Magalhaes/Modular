@@ -121,27 +121,6 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Remover Amigo
-*
-*  $ED Descrição da função
-*     
-*
-*  $EP Parâmetros
-*     XXXXXXXXXXXX  - 
-*
-*  $FV Valor retornado
-*     Se executou corretamente retorna o ponteiro para a lista.
-*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
-*
-*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
-*     a função retornará NULL.
-*     Não será dada mais informação quanto ao problema ocorrido.
-*
-***********************************************************************/   
-      USU_tpCondRet USU_AdicionaAmigo( int id_usuario ) ;            
-
-/***********************************************************************
-*
 *  $FC Função: LIS  &Editar Perfil
 *
 *  $ED Descrição da função
@@ -159,8 +138,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *     Não será dada mais informação quanto ao problema ocorrido.
 *
 ***********************************************************************/   
-      USU_tpCondRet USU_EditarPerfil(
-             void   ( * ExcluirValor ) ( void * pDado ) ) ; 
+      USU_tpCondRet USU_EditarPerfil() ; 
 
 /***********************************************************************
 *
