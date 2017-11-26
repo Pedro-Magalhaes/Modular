@@ -37,16 +37,18 @@
    #define USUARIO_EXT extern
 #endif
 
+#include   "LISTA.H"
+
 /***** Declarações exportadas pelo módulo *****/
 
-/* Tipo referência para uma lista */
+/* Tipo referência para um Usuario*/
 
-typedef struct USU_tagLista * USU_tppLista ;
+typedef struct USU_tagUsuario * USU_tppUsuario ;
 
 
 /***********************************************************************
 *
-*  $TC Tipo de dados: LIS Condições de retorno
+*  $TC Tipo de dados: USU Condições de retorno
 *
 *
 *  $ED Descrição do tipo
@@ -62,8 +64,8 @@ typedef struct USU_tagLista * USU_tppLista ;
          USU_CondRetListaVazia ,
                /* A lista n�o cont�m elementos */
 
-         USU_CondRetFimLista ,
-               /* Foi atingido o fim de lista */
+         USU_CondRetPerfilIncorreto ,
+               /* O perfil do usuário está incorreto */
 
          USU_CondRetNaoAchou ,
                /* N�o encontrou o valor procurado */
@@ -76,32 +78,25 @@ typedef struct USU_tagLista * USU_tppLista ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Criar Usuário
+*  $FC Função: USU  &Criar Usuário
 *
 *  $ED Descrição da função
-*     Cria uma lista genérica duplamente encadeada.
-*     Os possíveis tipos são desconhecidos a priori.
-*     A tipagem é implicita.
-*     Não existe identificador de tipo associado à lista.
+*     Cria um usuário com seu perfil, adiciona-o no chat público
 *
 *  $EP Parâmetros
-*     ExcluirValor  - ponteiro para a função que processa a
-*                     exclusão do valor referenciado pelo elemento
-*                     a ser excluído.
-*                     Ver descrição do módulo.
+*     Nome  - Nome do usuário com até 50 caracteres
+*     idade - inteiro positivo diferente de 0 com a idade do usuário
+*     genero - Caracter com o sexo do usuario, 'M' - masculino,
+*              'F'- Feminino , 'O' - outros
 *
 *  $FV Valor retornado
-*     Se executou corretamente retorna o ponteiro para a lista.
-*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
-*
-*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
-*     a função retornará NULL.
-*     Não será dada mais informação quanto ao problema ocorrido.
+*     Se executou corretamente retorna ok.
+*     ******TODO colocar erros
 *
 ***********************************************************************/
 
-   USU_tppLista USU_CriaUsuario(
-             void   ( * ExcluirValor ) ( void * pDado ) ) ;
+   USU_tpCondRet USU_CriaUsuario(
+             char * nome , int idade , char genero ) ;
 
 /***********************************************************************
 *
@@ -122,8 +117,7 @@ typedef struct USU_tagLista * USU_tppLista ;
 *     Não será dada mais informação quanto ao problema ocorrido.
 *
 ***********************************************************************/    
-      USU_tpCondRet USU_AdicionaAmigo(
-             void   ( * ExcluirValor ) ( void * pDado ) ) ;
+      USU_tpCondRet USU_AdicionaAmigo( int id_usuario ) ;
 
 /***********************************************************************
 *
@@ -144,8 +138,7 @@ typedef struct USU_tagLista * USU_tppLista ;
 *     Não será dada mais informação quanto ao problema ocorrido.
 *
 ***********************************************************************/   
-      USU_tpCondRet USU_AdicionaAmigo(
-             void   ( * ExcluirValor ) ( void * pDado ) ) ;             
+      USU_tpCondRet USU_AdicionaAmigo( int id_usuario ) ;            
 
 /***********************************************************************
 *
@@ -210,8 +203,7 @@ typedef struct USU_tagLista * USU_tppLista ;
 *     Não será dada mais informação quanto ao problema ocorrido.
 *
 ***********************************************************************/   
-      USU_tpCondRet USU_DeletarUsuario(
-             void   ( * ExcluirValor ) ( void * pDado ) ) ;   
+      USU_tpCondRet USU_DeletarUsuario( int id_usuario ) ;   
 
 #undef USUARIO_EXT
 
