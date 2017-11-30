@@ -16,9 +16,11 @@
 *     Versão  Autor    Data     Observações*     
 *     1       pfs   17/11/2017 início desenvolvimento
 *     2       pfs   26/11/2017 Continuação do desenvolvimento
+*     3       pfs   29/11/2017 Continuação do desenvolvimento
 *
 ***************************************************************************/
 #include   <stdio.h>
+#include   <stdlib.h>
 #include   <string.h>
 #include   <memory.h>
 #include   <malloc.h>
@@ -54,7 +56,7 @@
 
 
 /***********************************************************************
-*  $TC Tipo de dados: Int id Usuario
+*  $TC Tipo de dados: Variáveis Globais
 *       variável que vai gerar os ids de perfil de cada usuário
 *
 ***********************************************************************/
@@ -87,7 +89,7 @@ static void excluirUsuario (void* usuario);
 
 USU_tpCondRet USU_InicializarModulo( )
 {
-        if( pGrafo != NULL )
+        if( pGrafo != NULL ) // já existe um grafo
         {
                 GRA_DestruirGrafo(pGrafo);
         }/*If*/
@@ -95,6 +97,7 @@ USU_tpCondRet USU_InicializarModulo( )
         pGrafo = GRA_CriarGrafo ( excluirUsuario );
         IdSequencial = 0;
         NextPos = 0;
+        return USU_CondRetOK;
 }
 
 /* Fim função: USU  &Inicializar Modulo */
@@ -136,28 +139,22 @@ USU_tpCondRet USU_CriaUsuario(char * nome , int idade , char genero )
       if (genero == 'M' ||genero == 'F' || genero == 'O' || 
           genero == 'm' || genero == 'f'|| genero == 'o')
       {
-        perfil->generoUsuario = toupper(genero); //atribuindo genero
+        perfil->generoUsuario = (char)toupper(genero); //atribuindo genero
       }/* if */
       else
       {
         return USU_CondRetPerfilIncorreto;
       }/* else */
 
-      GetNewIdUsuario( perfil->idUsuario ); //atribuindo o Id
+      GetNewIdUsuario( &perfil->idUsuario ); //atribuindo o Id
 
       retorno = USU_AdicionaUsuario(perfil);
-      switch ( retorno )
-        {
-                case GRA_CondRetFaltouMemoria:
-                        return USU_CondRetFaltouMemoria;
-                        break;
-                case GRA_CondRetGrafoNulo:
-                        return USU_CondRetNaoInicializado;
-                        break;
-                default:    
-                        GuardaNoVetor(meus_usuarios,perfil);
-                        return USU_CondRetOK;
-        }
+      if(retorno == USU_CondRetOK)
+      {
+        GuardaNoVetor(meus_usuarios,perfil);
+        return USU_CondRetOK;
+      }
+      return retorno;
 }
 
 /* Fim função: USU  &Cria Usuario */
@@ -228,8 +225,25 @@ USU_tpCondRet USU_AdicionaUsuario(USU_tppUsuario usuario)
 
 /* Fim função: USU  &USU_AdicionaUsuario */
 
+/***************************************************************************
+*
+*  Função: USU  &USU_DestruirUsuarios
+*  ****/
 
+void USU_DestruirUsuarios ()
+{
+        int i;
+        GRA_DestruirGrafo(pGrafo);
+        pGrafo = NULL;
+        for(i=0;i<MAX_USERS;i++)
+        {
+                meus_usuarios[i]=NULL;
+        }
+        NextPos = 0;
+        IdSequencial = 0;
+}
 
+/* Fim função: USU  &USU_DestruirUsuarios */
 
 /****** Fim funções exportadas pelo modulo USU ******/
 
@@ -275,7 +289,7 @@ static void GetNewIdUsuario(int* id_destino)
                 exit(-1);
         }
         //incremento a variavel global e atribuo a variavel recebida
-        id_destino = ++IdSequencial; 
+        *id_destino = ++IdSequencial; 
 }
 /* Fim função: USU  &GetNewIdUsuario */
 

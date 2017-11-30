@@ -16,6 +16,7 @@
 *
 *  $HA Histórico de evolução:
 *     Versão  Autor    Data     Observações*     
+*     2       pfs   29/11/2017 Adição de funções e mudança de assinaturas de funções
 *     1       pfs   17/11/2017 início desenvolvimento
 *
 *  $ED Descrição do módulo
@@ -25,7 +26,10 @@
 *
 *     Cada usuário possui um perfil com Nome com no MAX 50 caracteres,
 *     idade (inteiro positivo), gênero (char 'M'-Masculino , 'F'-Feminino,
-      'O'-Outros)
+*     'O'-Outros)
+*     Apenas uma "instancia" do módulo pode estar ativa, ao tentar inicializar o
+*     modulo depois de já ter sido feita uma inicialização todos os dados anteriores
+*     serão perdidos pois o modulo vai resetar seu estado para o inicial (a memoria é desalocada)
 *
 *     FALTA ESCREVER MAIS?????? OLHAR MODULO LISTA.H
 *
@@ -198,6 +202,20 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 ***********************************************************************/   
       USU_tpCondRet USU_DeletarUsuario( int id_usuario ) ;   
+
+
+/***********************************************************************
+*
+*  $FC Função: USU  &Destruir Usuarios
+*
+*  $ED Descrição da função
+*     Destroi todos os dados alocados 
+*
+*  $FV Valor retornado
+*     Não retorna valor
+*
+***********************************************************************/  
+      void USU_DestruirUsuarios ();
 
 /***********************************************************************
 *
