@@ -29,6 +29,8 @@
 #include "USUARIO.h"
 #undef USUARIO_OWN
 
+#define MAX_USERS 10
+
 /***********************************************************************
 *
 *  $TC Tipo de dados: USU Perfil Usuario
@@ -56,17 +58,46 @@
 *       variável que vai gerar os ids de perfil de cada usuário
 *
 ***********************************************************************/
-static int IdSequencial = 0;
+static int IdSequencial = 0; //sequencia para gerar o id dos usuários
+static int NextPos = 0; // proxima posição para guardar o ponteiro de um usuario no vetor
+static GRA_tppGrafo pGrafo = NULL; // ponteiro para o tipo grafo
+static tpPerfilUsuario * meus_usuarios[MAX_USERS]; // vetor para guardar meus usuários criados
+
 
 /***** Protótipos das funções encapuladas no módulo *****/
 
 
 static void CopiaNome(char* destino, char * origem);
 
-static void GetIdUsuario(int* Id_destino);
+static void GetNewIdUsuario(int* Id_destino);
+
+static void GuardaNoVetor (tpPerfilUsuario** vetor , tpPerfilUsuario * perfil);
+
+static void DeletaDoVetor (tpPerfilUsuario** vetor , tpPerfilUsuario * perfil);
+
+static void excluirUsuario (void* usuario);
 
 /*****  Código das funções exportadas pelo módulo  *****/
 
+
+/***************************************************************************
+*
+*  Função: USU  &Inicializar Modulo
+*  ****/
+
+USU_tpCondRet USU_InicializarModulo( )
+{
+        if( pGrafo != NULL )
+        {
+                GRA_DestruirGrafo(pGrafo);
+        }/*If*/
+
+        pGrafo = GRA_CriarGrafo ( excluirUsuario );
+        IdSequencial = 0;
+        NextPos = 0;
+}
+
+/* Fim função: USU  &Inicializar Modulo */
 
 /***************************************************************************
 *
@@ -76,7 +107,9 @@ static void GetIdUsuario(int* Id_destino);
 USU_tpCondRet USU_CriaUsuario(char * nome , int idade , char genero )
 {
       tpPerfilUsuario * perfil = NULL;
+      USU_tpCondRet retorno;
       perfil =(tpPerfilUsuario*) malloc(sizeof(tpPerfilUsuario));
+
       if (perfil == NULL)
       {//erro de memoria
         return USU_CondRetFaltouMemoria;
@@ -110,8 +143,21 @@ USU_tpCondRet USU_CriaUsuario(char * nome , int idade , char genero )
         return USU_CondRetPerfilIncorreto;
       }/* else */
 
-      GetIdUsuario( perfil->idUsuario ); //atribuindo o Id
-      return USU_CondRetOK;
+      GetNewIdUsuario( perfil->idUsuario ); //atribuindo o Id
+
+      retorno = USU_AdicionaUsuario(perfil);
+      switch ( retorno )
+        {
+                case GRA_CondRetFaltouMemoria:
+                        return USU_CondRetFaltouMemoria;
+                        break;
+                case GRA_CondRetGrafoNulo:
+                        return USU_CondRetNaoInicializado;
+                        break;
+                default:    
+                        GuardaNoVetor(meus_usuarios,perfil);
+                        return USU_CondRetOK;
+        }
 }
 
 /* Fim função: USU  &Cria Usuario */
@@ -136,17 +182,51 @@ USU_tpCondRet USU_AdicionaAmigo( int id_usuario ) ;
 /* Fim função: USU  &Cria Usuario */
 
 
+/***************************************************************************
+*
+*  Função: USU  &Total Usuarios
+*  em caso de erro GRA_QntVertices retorna -1
+*  ****/
+
+ int USU_TotalUsuarios()
+ {
+         return GRA_QntVertices(pGrafo);
+ }
+
+/* Fim função: USU  &Total Usuarios */
+
+
 
 
 /***************************************************************************
 *
-*  Função: USU  &Cria Usuario
+*  Função: USU  &USU_AdicionaUsuario
 *  ****/
 
-USU_tpCondRet USU_AdicionaUsuario() ;     
+USU_tpCondRet USU_AdicionaUsuario(USU_tppUsuario usuario)
+{
+        #ifdef _DEBUG
+		 assert( usuario != NULL );
+                 assert(pGrafo != NULL );
+	#endif
+        LIS_tpCondRet retorno;
+        retorno = GRA_InserirVertice( pGrafo,usuario );
+        switch ( retorno )
+        {
+                case GRA_CondRetFaltouMemoria:
+                        return USU_CondRetFaltouMemoria;
+                        break;
+                case GRA_CondRetGrafoNulo:
+                        return USU_CondRetNaoInicializado;
+                        break;
+                default:                        
+                        return USU_CondRetOK;
+        }
+
+}  
 
 
-/* Fim função: USU  &Cria Usuario */
+/* Fim função: USU  &USU_AdicionaUsuario */
 
 
 
@@ -180,14 +260,14 @@ static void CopiaNome(char* destino, char * origem)
         }/*for*/
         destino[i] = 51;
 }
-
+/* Fim função: USU  &Copia Nome */
 /***************************************************************************
 *
-*  Função: USU  &Id Usuario
+*  Função: USU  &GetNewIdUsuario
 *       Preenche o id do usuário(recebido como parametro) com o próximo
 *       valor da variável global IdSequencial. Em caso de erro aborta.
 *  ****/
-static void GetIdUsuario(int* id_destino)
+static void GetNewIdUsuario(int* id_destino)
 {
         if( id_destino == NULL )
         {
@@ -196,4 +276,54 @@ static void GetIdUsuario(int* id_destino)
         }
         //incremento a variavel global e atribuo a variavel recebida
         id_destino = ++IdSequencial; 
+}
+/* Fim função: USU  &GetNewIdUsuario */
+
+/***************************************************************************
+*
+*  Função: USU  &excluir Usuario
+*       Faz a exclusão dos dados guardados no perfil
+*  ****/
+static void excluirUsuario (void* dado)
+{
+        tpPerfilUsuario * perfil = (tpPerfilUsuario*) dado;
+        free(perfil->nomeUsuario);
+}
+
+/* Fim função: USU  &excluirUsuario */
+
+
+
+/***************************************************************************
+*
+*  Função: USU  &GuardaNoVetor
+*       Guarda o perfil no vetor e atualiza a proxima posição disponivel
+*  ****/
+static void GuardaNoVetor ( tpPerfilUsuario** vetor , tpPerfilUsuario * perfil)
+{
+        #ifdef _DEBUG
+                assert( vetor[NextPos] == NULL );
+        #endif
+        vetor[NextPos] = perfil;
+        NextPos++;
+
+}
+
+/* Fim função: USU  &GuardaNoVetor */
+
+static void DeletaDoVetor (tpPerfilUsuario** vetor , tpPerfilUsuario * perfil)
+{
+        int i = 0;
+
+        while(i<MAX_USERS)
+        {
+                if(vetor[i] == perfil)
+                {
+                        NextPos--;
+                        vetor[i] = vetor[NextPos];
+                        vetor[NextPos] = NULL;
+                        return;
+                }
+                i++;
+        }/* while */
 }

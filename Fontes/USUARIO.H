@@ -37,7 +37,7 @@
    #define USUARIO_EXT extern
 #endif
 
-#include   "LISTA.H"
+#include   "GRAFO.H"
 
 /***** Declarações exportadas pelo módulo *****/
 
@@ -62,18 +62,35 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
                /* Concluiu corretamente */
 
          USU_CondRetListaVazia ,
-               /* A lista n�o cont�m elementos */
+               /* A lista não contém elementos */
 
          USU_CondRetPerfilIncorreto ,
                /* O perfil do usuário está incorreto */
 
          USU_CondRetNaoAchou ,
-               /* N�o encontrou o valor procurado */
+               /* Não encontrou o valor procurado */
 
-         USU_CondRetFaltouMemoria
-               /* Faltou mem�ria ao tentar criar um elemento de lista */
+         USU_CondRetFaltouMemoria,
+               /* Faltou memória ao tentar criar um elemento de lista */
+         USU_CondRetNaoInicializado
+              /* Modulo usuário não foi inicializado antes de chamar funções de manipulação */
 
    } USU_tpCondRet ;
+
+/***********************************************************************
+*
+*  $FC Função: USU  &InicializarModulo
+*
+*  $ED Descrição da função
+*     Faz a inicialização das variavéis internas ao módulo 
+*
+*  $FV Valor retornado
+*     Se executou corretamente retorna ok.
+*     ******TODO colocar erros
+*
+***********************************************************************/
+
+   USU_tpCondRet USU_InicializarModulo( ) ;
 
 
 /***********************************************************************
@@ -159,8 +176,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *     Não será dada mais informação quanto ao problema ocorrido.
 *
 ***********************************************************************/   
-      USU_tpCondRet USU_AdicionaUsuario(
-             void   ( * ExcluirValor ) ( void * pDado ) ) ;     
+      USU_tpCondRet USU_AdicionaUsuario( USU_tppUsuario usuario ) ;     
 
 /***********************************************************************
 *
@@ -182,6 +198,20 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 ***********************************************************************/   
       USU_tpCondRet USU_DeletarUsuario( int id_usuario ) ;   
+
+/***********************************************************************
+*
+*  $FC Função: USU  &Total Usuarios
+*
+*  $ED Descrição da função
+*     Retorna o numero de usuarios cadastrados atualmente
+*
+*  $FV Valor retornado
+*     Retorna um inteiro > 0 representando o numero de usuarios
+*     Em caso de erro retorna -1
+*
+***********************************************************************/  
+      int USU_TotalUsuarios();
 
 #undef USUARIO_EXT
 
