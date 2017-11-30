@@ -8,4 +8,6 @@ pushd  .
 gmake  /b..\Compos  /cTesteGrafo
 
 gmake  /b..\Compos  /cTesteLista
+
+gmake  /b..\Compos /cUsuario
 popd

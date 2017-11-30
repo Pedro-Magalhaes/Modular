@@ -5,14 +5,23 @@ cls
 del ..\produto\*.err
 del ..\produto\TesteGrafo.exe
 del ..\produto\TesteLista.exe
+del ..\produto\Usuario.exe
 del ..\objetos\*.obj
 
 REM compila TesteGrafo
 pushd .
 nmake /F..\Compos\TesteGrafo.make 
 del ..\objetos\*.obj
+
 REM Compila TesteLista
+pushd .
 nmake /F..\Compos\TesteLista.make
+del ..\objetos\*.obj
+
+REM Compila Usuario
+pushd .
+nmake /F..\Compos\Usuario.make
+del ..\objetos\*.obj
 
 popd
 
