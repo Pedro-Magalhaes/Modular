@@ -200,7 +200,7 @@ CHA_tpCondRet CHA_SairChat(CHA_tppChat pChat, void* participante)
 	{
 		LIS_ExcluirElemento(pChat->integrantes);
 	}
-	if (LIS_ObtemTamanho(pChat) == 0)
+	if (LIS_ObtemTamanho(pChat->integrantes) == 0)
 	{
 		CHA_DeletarChat(pChat);
 	}
