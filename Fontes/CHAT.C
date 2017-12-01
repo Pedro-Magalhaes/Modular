@@ -67,9 +67,10 @@ typedef struct CHA_tagChat {
 /***** Protótipos das funções encapuladas no módulo *****/
 
 
-static void ExcluirMensagens(Mensagem *msg)
-{
-	free(msg->conteudo);
+static void ExcluirMensagens(void *msg)
+{	
+	Mensagem * dado = msg;
+	free(dado->conteudo);
 	free(msg);
 }
 
