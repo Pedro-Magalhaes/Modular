@@ -15,13 +15,15 @@
 *  $HA Histórico de evolução:
 *     Versão  Autor    Data     Observações*     
 *     1       pfs   17/11/2017 início desenvolvimento
-*	    2		    hfac  22/11/2017 continuação do desenvolvimento
+*     2	      hfac  22/11/2017 continuação do desenvolvimento
+*     3       hfac  12/01/2017 correção e finalização do módulo
 ***************************************************************************/
 #include   <stdio.h>
 #include   <string.h>
 #include   <memory.h>
 #include   <malloc.h>
 #include   <assert.h>
+
 
 #define CHAT_OWN
 #include "CHAT.h"
@@ -40,7 +42,7 @@ typedef struct mensagem {
 	char * conteudo;
 	/* Ponteiro para a lista com as arestas do vertice  */
 
-	void * remetente;
+	char * remetente;
 	/* Ponteiro para remetende da mensagem */
 
 
@@ -57,14 +59,19 @@ typedef struct CHA_tagChat {
 	int ID;
 	/*Identificador do chat*/
 
+	void(*ExcluirValor) (void * pValor);
+	/* Ponteiro para a função de destruição do valor contido em um elemento */
+
 } CHA_tpChat;
 
 /***** Protótipos das funções encapuladas no módulo *****/
 
 
-static void ExcluirValor();
-
-static void ExcluirMensagens();
+static void ExcluirMensagens(Mensagem *msg)
+{
+	free(msg->conteudo);
+	free(msg);
+}
 
 /*****  Código das funções exportadas pelo módulo  *****/
 
@@ -73,7 +80,7 @@ static void ExcluirMensagens();
 *  Função: CHA  &Criar chat
 *  ****/
 
-CHA_tppChat CHA_CriaChat(void* participante)
+CHA_tppChat CHA_CriaChat(void* participante, void(*ExcluirValor) (void * pDado))
 {
 	CHA_tpChat * pChat = NULL;
 
@@ -112,7 +119,8 @@ CHA_tpCondRet CHA_AdicionaIntegrante(CHA_tppChat pChat, void* participante)
 		return CHA_CondRetChatNULL;
 	}/*if*/
 	LIS_IrInicioLista(pChat->integrantes);
-	if (LIS_ProcurarValor(pChat->integrantes,participante) == LIS_CondRetNaoAchou)
+
+	if (LIS_ProcurarValor(pChat->integrantes, participante) == LIS_CondRetNaoAchou)
 	{
 		LIS_IrFinalLista(pChat->integrantes);
 		if (LIS_InserirElementoApos(pChat->integrantes, participante) != LIS_CondRetOK)
@@ -133,15 +141,22 @@ CHA_tpCondRet CHA_AdicionaIntegrante(CHA_tppChat pChat, void* participante)
 *  Função: CHA  &Envia Mensagem
 *  ****/
 
-CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat,char mensagem[145], void* remetente)
+CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat,char* mensagem, char* remetente)
 {
+	Mensagem *msg;
+	msg = (Mensagem*)malloc(sizeof(Mensagem));
+	msg->conteudo = (char*)malloc(sizeof(char)*145);
+	if (msg == NULL)
+	{
+		return CHA_CondRetFaltouMemoria;
+	}
 	if (pChat == NULL)
 	{
 		return CHA_CondRetChatNULL;
 	}/*if*/
-	Mensagem *msg;
-	msg->conteudo = mensagem;
-	msg->remetente = remetente;
+
+	strcpy(msg->conteudo,mensagem);
+	msg->remetente=remetente;
 	LIS_IrInicioLista(pChat->integrantes);
 	if (LIS_ProcurarValor(pChat->integrantes, msg->remetente) != LIS_CondRetOK)
 	{
@@ -161,7 +176,7 @@ CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat,char mensagem[145], void* reme
 		}
 	}
 
-
+	
 	return CHA_CondRetOK;
 }
 
@@ -173,7 +188,7 @@ CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat,char mensagem[145], void* reme
 *  Função: CHA  &Sair chat
 *  ****/
 
-CHA_tpCondRet CHA_SairChat(CHA_tppChat pChat, void * participante)
+CHA_tpCondRet CHA_SairChat(CHA_tppChat pChat, void* participante)
 {
 	if (pChat == NULL)
 	{
@@ -235,3 +250,60 @@ CHA_tpCondRet CHA_DeletarMensagem(CHA_tppChat pChat)
 }
 
 /* Fim função: CHA  &Deleta chat */
+
+/***************************************************************************
+*
+*  Função: CHA  &Pega mensagens
+*  ****/
+
+char* CHA_PegaMensagens(CHA_tppChat pChat)
+{
+	char *mensagens;
+	char *aux;
+	int j = 0;
+	int i = 0;
+	
+	
+
+	Mensagem *m;
+	if (pChat == NULL)
+	{
+		
+		return NULL;
+	}/*if*/
+
+	mensagens = (char*)malloc(sizeof(char) * 2000);
+
+	LIS_IrInicioLista(pChat->mensagens);
+	if (LIS_ObtemTamanho(pChat->mensagens) > 0)
+	{
+		do
+		{
+			m = (Mensagem*)LIS_ObterValor(pChat->mensagens);
+			aux = m->remetente;
+			for (i = 0; aux[i] != '\0'; i++, j++)
+			{
+				mensagens[j] = aux[i];
+			}
+			mensagens[j] = ':';
+			j++;
+			mensagens[j] = ' ';
+			j++;
+			m = (Mensagem*)LIS_ObterValor(pChat->mensagens);
+			aux = m->conteudo;
+			for (i = 0; aux[i] != '\0'; i++, j++)
+			{
+				mensagens[j] = aux[i];
+			}
+			mensagens[j] = '\n';
+			j++;
+		} while (LIS_AvancarElementoCorrente(pChat->mensagens, 1) == LIS_CondRetOK);
+		mensagens[j] = '\0';
+		return mensagens;
+	}
+	else
+		free(mensagens);
+		return NULL;
+}
+
+/* Fim função: CHA  &Pega mensagens */
