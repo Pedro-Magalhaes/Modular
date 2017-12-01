@@ -18,7 +18,7 @@
 *     Versão  Autor    Data     Observações*     
 *     1       pfs   17/11/2017 início desenvolvimento
 *     2	      hfac  22/11/2017 continuação do desenvolvimento
-*     3       hfac  12/01/2017 correção e finalização do módulo
+*     3       hfac  01/12/2017 correção e finalização do módulo
 *
 *  $ED Descrição do módulo
 *     Implementa o módulo chat da rede de relacionamentos, contém os
