@@ -17,7 +17,8 @@
 *  $HA Histórico de evolução:
 *     Versão  Autor    Data     Observações*     
 *     1       pfs   17/11/2017 início desenvolvimento
-*	2       hfac  22/11/2017 continuação do desenvolvimento
+*	  2		  hfac  22/11/2017 continuação do desenvolvimento
+*     3       hfac  12/01/2017 correção e finalização do módulo
 *
 *  $ED Descrição do módulo
 *     Implementa o módulo chat da rede de relacionamentos, contém os
@@ -71,7 +72,7 @@ typedef struct CHA_tagChat * CHA_tppChat ;
          CHA_CondRetFaltouMemoria ,
                /* Faltou memoria ao tentar criar um chat */
 
-	   CHA_CondRetNaoEstaNoChat
+	     CHA_CondRetNaoEstaNoChat
 			   /* Nao está incluido no chat em que deseja interagir */
 
    } CHA_tpCondRet ;
@@ -98,7 +99,7 @@ typedef struct CHA_tagChat * CHA_tppChat ;
 *
 ***********************************************************************/  
 
-   CHA_tppChat CHA_CriaChat(void* participante);
+   CHA_tppChat CHA_CriaChat(void* participante, void(*ExcluirValor) (void * pDado));
 
 /***********************************************************************
 *
@@ -144,7 +145,7 @@ typedef struct CHA_tagChat * CHA_tppChat ;
 *
 ***********************************************************************/  
 
-   CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat, char mensagem[145], void* remetente) ;
+   CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat, char* mensagem, char* remetente) ;
 
 /***********************************************************************
 *
@@ -201,6 +202,23 @@ typedef struct CHA_tagChat * CHA_tppChat ;
 
    CHA_tpCondRet CHA_DeletarMensagem(CHA_tppChat pChat);
 
+   /***********************************************************************
+   *
+   *  $FC Função: CHA  &Pega Mensagens
+   *
+   *  $ED Descrição da função
+   *     Pega as mensagens do chat e monta uma string com o ID do remetente
+   *
+   *  $EP Parâmetros
+   *     pChat - Ponteiro para o chat em questão
+   *
+   *  $FV Valor retornado
+   *	  CHA_CondRetChatNULL	- Se o ponteiro para o chat for igual a NULL
+   *	  CHA_CondRetOK			- Se tudo tiver dado certo
+   *
+   ***********************************************************************/
+
+   char* CHA_PegaMensagens(CHA_tppChat pChat);
 
 #undef CHAT_EXT
 
