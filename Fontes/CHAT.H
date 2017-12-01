@@ -17,7 +17,7 @@
 *  $HA Histórico de evolução:
 *     Versão  Autor    Data     Observações*     
 *     1       pfs   17/11/2017 início desenvolvimento
-*	  2		  hfac  22/11/2017 continuação do desenvolvimento
+*     2	      hfac  22/11/2017 continuação do desenvolvimento
 *     3       hfac  12/01/2017 correção e finalização do módulo
 *
 *  $ED Descrição do módulo
