@@ -3,3 +3,5 @@
 22/11   1                   Codificação                     Fiz pequenas alterações no .H do módulo Usuário
 26/11	2		    Codificação			    Continuei o desenvolvimento do módulo Usuário
 29/11   3		Codificação e Estudo		   Continuei o módulo usuario mas me deparei com algumas dúvidas estruturais e estudei mudanças no modelo fisico.
+
+01/12             1,5h                    codificar módulo e Módulo revisado em busca de erros simples corrigir bugs
