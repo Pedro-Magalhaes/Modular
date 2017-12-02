@@ -1,7 +1,7 @@
 // Script:    TesteGrafo.script
-// Autor:     Yan Gurevitz
-// Data:      16/outubro/2017
-// Prop�sito: Testar superficialmente o m�dulo grafo
+// Autor:     Yan Gurevitz , Pedro Felipe
+// Data:      02/dezembro/2017
+// Prop�sito: Testar superficialmente o módulo grafo
 //
 
 == Inicializar valores
@@ -149,13 +149,35 @@
 =excvertice   grafo2   OK
 =irvertice    grafo2   struct0   OK
 =qntaresta    grafo2   1
+=qntvertice   grafo2   3
 
 == Deturpar Cabeca do grafo e recuperar
 =deturpacabeca  grafo2   OK
 =recuperacabeca grafo2   OK
+
+== Avancando na lista de origens apos deturpar e recuperar
+=qntvertice    grafo2   3
+=irinicio      grafo2
+=obtervalorcorrente  grafo2  str0   str1   str2   str3   pNaoNULL
+=avancar       grafo2  1  OK
+=obtervalorcorrente  grafo2  str4   str5   str6   str7   pNaoNULL
+=avancar       grafo2  1  OK
+=obtervalorcorrente  grafo2  str4   str9   str2   str7   pNaoNULL
+=avancar       grafo2 1  FimGrafo
+=obtervalorcorrente  grafo2  str4   str9   str2   str7   pNaoNULL
+
+== Retrocendendo na lista de origens apos deturpar e recuperar
+=avancar       grafo2  -1  OK
+=obtervalorcorrente  grafo2  str4   str5   str6   str7   pNaoNULL
+=avancar       grafo2  -1  OK
+=obtervalorcorrente  grafo2  str0   str1   str2   str3   pNaoNULL
+=avancar       grafo2 -1  FimGrafo
+=obtervalorcorrente  grafo2  str0   str1   str2   str3   pNaoNULL
+
+== Testando ir final
+=irfinal    grafo2
+=obtervalorcorrente  grafo2  str4   str9   str2   str7   pNaoNULL
+
 == Destruir o grafo
 =destruirgrafo   grafo2
-
-
-
 // fim

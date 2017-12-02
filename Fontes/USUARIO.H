@@ -167,7 +167,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *  $FC Função: USU  &Deletar Usuario
 *
 *  $ED Descrição da função
-*     
+*     Deleta 
 *
 *  $EP Parâmetros
 *     XXXXXXXXXXXX  - 

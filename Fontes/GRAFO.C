@@ -460,6 +460,71 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
  /* Fim Função: GRA  &QntArestas */
 
+ /***************************************************************************
+ *
+ *  Função: GRA  &AvancarElementoCorrente
+ *  ****/
+ GRA_tpCondRet GRA_AvancarElementoCorrente( GRA_tppGrafo pGrafo ,
+                                              int numElem ) 
+{
+	LIS_tpCondRet retorno;
+	if (pGrafo == NULL)
+	{
+		return GRA_CondRetGrafoNulo;
+	}/* if */
+	retorno = LIS_AvancarElementoCorrente (pGrafo->pOrigemGrafo,numElem);
+
+	switch (retorno)
+	{
+	case LIS_CondRetFimLista:
+		return GRA_CondRetFimGrafo;
+	case LIS_CondRetListaVazia:
+		return GRA_CondRetGrafoVazia;
+	default:
+		pGrafo->pVertice = LIS_ObterValor(pGrafo->pOrigemGrafo);
+		pGrafo->pArestas = pGrafo->pVertice->pVerticeArestas;
+		return GRA_CondRetOK;
+		break;
+	}/* switch */
+}											  
+ /* Fim Função: GRA  &AvancarElementoCorrente */
+ /***************************************************************************
+ *
+ *  Função: GRA  &IrInicioOrigens
+ *  ****/
+ void GRA_IrInicioOrigens( GRA_tppGrafo pGrafo )
+ {
+	#ifdef _DEBUG
+		assert(pGrafo != NULL);
+	#endif
+
+	LIS_IrInicioLista(pGrafo->pOrigemGrafo);
+	pGrafo->pVertice = LIS_ObterValor(pGrafo->pOrigemGrafo);
+	if (pGrafo->pVertice != NULL)
+	{
+		pGrafo->pArestas = pGrafo->pVertice->pVerticeArestas;
+	}/* if */
+ }
+ /* Fim Função: GRA  &IrInicioOrigens */
+ /***************************************************************************
+ *
+ *  Função: GRA  &IrFinalOrigens
+ *  ****/
+void GRA_IrFinalOrigens( GRA_tppGrafo pGrafo )
+{
+	#ifdef _DEBUG
+		assert(pGrafo != NULL);
+	#endif
+
+	LIS_IrFinalLista(pGrafo->pOrigemGrafo);
+	pGrafo->pVertice = LIS_ObterValor(pGrafo->pOrigemGrafo);
+	if (pGrafo->pVertice != NULL)
+	{
+		pGrafo->pArestas = pGrafo->pVertice->pVerticeArestas;
+	}/* if */
+}
+ /* Fim Função: GRA  &IrFinalOrigens */
+
 
 #ifdef _DEBUG
 /***************************************************************************

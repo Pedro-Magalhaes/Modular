@@ -42,6 +42,9 @@ static const char CRIAR_ARESTA_CMD        [ ] = "=criararesta"       ;
 static const char IR_VERTICE_CMD          [ ] = "=irvertice"        ;
 static const char QNT_VERTICE_CMD         [ ] = "=qntvertice"        ;
 static const char QNT_ARESTA_CMD          [ ] = "=qntaresta"        ;
+static const char IR_FINAL_CMD            [ ] = "=irfinal"        ;
+static const char IR_INICIO_CMD           [ ] = "=irinicio"        ;
+static const char AVANCAR_ELEMENTO_CMD    [ ] = "=avancar"        ;
 #ifdef _DEBUG
 static const char DETURPA_CABECA_CMD      [ ] = "=deturpacabeca"        ;
 static const char RECUPERA_CABECA_CMD     [ ] = "=recuperacabeca"        ;
@@ -101,6 +104,9 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 *     =irvertice                    inxgrafo   inxstruct   ValEsp
 *     =qntvertice                   inxgrafo  ValEsp
 *     =qntaresta                    inxgrafo  ValEsp
+*     =irfinal                      inxgrafo  ValEsp
+*     =irinicio                     inxgrafo  ValEsp
+*     =avancar                      inxgrafo  numElem  ValEsp               
 ***********************************************************************/
 
    TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
@@ -109,7 +115,8 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
       int inxgrafo  = -1 ,
           numLidos   = -1 ,
           ValEsp = -1 ,
-			inxstruct =-1;
+			    inxstruct =-1,
+          numElem = -1;
 
       TST_tpCondRet CondRet ;
 
@@ -420,7 +427,67 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 			 return TST_CompararInt( ValEsp , GRA_QntArestas(vtgrafos[inxgrafo]) ,
                      "Quantidade de arestas errada."                   ) ;
 
-		 }/* fim ativa: GRA &Ver quantidade de arestas do vertice corrente */
+     }/* fim ativa: GRA &Ver quantidade de arestas do vertice corrente */
+     
+     /* Testar IrInicio grafo */
+
+         else if ( strcmp( ComandoTeste , IR_INICIO_CMD ) == 0 )
+         {
+
+            numLidos = LER_LerParametros( "i" ,
+                               &inxgrafo ) ;
+
+            if ( ( numLidos != 1 )
+              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )))
+            {
+               return TST_CondRetParm ;
+            } /* if */
+
+            GRA_IrInicioOrigens( vtgrafos[ inxgrafo ] ) ;
+
+            return TST_CondRetOK ;
+
+         } /* fim ativa: Testar Irinicio grafo */
+
+          /* Testar IrFinal grafo */
+
+         else if ( strcmp( ComandoTeste , IR_FINAL_CMD ) == 0 )
+         {
+
+            numLidos = LER_LerParametros( "i" ,
+                               &inxgrafo ) ;
+
+            if ( ( numLidos != 1 )
+              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )))
+            {
+               return TST_CondRetParm ;
+            } /* if */
+
+            GRA_IrFinalOrigens( vtgrafos[ inxgrafo ] ) ;
+
+            return TST_CondRetOK ;
+
+         } /* fim ativa: Testar IrFinal grafo */
+
+          /* Testar avancar elemento grafo */
+
+         else if ( strcmp( ComandoTeste , AVANCAR_ELEMENTO_CMD ) == 0 )
+         {
+
+            numLidos = LER_LerParametros( "iii" ,
+                               &inxgrafo, &numElem ,&ValEsp ) ;
+
+            if ( ( numLidos != 3 )
+              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )))
+            {
+               return TST_CondRetParm ;
+            } /* if */
+
+            
+            return TST_CompararInt( ValEsp , GRA_AvancarElementoCorrente( vtgrafos[ inxgrafo ] , numElem ) ,
+                     "Erro ao avancar elemento corrente do Grafo."                   ) ;
+
+         } /* fim ativa: Testar avancar elemento grafo */
 
      #ifdef _DEBUG
       /********** FUNÇOES DEBUG  *********/

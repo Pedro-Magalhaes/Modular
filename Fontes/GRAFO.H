@@ -308,6 +308,65 @@ GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * valor);
 
 /***********************************************************************
 *
+*  $FC Função: GRA  &Ir para o elemento inicial
+*
+*  $ED Descrição da função
+*     Torna corrente o primeiro elemento da lista de origens.
+*     Faz nada se a lista origens está vazia.
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo a manipular
+*
+***********************************************************************/
+
+   void GRA_IrInicioOrigens( GRA_tppGrafo pGrafo ) ;
+
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Ir para o elemento final
+*
+*  $ED Descrição da função
+*     Torna corrente o elemento final da lista de origens.
+*     Faz nada se a lista origens está vazia.
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo a manipular
+*
+***********************************************************************/
+
+   void GRA_IrFinalOrigens( GRA_tppGrafo pGrafo ) ;
+
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Avançar elemento
+*
+*  $ED Descrição da função
+*     Avança o elemento corrente numElem elementos na lista de origens do grafo
+*     Se numElem for positivo avança em direção ao final
+*     Se numElem for negativo avança em direção ao início
+*     numElem pode ser maior do que o númro de elementos existentes na
+*               direção desejada
+*     Se numElem for zero somente verifica se a lista está vazia
+*
+*  $EP Parâmetros
+*     pGrafo  - ponteiro para o grafo a ser manipulado
+*     numElem - o número de elementos a andar
+*
+*  $FV Valor retornado
+*     CondRetOK         - se numElem elementos tiverem sido andados
+*     CondRetFimGrafo   - se encontrou o fim da lista antes de andar numElem
+*                         elementos
+*     CondRetGrafoVazia - se o grafo está vazio
+*
+***********************************************************************/
+
+   GRA_tpCondRet GRA_AvancarElementoCorrente( GRA_tppGrafo pGrafo ,
+                                              int numElem ) ;
+
+/***********************************************************************
+*
 *  $FC Função: GRA  &QntVertices
 *
 *  $ED Descrição da função
