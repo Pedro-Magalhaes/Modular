@@ -1,0 +1,7 @@
+.LOG
+20:31 01/12/2017
+Comecei o desenvolvimento do módulo TESTECHAT para controlar o teste automatizado do módulo CHAT
+15:27 02/12/2017
+Fiz o script de teste para o módulo CHAT
+16:29 02/12/2017
+Correção de pequenos erros no módulo TESTECHAT
