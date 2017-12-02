@@ -82,11 +82,11 @@ CHA_tppChat   vtchats[ DIM_VT_CHAT ] ;
 *    
 *     =criarchat					inxchat  inxstruct  string1   int1   string2   int2 
 *     =adicionarintgrante			inxchat  inxstruct  string1   int1   string2   int2    CondRetEsp
-*     =enviarmensagem				inxchat  inxstruct   string1   CondRetEsp
+*     =enviarmensagem				inxchat  inxstruct  string1   CondRetEsp
 *     =sairchat						inxchat  inxstruct  CondRetEsp
 *     =deletarchat                  inxchat  CondRetEsp
 *     =deletarmensagem              inxchat  CondRetEsp
-*     =pegarmensagens				inxchat  
+*     =pegarmensagens				inxchat  StringEsp
 ***********************************************************************/
 
    TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
