@@ -1,11 +1,9 @@
 /***************************************************************************
 *  $MCI Módulo de implementação: TLIS Teste grafo de símbolos
 *
-*  Arquivo gerado:              TESTEGRAFO.c.c
+*  Arquivo gerado:              TESTEGRAFO.c
 *  Letras identificadoras:      TGRA
 *
-*  Nome da base de software:    Arcabouço para a automação de testes de programas redigidos em C
-*  Arquivo da base de software: D:\AUTOTEST\PROJETOS\LISTA.BSW
 *
 *  Projeto: INF 1301 / 1628 Automatização dos testes de módulos C
 *  Gestor:  LES/DI/PUC-Rio
@@ -44,7 +42,10 @@ static const char CRIAR_ARESTA_CMD        [ ] = "=criararesta"       ;
 static const char IR_VERTICE_CMD          [ ] = "=irvertice"        ;
 static const char QNT_VERTICE_CMD         [ ] = "=qntvertice"        ;
 static const char QNT_ARESTA_CMD          [ ] = "=qntaresta"        ;
-
+#ifdef _DEBUG
+static const char DETURPA_CABECA_CMD      [ ] = "=deturpacabeca"        ;
+static const char RECUPERA_CABECA_CMD     [ ] = "=recuperacabeca"        ;
+#endif
 
 
 #define TRUE  1
@@ -420,6 +421,44 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
                      "Quantidade de arestas errada."                   ) ;
 
 		 }/* fim ativa: GRA &Ver quantidade de arestas do vertice corrente */
+
+     #ifdef _DEBUG
+      /********** FUNÇOES DEBUG  *********/
+      /*GRA &Deturpa Cabeça do grafo ( torna ponteiro para origem do grafo null */
+            else if ( strcmp( ComandoTeste , DETURPA_CABECA_CMD ) == 0 )
+		 {
+			 numLidos = LER_LerParametros( "ii" , &inxgrafo, &ValEsp);
+
+			 if ( ( numLidos != 2 )
+              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+            {
+               return TST_CondRetParm ;
+            } /* if */
+
+			 return TST_CompararInt( ValEsp , GRA_DeturpaCabeca(vtgrafos[inxgrafo]) ,
+                     "Erro ao deturpar Cabeça do Grafo."                   ) ;
+
+		 }/* fim ativa: GRA &Ver quantidade de arestas do vertice corrente */
+
+     /*GRA &Ver quantidade de arestas do vertice corrente*/
+     else if ( strcmp( ComandoTeste , RECUPERA_CABECA_CMD ) == 0 )
+		 {
+			 numLidos = LER_LerParametros( "ii" , &inxgrafo, &ValEsp);
+
+			 if ( ( numLidos != 2 )
+              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+            {
+               return TST_CondRetParm ;
+            } /* if */
+
+			 return TST_CompararInt( ValEsp , GRA_RecuperaCabeca(vtgrafos[inxgrafo]) ,
+                     "Erro ao recuperar cabeça, Grafo era realmente null?."                   ) ;
+
+		 }/* fim ativa: GRA &Ver quantidade de arestas do vertice corrente */
+
+
+     /********** FIM FUNÇÕES DEBUG  *********/
+     #endif
 
       return TST_CondRetNaoConhec ;
 

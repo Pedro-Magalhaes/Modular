@@ -23,6 +23,11 @@ pushd .
 nmake /F..\Compos\Usuario.make
 del ..\objetos\*.obj
 
+REM Compila Rede
+pushd .
+nmake /F..\Compos\Rede.make
+del ..\objetos\*.obj
+
 popd
 
 copy ..\produto\*.err ..\produto\tudo.err

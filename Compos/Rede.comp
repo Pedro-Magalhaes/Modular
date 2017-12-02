@@ -1,8 +1,8 @@
-# Composicao do programa de teste de uma lista gen�rica duplamente encadeada
-# Este exemplo utiliza o arcabou�o completo 
+# Composicao do programa de teste do Modulo Rede
+
 
 [Diretorios]
-Nome        = TesteLista
+Nome        = Usuario
 PathDefault = ..\Fontes
 err         = ..\Produto
 obj			= ..\Objetos
@@ -10,12 +10,14 @@ h			= ..\Fontes
 c			= ..\Fontes
 
 [Modulos]
-TestLis
 Lista
-
+Grafo
+Usuario
+Rede
+TESTEREDE
 
 [BuildInicio]
-/OUT:..\Produto\TesteLista.exe
+/OUT:..\Produto\Rede.exe
 /INCREMENTAL:NO
 /MACHINE:IX86
 

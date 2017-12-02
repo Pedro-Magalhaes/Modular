@@ -10,4 +10,6 @@ gmake  /b..\Compos  /cTesteGrafo
 gmake  /b..\Compos  /cTesteLista
 
 gmake  /b..\Compos /cUsuario
+
+gmake  /b..\Compos /cRede
 popd

@@ -1,7 +1,7 @@
 // Script:    TesteGrafo.script
 // Autor:     Yan Gurevitz
 // Data:      16/outubro/2017
-// Propósito: Testar superficialmente o módulo grafo
+// Propï¿½sito: Testar superficialmente o mï¿½dulo grafo
 //
 
 == Inicializar valores
@@ -150,7 +150,12 @@
 =irvertice    grafo2   struct0   OK
 =qntaresta    grafo2   1
 
+== Deturpar Cabeca do grafo e recuperar
+=deturpacabeca  grafo2   OK
+=recuperacabeca grafo2   OK
 == Destruir o grafo
 =destruirgrafo   grafo2
+
+
 
 // fim

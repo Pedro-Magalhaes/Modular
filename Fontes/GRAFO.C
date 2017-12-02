@@ -60,6 +60,10 @@ typedef struct GRA_tagGrafo {
 
 	LIS_tppLista pOrigemGrafo;
 	/* Ponteiro para a origem do grafo */
+	#ifdef _DEBUG
+		LIS_tppLista _pOrigemGrafoRedundante;
+	/* Cópia do Ponteiro para a origem do grafo */
+	#endif
 
 	tpVerticeGrafo * pVertice;
 	/* Ponteiro para o vertice corrente do grafo */
@@ -108,7 +112,9 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	pGrafo->pOrigemGrafo = LIS_CriarLista(ExcluirValor); //criando uma lista vazia
 	pGrafo->pVertice = NULL;
 	
-
+	#ifdef _DEBUG
+	pGrafo->_pOrigemGrafoRedundante = pGrafo->pOrigemGrafo;
+	#endif
 
 	return pGrafo;
 }
@@ -146,11 +152,12 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  void GRA_EsvaziarGrafo(GRA_tppGrafo pGrafo)
  {
 
-#ifdef _DEBUG
-	 assert(pGrafo != NULL);
-#endif
+
 	 LIS_tppLista Elem = pGrafo->pOrigemGrafo;
 	 tpVerticeGrafo * atual;
+	 #ifdef _DEBUG
+		 assert(pGrafo != NULL) ;
+	#endif
 	 if (pGrafo == NULL)
 	 {
 		 return;
@@ -198,11 +205,11 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
    *  ****/
 
  GRA_tpCondRet GRA_InserirVertice(GRA_tppGrafo pGrafo, void* pValor)
- {
-	#ifdef _DEBUG
-		 assert(pGrafo != NULL);
-	#endif
+ {	
 	tpVerticeGrafo* pVerticeAux = NULL;
+	#ifdef _DEBUG
+		 assert(pGrafo != NULL) ;
+	#endif
 	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo;  
@@ -296,19 +303,16 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	exclui do vertice corrente para o vertice recebido e do recebido para o corrente
  *  ****/
  GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo, void * valor)
- {
-	#ifdef _DEBUG
-	 assert(pGrafo != NULL);
-	#endif
+ {	
 	 GRA_tppGrafo gAux = pGrafo;
-	 tpVerticeGrafo* vAux = GRA_ProcurarValor(gAux->pOrigemGrafo, valor);
-	 GRA_tpCondRet CondRet = EfetuaExclusaoAresta(pGrafo->pVertice, vAux);
+	 tpVerticeGrafo* vAux;
+	 GRA_tpCondRet CondRet;
 	 if (pGrafo == NULL)
 	 {
 		 return GRA_CondRetGrafoNulo;  
 	 }/*if*/
-	
-	 
+	 vAux = GRA_ProcurarValor(gAux->pOrigemGrafo, valor);
+	 CondRet = EfetuaExclusaoAresta(pGrafo->pVertice, vAux);
 	 return CondRet;
  }
 
@@ -322,11 +326,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  *  ****/
  GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void *valor)
  {
-
+	tpVerticeGrafo* vertAux;
 	#ifdef _DEBUG
 		assert(pGrafo != NULL);
 	#endif
-	tpVerticeGrafo* vertAux;
 	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo;
@@ -379,17 +382,17 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
  GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo, void* valor)
  {
+	
+
+	tpVerticeGrafo *aux;
 	#ifdef _DEBUG
 		 assert(pGrafo != NULL);
 	#endif
-
-		 tpVerticeGrafo *aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo, valor);
-
 	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo; 
 	}/*if*/
-
+	aux = GRA_ProcurarValor(pGrafo->pOrigemGrafo, valor);
 	 if (aux != NULL)
 	 {	
 		 LIS_tpCondRet retBusca;
@@ -458,6 +461,43 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  /* Fim Função: GRA  &QntArestas */
 
 
+#ifdef _DEBUG
+/***************************************************************************
+ *  Função: GRA  &Deturpa Cabeca
+ * Torna o ponteiro pra cabeça do grafo null
+ *  ****/
+
+GRA_tpCondRet GRA_DeturpaCabeca (GRA_tppGrafo pGrafo)
+{
+	if(pGrafo == NULL)
+	{
+		return GRA_CondRetGrafoNulo;
+	}
+	pGrafo = NULL;
+	return GRA_CondRetOK;
+}
+
+/* Fim Função: GRA  &Deturpa Cabeca */
+
+/***************************************************************************
+ *  Função: GRA  &Recupera Cabeca
+ * Utiliza a estrutura auxiliar para recuperar o ponteiro pra cabeça
+ *  ****/
+GRA_tpCondRet GRA_RecuperaCabeca (GRA_tppGrafo pGrafo)
+{
+	if ( pGrafo->_pOrigemGrafoRedundante == NULL )
+	{
+		return GRA_CondRetGrafoNulo;
+	}
+	pGrafo->pOrigemGrafo = pGrafo->_pOrigemGrafoRedundante;
+	return GRA_CondRetOK;
+}
+
+#endif
+
+
+
+
  /***** ******************** Código das funções encapsuladas no módulo  ****************************/
 
   /***************************************************************************
@@ -481,11 +521,13 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
  static tpVerticeGrafo* GRA_ProcurarValor(LIS_tppLista pOrigemGrafo, void* pValor)
  {
-#ifdef _DEBUG
-	 assert(pOrigemGrafo != NULL);
-#endif
+
 	 LIS_tppLista Lisaux = pOrigemGrafo;
 	 tpVerticeGrafo *vertaux;
+
+	#ifdef _DEBUG
+	 assert(pOrigemGrafo != NULL);
+	#endif
 	 if (pOrigemGrafo == NULL)
 	 {
 		 return NULL;

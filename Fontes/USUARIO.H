@@ -8,7 +8,7 @@
 *  Letras identificadoras:      USU
 *
 *  Nome da base de software:    iMigo - a sua nova rede de relacionamentos
-*  Arquivo da base de software: D:\AUTOTEST\PROJETOS\LISTA.BSW
+*  Arquivo da base de software: D:\AUTOTEST\PROJETOS\GRATA.BSW
 *
 *  Projeto: INF 1301/ iMigo - a sua nova rede de relacionamentos
 *  Gestor:  LES/DI/PUC-Rio
@@ -94,7 +94,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 ***********************************************************************/
 
-   USU_tpCondRet USU_InicializarModulo( ) ;
+   USU_tppUsuario USU_InicializarModulo( ) ;
 
 
 /***********************************************************************
@@ -102,7 +102,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *  $FC Função: USU  &Criar Usuário
 *
 *  $ED Descrição da função
-*     Cria um usuário com seu perfil, adiciona-o no chat público
+*     Cria um usuário com seu perfil, adiciona-o no chat público 
 *
 *  $EP Parâmetros
 *     Nome  - Nome do usuário com até 50 caracteres
@@ -117,11 +117,11 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 ***********************************************************************/
 
    USU_tpCondRet USU_CriaUsuario(
-             char * nome , int idade , char genero ) ;
+             USU_tppUsuario pUsuario, char * nome , int idade , char genero ) ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Adicionar Amigo
+*  $FC Função: USU  &Adicionar Amigo
 *
 *  $ED Descrição da função
 *     
@@ -138,11 +138,11 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *     Não será dada mais informação quanto ao problema ocorrido.
 *
 ***********************************************************************/    
-      USU_tpCondRet USU_AdicionaAmigo( int id_usuario ) ;
+      USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, int id_usuario ) ;
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Editar Perfil
+*  $FC Função: USU  &Editar Perfil
 *
 *  $ED Descrição da função
 *     
@@ -160,31 +160,11 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 ***********************************************************************/   
       USU_tpCondRet USU_EditarPerfil() ; 
+  
 
 /***********************************************************************
 *
-*  $FC Função: LIS  &Adicionar Usúario
-*
-*  $ED Descrição da função
-*     
-*
-*  $EP Parâmetros
-*     XXXXXXXXXXXX  - 
-*
-*  $FV Valor retornado
-*     Se executou corretamente retorna o ponteiro para a lista.
-*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
-*
-*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
-*     a função retornará NULL.
-*     Não será dada mais informação quanto ao problema ocorrido.
-*
-***********************************************************************/   
-      USU_tpCondRet USU_AdicionaUsuario( USU_tppUsuario usuario ) ;     
-
-/***********************************************************************
-*
-*  $FC Função: LIS  &Deletar Usuario
+*  $FC Função: USU  &Deletar Usuario
 *
 *  $ED Descrição da função
 *     
@@ -215,7 +195,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *     Não retorna valor
 *
 ***********************************************************************/  
-      void USU_DestruirUsuarios ();
+      void USU_DestruirUsuarios (USU_tppUsuario pUsuario);
 
 /***********************************************************************
 *

@@ -1,5 +1,5 @@
-# Composicao do programa de teste de uma lista genérica duplamente encadeada
-# Este exemplo utiliza o arcabouço completo 
+# Composicao do programa de teste de uma lista genï¿½rica duplamente encadeada
+# Este exemplo utiliza o arcabouï¿½o completo 
 
 [Diretorios]
 Nome        = TesteGrafo
@@ -11,11 +11,11 @@ c			= ..\Fontes
 
 [Modulos]
 Lista
-Grafo
-TesteGrafo
+Grafo /D_DEBUG
+TesteGrafo /D_DEBUG
 
 [BuildInicio]
-/OUT:..\Produto\TesteGrafo.exe
+/OUT:..\Produto\TesteGrafoDEBUG.exe
 /INCREMENTAL:NO
 /MACHINE:IX86
 
