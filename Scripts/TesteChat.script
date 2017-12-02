@@ -1,0 +1,100 @@
+// Script:    TesteChat.script
+// Autor:     Yan Gurevitz
+// Data:      02/dezembro/2017
+// Propósito: Testar superficialmente o módulo chat
+//
+
+== Inicializar valores
+=declararparm   chat0  int 0
+=declararparm   chat1  int 1
+=declararparm   chat2  int 2
+
+=declararparm	struct0 int 0
+=declararparm	struct1 int 1
+=declararparm	struct2 int 2
+=declararparm	struct3 int 3
+
+=declararparm   nome0    string  "Ansem"
+=declararparm   id0		 int	 0
+=declararparm	gen0	 string  "M"
+=declararparm	idade0   int	 53
+=declararparm   nome1    string  "Faker"
+=declararparm   id1		 int	 1
+=declararparm	gen1	 string  "M"
+=declararparm	idade1   int	 21
+=declararparm   nome2    string  "Papaco"
+=declararparm   id2		 int	 2
+=declararparm	gen2	 string  "O"
+=declararparm	idade2   int	 37  
+=declararparm   nome3    string  "IHZ"
+=declararparm   id3		 int	 3
+=declararparm	gen3	 string  "F"
+=declararparm	idade3   int	 116  
+
+
+=declararparm   OK              int  0
+=declararparm   ChatVazio       int  1
+=declararparm   ChatNULL        int  2
+=declararparm   SemMensagens    int  3
+=declararparm   NaoAchou   		int  4
+=declararparm   FaltouMemoria   int  5
+=declararparm	NaoEstaNoChat	int  6
+
+=declararparm   pNULL          int  0
+=declararparm   pNaoNULL       int  1
+
+== Criar o chat 0
+=criarchat      chat0   0   nome0   id0   gen0   idade0
+
+== Testar diferentes condições de enviar mensagem cobrindo todas as classes de equivalência
+== Enviar mensagem em chat não existente 
+=enviarmensagem   	 chat1   struct0   "Oi"   ChatNULL
+== Enviar mensagem de usuário não existente no chat
+=enviarmensagem   	 chat0   struct1   "Oi"   NaoEstaNoChaat
+== Enviar mensagem em chat corretamente 
+=enviarmensagem   	 chat0   struct0   "Oi"   OK
+
+== Testar adicionar integrante cobrindo todas as classes de equivalência
+== Adicionar um integrante que já está no chat
+=adicionarintegrante  chat0   struct0   nome0   id0   gen0   idade0   OK
+== Adicionar integrante em chat não existente
+=adicionarintegrante  chat1   struct0   nome0   id0   gen0   idade0   ChatNULL 
+== Adicionar integrante corretamente
+=adicionarintegrante  chat0   struct1   nome1   id1   gen1   idade1   OK
+== Verificar se o usuario foi mesmo adicionado
+=enviarmensagem   	 chat0   struct1   "Oi"   OK
+
+== Testar sair do chat cobrindo todas as classes de equivalência
+== Sair de chat não existente
+=sairchat  	 chat1   struct0	ChatNULL
+== Remover usuário não existente
+=sairchat  	 chat0   struct2	OK
+== Remover usuário corretamente
+=sairchat  	 chat0   struct1	OK
+== Verificar se o usuário foi mesmo removido
+=enviarmensagem   	 chat0   struct1   "Oi"   NaoEstaNoChaat
+== Remover usuário que não está no chat
+=sairchat  	 chat0   struct1	OK
+
+== Testar pegar mensagens cobrindo todas as classes de equivalência
+== Pegar mensagens em chat não existente
+=pegarmensagens    chat1   NULL
+== Pegar mensagens corretmaente
+=pegarmensagens    chat0   "Ansem: Oi\nFaker: Oi\n"
+
+== Testar deletar mensagem cobrindo todas as classes de equivalência
+== Deletar mensagem de chat não existente
+=deletarmensagem    chat1   ChatNULL
+== Deletar mensagem corretamente e verificar se foi deletada
+=deletarmensagem    chat0   OK
+=pegarmensagens    chat0   NULL
+
+== Testar deletar chat conbrindo todas as classes de equivalência
+== Deletar chat não existente
+=deletarchat    chat1   ChatNULL
+=0 Deletar chat corretamente
+=deletarchat    chat0   OK
+
+
+
+// fim
