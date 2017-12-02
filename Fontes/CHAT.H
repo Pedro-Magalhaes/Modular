@@ -213,8 +213,8 @@ typedef struct CHA_tagChat * CHA_tppChat ;
    *     pChat - Ponteiro para o chat em questão
    *
    *  $FV Valor retornado
-   *	  CHA_CondRetChatNULL	- Se o ponteiro para o chat for igual a NULL
-   *	  CHA_CondRetOK			- Se tudo tiver dado certo
+   *	  NULL - Se não tiver conseguido alocar memoria, ou caso não tenha mensagens no chat
+   *	  char* - Ponteiro para uma string que contem todas as mensagens formatadas
    *
    ***********************************************************************/
 
