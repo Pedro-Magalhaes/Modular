@@ -1,7 +1,6 @@
 ﻿Data	Horas trabalhadas	Tipo de tarefa					Descrição da tarefa realizada 
-17/11   4                   Criando base do T4              Criei o Módulo Usuário e Chat, estruturei as funções
-22/11   1                   Codificação                     Fiz pequenas alterações no .H do módulo Usuário
-26/11	2		    Codificação			    Continuei o desenvolvimento do módulo Usuário
-29/11   3		Codificação e Estudo		   Continuei o módulo usuario mas me deparei com algumas dúvidas estruturais e estudei mudanças no modelo fisico.
-
-01/12             1,5h                    codificar módulo e Módulo revisado em busca de erros simples corrigir bugs
+17/11   4h                  Criando base do T4              Criei o Módulo Usuário e Chat, estruturei as funções
+22/11   1h                  Codificação                     Fiz pequenas alterações no .H do módulo Usuário
+26/11	2h		            Codificação			            Continuei o desenvolvimento do módulo Usuário
+29/11   3h		            Codificação e Estudo		    Continuei o módulo usuario mas me deparei com algumas dúvidas estruturais e estudei mudanças no modelo fisico.
+01/12   6h                  Codificação e Estudo            Pair programming com o Hugo no módulo Chat, monitoria ,criação do módulo REDE, codificação do módulo Usuario, alterações no modulo Grafo para adicionar ,função de deturpar e de recuperar, e testes para estas. 
