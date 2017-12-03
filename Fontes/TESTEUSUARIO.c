@@ -1,5 +1,5 @@
 /***************************************************************************
-*  $MCI Módulo de implementação: TUSU Teste usuario de símbolos
+*  $MCI Módulo de implementação: TUSU Teste usuario da rede
 *
 *  Arquivo gerado:              TESTEUSUARIO.c
 *  Letras identificadoras:      TUSU
@@ -15,6 +15,7 @@
 *     Versão  Autor    Data     Observações
 *
 *     1       pfs   29/11/2017 início desenvolvimento
+*	  2		  yan	02/12/2017 continuação do desenvolvimento
 *
 ***************************************************************************/
 
@@ -30,18 +31,14 @@
 #include    "USUARIO.h"
 
 
-static const char RESET_GRAFO_CMD         [ ] = "=resetteste"     ;
-static const char CRIAR_GRAFO_CMD         [ ] = "=criargrafo"     ;
-static const char DESTRUIR_GRAFO_CMD      [ ] = "=destruirgrafo"  ;
-static const char ESVAZIAR_GRAFO_CMD      [ ] = "=esvaziargrafo"  ;
-static const char INS_VERTICE_CMD         [ ] = "=insvertice"   ;
-static const char EXC_VERTICE_CMD         [ ] = "=excvertice"    ;
-static const char EXC_ARESTA_CMD          [ ] = "=excaresta" ;
-static const char OBTER_CORRENTE_CMD      [ ] = "=obtervalorcorrente"    ;
-static const char CRIAR_ARESTA_CMD        [ ] = "=criararesta"       ;
-static const char IR_VERTICE_CMD          [ ] = "=irvertice"        ;
-static const char QNT_VERTICE_CMD         [ ] = "=qntvertice"        ;
-static const char QNT_ARESTA_CMD          [ ] = "=qntaresta"        ;
+static const char INICIAR_MODULO_CMD       [ ] = "=iniciarmodulo"   ;
+static const char CRIAR_USUARIO_CMD        [ ] = "=criarusuario"   ;
+static const char ADICIONAR_AMIGO_CMD      [ ] = "=adicionaramigo"   ;
+static const char EDITARPERFIL_CMD		   [ ] = "=editarperfil"   ;
+static const char DELETAR_USUARIO_CMD      [ ] = "=deletarusuario"   ;
+static const char DESTRUIR_USUARIOS_CMD    [ ] = "=destruirusuarios"   ;
+static const char TOTAL_USUARIOS_CMD       [ ] = "=totalusuarios"   ;
+
 
 
 
@@ -51,16 +48,16 @@ static const char QNT_ARESTA_CMD          [ ] = "=qntaresta"        ;
 #define VAZIO     0
 #define NAO_VAZIO 1
 
-#define DIM_VT_GRAFO   10
+#define DIM_VT_USUARIO   10
 #define DIM_VALOR     100
 
-GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
+USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 
 /***** Protótipos das funções encapuladas no módulo *****/
 
    static void DestruirValor( void * pValor ) ;
 
-   static int ValidarInxGrafo( int inxgrafo , int Modo ) ;
+   static int ValidarInxusuario( int inxusuario , int Modo ) ;
 
 /*****  Definição da struct de teste  *****/
 
@@ -72,38 +69,32 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 	   char cidade[31];
    } no_teste;
 
-	no_teste vtstructs [DIM_VT_GRAFO];
+	no_teste vtstructs [DIM_VT_USUARIO];
 /*****  Código das funções exportadas pelo módulo  *****/
 
 
 /***********************************************************************
 *
-*  $FC Função: TGRA &Testar grafo
+*  $FC Função: TUSU &Testar usuario
 *
 *  $ED Descrição da função
-*     Podem ser criados até 10 grafos, identificados pelos índices 0 a 10
+*     Podem ser criados até 10 usuarios, identificados pelos índices 0 a 10
 *
 *     Comandos disponíveis:
 *
-*     =resetteste
-*           - anula o vetor de grafos. Provoca vazamento de memória
-*     =criargrafo                   inxgrafo     CondRetEsp
-*     =destruirgrafo                inxgrafo     CondRetEsp
-*     =esvaziargrafo                inxgrafo     CondRetEsp
-*     =insvertice                   inxgrafo  string1 string2 string3 string4  CondRetEsp
-*     =excvertice                   inxgrafo   CondRetEsp
-*     =excaresta               	    inxgrafo  indstruct  CondretPonteiro
-*     =obtervalorcorrente           inxgrafo  string1 string2 string3 string4   CondRetEsp
-*     =criararesta                  inxgrafo   inxstruct   CondRetEsp
-*     =irvertice                    inxgrafo   inxstruct   ValEsp
-*     =qntvertice                   inxgrafo  ValEsp
-*     =qntaresta                    inxgrafo  ValEsp
+*     =iniciarmodulo                inxusuario     
+*     =criarusuario                 inxusuario   string1   int1   string2     CondRetEsp
+*     =adicionaramigo               inxusuario   int1     CondRetEsp
+*     =editarperfil                 inxusuario   XXXX     CondRetEsp
+*     =deletarusuario               int1     CondRetEsp
+*     =destruirusuarios             inxusuario     CondRetEsp
+*     =totalusuarios				ValEsp
 ***********************************************************************/
 
    TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
    {
 
-      int inxgrafo  = -1 ,
+      int inxusuario  = -1 ,
           numLidos   = -1 ,
           ValEsp = -1 ,
 			inxstruct =-1;
@@ -125,83 +116,83 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 	  StringDado3[ 0 ] = 0 ;
 	  StringDado4[ 0 ] = 0 ;
 
-      /* Efetuar reset de teste de grafo */
+      /* Efetuar reset de teste de usuario */
 
-         if ( strcmp( ComandoTeste , RESET_GRAFO_CMD ) == 0 )
+         if ( strcmp( ComandoTeste , RESET_usuario_CMD ) == 0 )
          {
 
-            for( i = 0 ; i < DIM_VT_GRAFO ; i++ )
+            for( i = 0 ; i < DIM_VT_usuario ; i++ )
             {
-               vtgrafos[ i ] = NULL ;
+               vtusuarios[ i ] = NULL ;
 			   
             } /* for */
 
             return TST_CondRetOK ;
 
-         } /* fim ativa: Efetuar reset de teste de grafo */
+         } /* fim ativa: Efetuar reset de teste de usuario */
 
-      /* Testar CriarGrafo */
+      /* Testar Criarusuario */
 
-         else if ( strcmp( ComandoTeste , CRIAR_GRAFO_CMD ) == 0 )
+         else if ( strcmp( ComandoTeste , CRIAR_usuario_CMD ) == 0 )
          {
 
             numLidos = LER_LerParametros( "i" ,
-                       &inxgrafo ) ;
+                       &inxusuario ) ;
 
             if ( ( numLidos != 1 )
-              || ( ! ValidarInxGrafo( inxgrafo , VAZIO )))
+              || ( ! ValidarInxusuario( inxusuario , VAZIO )))
             {
                return TST_CondRetParm ;
             } /* if */
 
-            vtgrafos[ inxgrafo ] =
-                 GRA_CriarGrafo( DestruirValor ) ;
+            vtusuarios[ inxusuario ] =
+                 USU_Criarusuario( DestruirValor ) ;
 
-            return TST_CompararPonteiroNulo( 1 , vtgrafos[ inxgrafo ] ,
-               "Erro em ponteiro de novo grafo."  ) ;
+            return TST_CompararPonteiroNulo( 1 , vtusuarios[ inxusuario ] ,
+               "Erro em ponteiro de novo usuario."  ) ;
 
-         } /* fim ativa: Testar Criar grafo */
+         } /* fim ativa: Testar Criar usuario */
 
-      /* Testar Esvaziar grafo */
+      /* Testar Esvaziar usuario */
 
-         else if ( strcmp( ComandoTeste , ESVAZIAR_GRAFO_CMD ) == 0 )
+         else if ( strcmp( ComandoTeste , ESVAZIAR_usuario_CMD ) == 0 )
          {
 
             numLidos = LER_LerParametros( "i" ,
-                               &inxgrafo ) ;
+                               &inxusuario ) ;
 
             if ( ( numLidos != 1 )
-              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )))
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )))
             {
                return TST_CondRetParm ;
             } /* if */
 
-            GRA_EsvaziarGrafo( vtgrafos[ inxgrafo ] ) ;
+            USU_Esvaziarusuario( vtusuarios[ inxusuario ] ) ;
 
             return TST_CondRetOK ;
 
-         } /* fim ativa: Testar Esvaziar grafo */
+         } /* fim ativa: Testar Esvaziar usuario */
 
-      /* Testar Destruir grafo */
+      /* Testar Destruir usuario */
 
-         else if ( strcmp( ComandoTeste , DESTRUIR_GRAFO_CMD ) == 0 )
+         else if ( strcmp( ComandoTeste , DESTRUIR_usuario_CMD ) == 0 )
          {
 
             numLidos = LER_LerParametros( "i" ,
-                               &inxgrafo ) ;
+                               &inxusuario ) ;
 
             if ( ( numLidos != 1 )
-              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )))
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )))
             {
                return TST_CondRetParm ;
             } /* if */
 
-            GRA_DestruirGrafo( vtgrafos[ inxgrafo ] ) ;
-            vtgrafos[ inxgrafo ] = NULL ;
+            USU_Destruirusuario( vtusuarios[ inxusuario ] ) ;
+            vtusuarios[ inxusuario ] = NULL ;
 
             return TST_CondRetOK ;
 
-         } /* fim ativa: Testar Destruir grafo */
+         } /* fim ativa: Testar Destruir usuario */
 
       /* Testar inserir vertice */
 
@@ -209,10 +200,10 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
          {
 
             numLidos = LER_LerParametros( "iissssi" ,
-                       &inxgrafo , &inxstruct ,StringDado1, StringDado2, StringDado3, StringDado4 , &ValEsp ) ;
+                       &inxusuario , &inxstruct ,StringDado1, StringDado2, StringDado3, StringDado4 , &ValEsp ) ;
 
             if ( ( numLidos != 7 ) //6
-              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
@@ -231,9 +222,9 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 			
 
 
-            CondRet = (TST_tpCondRet) GRA_InserirVertice( vtgrafos[ inxgrafo ] , pDado ) ;
+            CondRet = (TST_tpCondRet) USU_InserirVertice( vtusuarios[ inxusuario ] , pDado ) ;
 
-            if ( CondRet != GRA_CondRetOK )
+            if ( CondRet != USU_CondRetOK )
             {
                //free( pDado ) ; //não foi alocado dinamicamente
             } /* if */
@@ -249,10 +240,10 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
          {
 
              numLidos = LER_LerParametros( "iii" ,
-                       &inxgrafo , &inxstruct , &ValEsp ) ;
+                       &inxusuario , &inxstruct , &ValEsp ) ;
 
             if ( ( numLidos != 3 ) //6
-              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
@@ -263,9 +254,9 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
                return TST_CondRetMemoria ;
             } /* if */
 
-            CondRet = (TST_tpCondRet) GRA_CriarAresta( vtgrafos[ inxgrafo ] , pDado ) ;
+            CondRet = (TST_tpCondRet) USU_CriarAresta( vtusuarios[ inxusuario ] , pDado ) ;
 
-            if ( CondRet != GRA_CondRetOK )
+            if ( CondRet != USU_CondRetOK )
             {
                //free( pDado ) ;//não foi alocado dinamicamente
             } /* if */
@@ -281,16 +272,16 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
          {
 
             numLidos = LER_LerParametros( "ii" ,
-                  &inxgrafo , &ValEsp ) ;
+                  &inxusuario , &ValEsp ) ;
 
             if ( ( numLidos != 2 )
-              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
 
             return TST_CompararInt( ValEsp ,
-                      GRA_ExcluirVertice( vtgrafos[ inxgrafo ] ) ,
+                      USU_ExcluirVertice( vtusuarios[ inxusuario ] ) ,
                      "Condição de retorno errada ao excluir."   ) ;
 
          } /* fim ativa: Testar excluir vertice */
@@ -301,15 +292,15 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
          {
 
             numLidos = LER_LerParametros( "issssi" ,
-                       &inxgrafo, StringDado1, StringDado2, StringDado3, StringDado4, &ValEsp ) ;
+                       &inxusuario, StringDado1, StringDado2, StringDado3, StringDado4, &ValEsp ) ;
 
             if ( ( numLidos != 6 )
-              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
 
-            pDado = ( no_teste * ) GRA_ObterValorCorrente( vtgrafos[ inxgrafo ] ) ;
+            pDado = ( no_teste * ) USU_ObterValorCorrente( vtusuarios[ inxusuario ] ) ;
 
             if ( ValEsp == 0 )
             {
@@ -336,10 +327,10 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
          else if ( strcmp( ComandoTeste , EXC_ARESTA_CMD ) == 0 )
          {
 
-            numLidos = LER_LerParametros( "iii" , &inxgrafo, &inxstruct, &ValEsp ) ; //str1234
+            numLidos = LER_LerParametros( "iii" , &inxusuario, &inxstruct, &ValEsp ) ; //str1234
 
             if ( ( numLidos != 3 ) //6
-              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
@@ -350,22 +341,22 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
                return TST_CondRetMemoria ;
             } /* if */
 
-            CondRet = (TST_tpCondRet) GRA_ExcluirAresta( vtgrafos[ inxgrafo ] , pDado ) ;
+            CondRet = (TST_tpCondRet) USU_ExcluirAresta( vtusuarios[ inxusuario ] , pDado ) ;
 
             return TST_CompararInt( ValEsp , CondRet ,
                      "Condicao de retorno errada ao excluir aresta."                   ) ;
 
          } /* fim ativa: Testar excluir aresta */
 
-      /* GRA  &Ir para o vertice com o indice passado */
+      /* USU  &Ir para o vertice com o indice passado */
 
          else if ( strcmp( ComandoTeste , IR_VERTICE_CMD ) == 0 )
          {
 
-            numLidos = LER_LerParametros( "iii" , &inxgrafo, &inxstruct, &ValEsp ) ;
+            numLidos = LER_LerParametros( "iii" , &inxusuario, &inxstruct, &ValEsp ) ;
 
             if ( ( numLidos != 3 )
-              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
@@ -378,50 +369,50 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
             } /* if */
 
 
-            CondRet = (TST_tpCondRet) GRA_IrVertice(vtgrafos[inxgrafo], pDado);
+            CondRet = (TST_tpCondRet) USU_IrVertice(vtusuarios[inxusuario], pDado);
 
            return TST_CompararInt( ValEsp , CondRet ,
                      "Condicao de retorno errada ao ir para vertice."                   ) ;
 
-         } /* fim ativa: GRA  &Ir para o vertice */
+         } /* fim ativa: USU  &Ir para o vertice */
 
-		 /*GRA &Ver quantidade de vertices*/
+		 /*USU &Ver quantidade de vertices*/
 
 		 else if ( strcmp( ComandoTeste , QNT_VERTICE_CMD ) == 0 )
 		 {
-			 numLidos = LER_LerParametros( "ii" , &inxgrafo, &ValEsp);
+			 numLidos = LER_LerParametros( "ii" , &inxusuario, &ValEsp);
 
 			 if ( ( numLidos != 2 )
-              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
 
-			 return TST_CompararInt( ValEsp , GRA_QntVertices(vtgrafos[inxgrafo]) ,
+			 return TST_CompararInt( ValEsp , USU_QntVertices(vtusuarios[inxusuario]) ,
                      "Quantidade de vertices errada."                   ) ;
 
-		 }/* fim ativa: GRA &Ver quantidade de vertices */
+		 }/* fim ativa: USU &Ver quantidade de vertices */
 
-		 /*GRA &Ver quantidade de arestas do vertice corrente*/
+		 /*USU &Ver quantidade de arestas do vertice corrente*/
 
 		  else if ( strcmp( ComandoTeste , QNT_ARESTA_CMD ) == 0 )
 		 {
-			 numLidos = LER_LerParametros( "ii" , &inxgrafo, &ValEsp);
+			 numLidos = LER_LerParametros( "ii" , &inxusuario, &ValEsp);
 
 			 if ( ( numLidos != 2 )
-              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
 
-			 return TST_CompararInt( ValEsp , GRA_QntArestas(vtgrafos[inxgrafo]) ,
+			 return TST_CompararInt( ValEsp , USU_QntArestas(vtusuarios[inxusuario]) ,
                      "Quantidade de arestas errada."                   ) ;
 
-		 }/* fim ativa: GRA &Ver quantidade de arestas do vertice corrente */
+		 }/* fim ativa: USU &Ver quantidade de arestas do vertice corrente */
 
       return TST_CondRetNaoConhec ;
 
-   } /* Fim função: TGRA &Testar grafo */
+   } /* Fim função: TUSU &Testar usuario */
 
 
 /*****  Código das funções encapsuladas no módulo  *****/
@@ -429,7 +420,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
 /***********************************************************************
 *
-*  $FC Função: TGRA -Destruir valor
+*  $FC Função: TUSU -Destruir valor
 *
 ***********************************************************************/
 
@@ -443,28 +434,28 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
 /***********************************************************************
 *
-*  $FC Função: TGRA -Validar indice do Grafo
+*  $FC Função: TUSU -Validar indice do usuario
 *
 ***********************************************************************/
 
-   int ValidarInxGrafo( int inxgrafo , int Modo )
+   int ValidarInxusuario( int inxusuario , int Modo )
    {
 
-      if ( ( inxgrafo <  0 )
-        || ( inxgrafo >= DIM_VT_GRAFO ))
+      if ( ( inxusuario <  0 )
+        || ( inxusuario >= DIM_VT_usuario ))
       {
          return FALSE ;
       } /* if */
          
       if ( Modo == VAZIO )
       {
-         if ( vtgrafos[ inxgrafo ] != 0 )
+         if ( vtusuarios[ inxusuario ] != 0 )
          {
             return FALSE ;
          } /* if */
       } else
       {
-         if ( vtgrafos[ inxgrafo ] == 0 )
+         if ( vtusuarios[ inxusuario ] == 0 )
          {
             return FALSE ;
          } /* if */
@@ -472,7 +463,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
          
       return TRUE ;
 
-   } /* Fim função: TGRA -Validar indice do Grafo */
+   } /* Fim função: TUSU -Validar indice do usuario */
 
 
 /********** Fim do módulo de implementação: TLIS Teste lista de símbolos **********/
