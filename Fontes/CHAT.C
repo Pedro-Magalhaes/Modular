@@ -69,7 +69,7 @@ typedef struct CHA_tagChat {
 
 static void ExcluirMensagens(void *msg)
 {	
-	Mensagem * dado = msg;
+	Mensagem * dado = (Mensagem *)msg;
 	free(dado->conteudo);
 	free(msg);
 }
@@ -119,6 +119,11 @@ CHA_tpCondRet CHA_AdicionaIntegrante(CHA_tppChat pChat, void* participante)
 	{
 		return CHA_CondRetChatNULL;
 	}/*if*/
+	if (participante == NULL)
+	{
+		return CHA_CondRetChatNULL;
+	}/*if*/
+	
 	LIS_IrInicioLista(pChat->integrantes);
 
 	if (LIS_ProcurarValor(pChat->integrantes, participante) == LIS_CondRetNaoAchou)
