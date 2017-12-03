@@ -77,8 +77,6 @@ static tpPerfilUsuario* buscaPorNome (GRA_tppGrafo pGrafo, char*nome);
 
 static USU_tpCondRet USU_AdicionaUsuario(USU_tppUsuario pUsuario, tpPerfilUsuario* perfil);
 
-static void CopiaNome(char* destino, char * origem);
-
 static void GetNewIdUsuario(USU_tppUsuario pUsuario,int* Id_destino);
 
 static void excluirUsuario (void* usuario);
@@ -93,18 +91,6 @@ static void DeletaDoVetor (USU_tppUsuario pUsuario,tpPerfilUsuario** vetor , tpP
 
 /*****  Código das funções exportadas pelo módulo  *****/
 
-int USU_PegaIdusuario (USU_tppUsuario pUsuario, char* nome)
-{
-        tpPerfilUsuario * aux;
-
-        aux = buscaPorNome(pUsuario->pGrafo,nome);
-
-        if(aux == NULL)
-        {
-                return -1;
-        }
-        return aux->idUsuario;
-}
 
 /***************************************************************************
 *
@@ -121,9 +107,11 @@ USU_tppUsuario USU_InicializarModulo( )
         } /* if */
         pUsuario->pGrafo = GRA_CriarGrafo ( excluirUsuario );
         pUsuario->IdSequencial = 0;
+
         #ifdef _DEBUG
                 pUsuario->NextPos = 0;
-        #endif
+        #endif /* _DEBUG */
+
         return pUsuario;
 }
 
@@ -151,8 +139,11 @@ USU_tpCondRet USU_CriaUsuario(USU_tppUsuario pUsuario, char * nome , int idade ,
       {//erro de memoria
         return USU_CondRetFaltouMemoria;
       } /* if */
-      
-      CopiaNome(perfil->nomeUsuario, nome); //atribuindo o nome
+      if(strlen(nome) > 50)
+      {
+              return USU_CondRetPerfilIncorreto;
+      }/* if */
+      strcpy_s(perfil->nomeUsuario,50,nome); //atribuindo o nome
 
       if(idade > 0 && idade < 200)
       {
@@ -182,7 +173,8 @@ USU_tpCondRet USU_CriaUsuario(USU_tppUsuario pUsuario, char * nome , int idade ,
         GuardaNoVetor(pUsuario,perfil);
         return USU_CondRetOK;
       } /* if */
-      #endif
+      #endif/* _DEBUG */
+
       return retorno;
 }
 
@@ -190,32 +182,35 @@ USU_tpCondRet USU_CriaUsuario(USU_tppUsuario pUsuario, char * nome , int idade ,
 
 /***************************************************************************
 *
-*  Função: USU  &Cria Usuario
+*  Função: USU  &Adiciona Amigo
 *  ****/
 
 USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, char* nome ) 
 {
         tpPerfilUsuario * usuario1;
         tpPerfilUsuario * usuario2;
-
+        if( pUsuario == NULL )
+        {
+                return USU_CondRetNaoInicializado;
+        }/* if */
         usuario1 = GRA_ObterValorCorrente(pUsuario->pGrafo);
         usuario2 = buscaPorNome(pUsuario->pGrafo ,nome); // agora o corrente do grafo eh usuario2
         if( usuario1 == NULL || usuario2 == NULL )
         {
                 return USU_CondRetNaoAchou;
-        }        
+        }/* if */     
         if(GRA_CriarAresta(pUsuario->pGrafo,usuario1) == GRA_CondRetOK)
         {
                 if(GRA_IrVertice(pUsuario->pGrafo,usuario1)==GRA_CondRetOK) // voltando o corrente pra usuario1
                 {
                         return USU_CondRetOK;
-                }
-        }
+                }/* if */
+        }/* if */
         return USU_CondRetNaoAchou;
-}
+}/* Fim função: USU  &Adiciona Amigo */
 
 
-/* Fim função: USU  &Cria Usuario */
+
 /***************************************************************************
 *
 *  Função: USU  &Deletar Usuario
@@ -224,15 +219,25 @@ USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, char* nome )
 USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
 {
         GRA_tpCondRet retorno;
+        #ifdef _DEBUG  // deletando o usuario tambem do vertor de redundâncias
+                tpPerfilUsuario * aux;
+                int i;
+                assert( pUsuario != NULL );                
+                aux = GRA_ObterValorCorrente(pUsuario->pGrafo);
+                DeletaDoVetor(pUsuario,aux);
+                
+        #endif /* _DEBUG */
+        
+        
         if(pUsuario == NULL)
         {
                 return USU_CondRetNaoInicializado;
-        }
+        }/* if */
         retorno = GRA_ExcluirVertice(pUsuario->pGrafo);
         if(retorno == GRA_CondRetGrafoNulo)
         {
                  return USU_CondRetNaoInicializado;
-        }
+        }/* if */
     
         return USU_CondRetOK;
            
@@ -259,6 +264,10 @@ USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
 
  int USU_TotalUsuarios(USU_tppUsuario pUsuario)
  {
+         if (pUsuario == NULL)
+         {
+                 return -1;
+         }/* if */
          return GRA_QntVertices( pUsuario->pGrafo );
  }
 
@@ -266,8 +275,7 @@ USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
 
 /***************************************************************************
 *
-*  Função: USU  &pegaNomeUsuarioCorrente
-*  em caso de erro GRA_QntVertices retorna -1
+*  Função: USU  &Pega Nome Usuario Corrente
 *  ****/
 char* USU_PegaNomeUsuarioCorrente (USU_tppUsuario pUsuario)
 {
@@ -275,12 +283,12 @@ char* USU_PegaNomeUsuarioCorrente (USU_tppUsuario pUsuario)
         if(pUsuario == NULL)
         {
                 return NULL;
-        }
+        }/* if */
         aux = GRA_ObterValorCorrente(pUsuario->pGrafo);
         if(aux == NULL)
         {
                 return NULL;
-        }
+        }/* if */
         return aux->nomeUsuario;
 }
 
@@ -293,20 +301,45 @@ char* USU_PegaNomeUsuarioCorrente (USU_tppUsuario pUsuario)
 void USU_DestruirUsuarios (USU_tppUsuario pUsuario)
 {
         #ifdef _DEBUG //limpar usuarios da redundancia
+                assert(pUsuario != NULL);
                 int i;
                 for(i=0;i<MAX_USERS;i++)
                 {
                         pUsuario->meus_usuarios[i]=NULL;
-                }
+                }/* for */
                 pUsuario->NextPos = 0;
-        #endif
-        
+        #endif /* _DEBUG */
+        if( pUsuario == NULL )
+        {//nada a ser feito
+                return;
+        }/* if */
         GRA_DestruirGrafo(pUsuario->pGrafo);
         pUsuario->pGrafo = NULL;                
         pUsuario->IdSequencial = 0;     
 }
 
 /* Fim função: USU  &USU_DestruirUsuarios */
+
+/***************************************************************************
+*
+*  Função: USU  &PegaIdusuario
+*  ****/
+int USU_PegaIdusuario (USU_tppUsuario pUsuario, char* nome)
+{
+        tpPerfilUsuario * aux;
+        if(pUsuario == NULL)
+        {
+                return -1;
+        }
+        aux = buscaPorNome(pUsuario->pGrafo,nome);
+
+        if(aux == NULL)
+        {
+                return -1;
+        }/* if */
+        return aux->idUsuario;
+}/* Fim função: USU  &PegaIdusuario */
+
 
 /****** Fim funções exportadas pelo modulo USU ******/
 
@@ -348,7 +381,7 @@ USU_tpCondRet USU_AdicionaUsuario(USU_tppUsuario pUsuario, tpPerfilUsuario* perf
                         break;
                 default:                        
                         return USU_CondRetOK;
-        }
+        }/* switch */
 
 }  
 
@@ -357,43 +390,17 @@ USU_tpCondRet USU_AdicionaUsuario(USU_tppUsuario pUsuario, tpPerfilUsuario* perf
 
 /***************************************************************************
 *
-*  Função: USU  &Copia Nome
-*       Copia o nome do usuario com até 50 caracteres, qualquer valor maior é 
-        ignorado.
-*  ****/
-static void CopiaNome(char* destino, char * origem)
-{
-        int i;
-        if (destino == NULL || origem == NULL)
-        {
-                printf("Função copia nome: erro com os parametros de entrada");
-                return; 
-        }/*if*/
-
-        for (i=0;i<50;i++)
-        {
-                destino[i] = origem[i];
-                if(destino[i]=='\0')
-                {
-                        return;
-                }
-        }/*for*/
-        destino[i] = 51;
-}
-/* Fim função: USU  &Copia Nome */
-/***************************************************************************
-*
 *  Função: USU  &GetNewIdUsuario
 *       Preenche o id do usuário(recebido como parametro) com o próximo
-*       valor da variável global IdSequencial. Em caso de erro aborta.
+*       valor da variável IdSequencial. Em caso de erro aborta.
 *  ****/
 static void GetNewIdUsuario(USU_tppUsuario pUsuario, int* id_destino)
 {
-        if( id_destino == NULL )
+        if( id_destino == NULL || pUsuario == NULL)
         {
                 printf("Funcao IdUsuario: parametro recebido == NULL abortando\n");
                 exit(-1);
-        }
+        }/* if */
         //incremento a variavel global e atribuo a variavel recebida
         *id_destino = ++pUsuario->IdSequencial; 
 }
@@ -412,30 +419,43 @@ static void excluirUsuario (void* dado)
 
 /* Fim função: USU  &excluirUsuario */
 
-
+/***************************************************************************
+*
+*  Função: USU  &excluir Usuario
+*       Faz a busca de um usuario no grafo recebido por parametro
+*        através no nome também recebido por parametro.
+*       retorna nullo em caso de erro e se não encontrar
+*  ****/
 static tpPerfilUsuario* buscaPorNome (GRA_tppGrafo pGrafo, char*nome)
 {
         tpPerfilUsuario * aux;
-        GRA_IrInicioOrigens(pGrafo);
-        
+        if ( pGrafo == NULL )
+        {
+                return NULL;
+        }/* if */
+        GRA_IrInicioOrigens(pGrafo);        
         do
         {
                 aux = GRA_ObterValorCorrente(pGrafo);
+                if(aux == NULL)
+                {
+                        return NULL;
+                }
                 if(strcmp(aux->nomeUsuario,nome)==0)
                 {
                         return aux;
-                }
+                }/* if */
         }while(GRA_AvancarElementoCorrente(pGrafo,1) == GRA_CondRetOK);
         return NULL;
-}
+}/* Fim função: USU  &buscaPorNome */
 
 /*****  Código das funções usadas apenas em DEBUG  *****/
 #ifdef _DEBUG
-        /***************************************************************************
-        *
-        *  Função: USU  &GuardaNoVetor
-        *       Guarda o perfil no vetor e atualiza a proxima posição disponivel
-        *  ****/
+/***************************************************************************
+*
+*  Função: USU  &GuardaNoVetor
+*       Guarda o perfil no vetor de redundancias e atualiza a proxima posição disponivel
+*  ****/
         static void GuardaNoVetor ( USU_tppUsuario pUsuario,  tpPerfilUsuario * perfil)
         {
                
@@ -448,19 +468,25 @@ static tpPerfilUsuario* buscaPorNome (GRA_tppGrafo pGrafo, char*nome)
 
         /* Fim função: USU  &GuardaNoVetor */
 
-        static void DeletaDoVetor (USU_tppUsuario pUsuario, tpPerfilUsuario** vetor , tpPerfilUsuario * perfil)
-        {
+/***************************************************************************
+*
+*  Função: USU  &Deleta do Vetor
+*       Seta todas as posições do vetor como null, como os dados estão alocados no grafo
+*       não libero a memória
+*  ****/
+        static void DeletaDoVetor (USU_tppUsuario pUsuario, tpPerfilUsuario * perfil)
+        {                
                 int i = 0;
-
+                assert((pUsuario != NULL) && (pUsuario->meus_usuarios != NULL));
                 while(i<MAX_USERS)
                 {
-                        if(vetor[i] == perfil)
+                        if(pUsuario->meus_usuarios[i] == perfil)
                         {
                                 pUsuario->NextPos--;
-                                vetor[i] = vetor[pUsuario->NextPos];
-                                vetor[pUsuario->NextPos] = NULL;
+                                pUsuario->meus_usuarios[i] = pUsuario->meus_usuarios[pUsuario->NextPos];
+                                pUsuario->meus_usuarios[pUsuario->NextPos] = NULL;
                                 return;
-                        }
+                        }/* if */
                         i++;
                 }/* while */
         }

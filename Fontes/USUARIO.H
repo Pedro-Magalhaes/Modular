@@ -86,10 +86,13 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *  $FC Função: USU  &InicializarModulo
 *
 *  $ED Descrição da função
-*     Faz a inicialização das variavéis internas ao módulo 
+*     Faz a inicialização das variavéis internas ao módulo e retorna o
+*     ponteiro para o tipo usuario.Este ponteiro será utilizado pelas funções 
+*     que manipulem os usuarios.
+*
 *
 *  $FV Valor retornado
-*     Se executou corretamente retorna o ponteiro pro tipo pnteiro p/ usuario.
+*     Se executou corretamente retorna o ponteiro pro tipo usuario.
 *     em caso de erro retorna nulo
 *
 ***********************************************************************/
@@ -125,18 +128,17 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *  $FC Função: USU  &Adicionar Amigo
 *
 *  $ED Descrição da função
-*     
+*     Adiciona ao usuario corrente o amigo com o nome recebido por parametro
+*     o usuario deve existir e o nome deve ser igual ao nome inserido ao cria-lo
 *
 *  $EP Parâmetros
-*     XXXXXXXXXXXX  - 
+*     nome  - string com o nome do usuario que vai ser adicionado aos amigos do corrente
+*     pUsuario - Ponteiro para o tipo usuario
 *
 *  $FV Valor retornado
-*     Se executou corretamente retorna o ponteiro para a lista.
-*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
+*     Se executou corretamente retorna USU_CondRetOK .
 *
-*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
-*     a função retornará NULL.
-*     Não será dada mais informação quanto ao problema ocorrido.
+*     Se ocorreu algum erro, vai retornar USU_CondRetNaoAchou .
 *
 ***********************************************************************/    
       USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, char* nome ) ;

@@ -17,6 +17,8 @@
 *     1       pfs   17/11/2017 início desenvolvimento
 *     2       pfs   26/11/2017 Continuação do desenvolvimento
 *     3       pfs   29/11/2017 Continuação do desenvolvimento
+*     4       pfs   02/12/2017 Continuação do desenvolvimento
+*     5       pfs   03/12/2017 Continuação do desenvolvimento
 *
 ***************************************************************************/
 #include   <stdio.h>
@@ -63,7 +65,7 @@ int main (void)
     minhaRede = USU_InicializarModulo();
     printf(" \n Bem vindo ao iMigo a sua nova rede de relacionametos\n\n\n");
     do{
-        printf (" Digite o que deseja fazer:\n0- Finalizar execucao\n1- Criar Usuario\n2- Remover Usuario\n3- Adicionar Amigo\n4-Buscar por nome\n");
+        printf ("Digite o que deseja fazer:\n\t0- Finalizar execucao\n\t1- Criar Usuario\n\t2- Remover Usuario\n\t3- Adicionar Amigo\n\t4-Buscar por nome\n");
         scanf("%d",&opcao);
         switch (opcao)
         {
@@ -150,7 +152,7 @@ void removerUsuario (USU_tppUsuario minhaRede)
     }/* if */
     else
     {
-        printf("Não há usuarios a serem removidos (num usuarios: %d)\n",num_usuarios);
+        printf("Nao ha usuarios a serem removidos (num usuarios: %d)\n",num_usuarios);
     }/* else */
     
 }
@@ -158,10 +160,28 @@ void adicionarAmigo (USU_tppUsuario minhaRede)
 {
     char nome[MAXNOME];
     char * nomeUsuarioCorrente;
+    int usuarios;
+    if(minhaRede == NULL)
+    {
+        printf("Rede não inicializada\n");
+        return;
+    }
     nomeUsuarioCorrente = USU_PegaNomeUsuarioCorrente(minhaRede);
     if(nomeUsuarioCorrente == NULL)
     {
-        printf("erro no usuario corrente dentro da funcao RED_adicionarAmigo\n");
+        usuarios = USU_TotalUsuarios(minhaRede);
+        if(usuarios < 0)
+        {
+            printf("Rede não inicializada\n");
+            return;
+        }
+        if (usuarios == 0)
+        {
+            printf("Ninguem foi adicionado ainda, tente adicionar usuarios primeiro\n");
+            return;
+        }
+        printf("erro no usuario corrente dentro da funcao RED_adicionarAmigo,numero de usuarios: %d\n",usuarios);
+        return;
     }/* if */
     printf("%s digite no nome do amigo a adicionar:\n",nomeUsuarioCorrente);
     scanf(" %49[^\n]",nome);
