@@ -73,8 +73,9 @@ typedef struct USU_tagUsuario {
 
 
 /***** Protótipos das funções encapuladas no módulo *****/
+static tpPerfilUsuario* buscaPorNome (GRA_tppGrafo pGrafo, char*nome);
 
-USU_tpCondRet USU_AdicionaUsuario(USU_tppUsuario pUsuario, tpPerfilUsuario* perfil);
+static USU_tpCondRet USU_AdicionaUsuario(USU_tppUsuario pUsuario, tpPerfilUsuario* perfil);
 
 static void CopiaNome(char* destino, char * origem);
 
@@ -92,6 +93,18 @@ static void DeletaDoVetor (USU_tppUsuario pUsuario,tpPerfilUsuario** vetor , tpP
 
 /*****  Código das funções exportadas pelo módulo  *****/
 
+int USU_PegaIdusuario (USU_tppUsuario pUsuario, char* nome)
+{
+        tpPerfilUsuario * aux;
+
+        aux = buscaPorNome(pUsuario->pGrafo,nome);
+
+        if(aux == NULL)
+        {
+                return -1;
+        }
+        return aux->idUsuario;
+}
 
 /***************************************************************************
 *
@@ -180,7 +193,26 @@ USU_tpCondRet USU_CriaUsuario(USU_tppUsuario pUsuario, char * nome , int idade ,
 *  Função: USU  &Cria Usuario
 *  ****/
 
-USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, int id_usuario ) ;
+USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, char* nome ) 
+{
+        tpPerfilUsuario * usuario1;
+        tpPerfilUsuario * usuario2;
+
+        usuario1 = GRA_ObterValorCorrente(pUsuario->pGrafo);
+        usuario2 = buscaPorNome(pUsuario->pGrafo ,nome); // agora o corrente do grafo eh usuario2
+        if( usuario1 == NULL || usuario2 == NULL )
+        {
+                return USU_CondRetNaoAchou;
+        }        
+        if(GRA_CriarAresta(pUsuario->pGrafo,usuario1) == GRA_CondRetOK)
+        {
+                if(GRA_IrVertice(pUsuario->pGrafo,usuario1)==GRA_CondRetOK) // voltando o corrente pra usuario1
+                {
+                        return USU_CondRetOK;
+                }
+        }
+        return USU_CondRetNaoAchou;
+}
 
 
 /* Fim função: USU  &Cria Usuario */
@@ -208,7 +240,26 @@ USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, int id_usuario ) ;
 
 /* Fim função: USU  &Total Usuarios */
 
+/***************************************************************************
+*
+*  Função: USU  &pegaNomeUsuarioCorrente
+*  em caso de erro GRA_QntVertices retorna -1
+*  ****/
+char* pegaNomeUsuarioCorrente (USU_tppUsuario pUsuario)
+{
+        tpPerfilUsuario aux;
+        if(pUsuario == NULL)
+        {
+                return USU_CondRetNaoInicializado;
+        }
+        aux = GRA_ObterValorCorrente(pUsuario->pGrafo);
+        if(aux == NULL)
+        {
+                USU_CondRetSemUsuarios;
+        }
+}
 
+/* Fim função: USU  &Total Usuarios */
 /***************************************************************************
 *
 *  Função: USU  &USU_DestruirUsuarios
@@ -336,6 +387,22 @@ static void excluirUsuario (void* dado)
 
 /* Fim função: USU  &excluirUsuario */
 
+
+static tpPerfilUsuario* buscaPorNome (GRA_tppGrafo pGrafo, char*nome)
+{
+        tpPerfilUsuario * aux;
+        GRA_IrInicioOrigens(pGrafo);
+        
+        do
+        {
+                aux = GRA_ObterValorCorrente(pGrafo);
+                if(strcmp(aux->nomeUsuario,nome)==0)
+                {
+                        return aux;
+                }
+        }while(GRA_AvancarElementoCorrente(pGrafo,1) == GRA_CondRetOK);
+        return NULL;
+}
 
 /*****  Código das funções usadas apenas em DEBUG  *****/
 #ifdef _DEBUG

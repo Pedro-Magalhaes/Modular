@@ -56,7 +56,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 *
 *  $ED Descrição do tipo
-*     Condições de retorno das funções da lista
+*     Condições de retorno das funções do módulo usuário
 *
 ***********************************************************************/
 
@@ -65,8 +65,8 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
          USU_CondRetOK ,
                /* Concluiu corretamente */
 
-         USU_CondRetListaVazia ,
-               /* A lista não contém elementos */
+         USU_CondRetSemUsuarios ,
+               /* A lista de usuarios não contém elementos */
 
          USU_CondRetPerfilIncorreto ,
                /* O perfil do usuário está incorreto */
@@ -75,7 +75,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
                /* Não encontrou o valor procurado */
 
          USU_CondRetFaltouMemoria,
-               /* Faltou memória ao tentar criar um elemento de lista */
+               /* Faltou memória ao tentar criar um elemento de usuário */
          USU_CondRetNaoInicializado
               /* Modulo usuário não foi inicializado antes de chamar funções de manipulação */
 
@@ -89,8 +89,8 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *     Faz a inicialização das variavéis internas ao módulo 
 *
 *  $FV Valor retornado
-*     Se executou corretamente retorna ok.
-*     ******TODO colocar erros
+*     Se executou corretamente retorna o ponteiro pro tipo pnteiro p/ usuario.
+*     em caso de erro retorna nulo
 *
 ***********************************************************************/
 
@@ -102,7 +102,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *  $FC Função: USU  &Criar Usuário
 *
 *  $ED Descrição da função
-*     Cria um usuário com seu perfil, adiciona-o no chat público 
+*     Cria um usuário com seu perfil, (TODO:adiciona-o no chat público )
 *
 *  $EP Parâmetros
 *     Nome  - Nome do usuário com até 50 caracteres
@@ -111,8 +111,9 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *              'F'- Feminino , 'O' - outros
 *
 *  $FV Valor retornado
-*     Se executou corretamente retorna ok.
-*     ******TODO colocar erros
+*     Se executou corretamente retorna USU_CondRetOK.
+*     USU_CondRetPerfilIncorreto - dados de genero ou idade incorretos
+*     USU_CondRetFaltouMemoria - caso não tenha conseguido alocar memoria
 *
 ***********************************************************************/
 
@@ -138,7 +139,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *     Não será dada mais informação quanto ao problema ocorrido.
 *
 ***********************************************************************/    
-      USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, int id_usuario ) ;
+      USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, char* nome ) ;
 
 /***********************************************************************
 *
@@ -159,7 +160,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *     Não será dada mais informação quanto ao problema ocorrido.
 *
 ***********************************************************************/   
-      USU_tpCondRet USU_EditarPerfil() ; 
+      USU_tpCondRet USU_EditarPerfil( ) ; 
   
 
 /***********************************************************************
@@ -210,6 +211,25 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 ***********************************************************************/  
       int USU_TotalUsuarios();
+
+/***********************************************************************
+*
+*  $FC Função: USU  &pegaNomeUsuarioCorrente
+*
+*  $ED Descrição da função
+*     Retorna o nome do usuario corrente na rede de relacionamentos
+*
+*  $FV Valor retornado
+*     Retorna um ponteiro pra char com o nome do usuario
+*     Em caso de erro retorna NULL
+*
+***********************************************************************/ 
+      char* pegaNomeUsuarioCorrente (USU_tppUsuario pUsuario);
+
+
+      /* ainda sem certeza de o que externar */
+
+      int USU_PegaIdusuario (USU_tppUsuario pUsuario, char* nome);
 
 #undef USUARIO_EXT
 

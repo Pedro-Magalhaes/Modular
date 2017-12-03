@@ -47,6 +47,7 @@ void criarUsuario (USU_tppUsuario minhaRede);
 RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero);
 void removerUsuario (USU_tppUsuario minhaRede);
 void adicionarAmigo (USU_tppUsuario minhaRede);
+void buscarIdUsuario (USU_tppUsuario minhaRede);
 
 int verificaIdade (int idade);
 int verificaGenero (char genero);
@@ -60,7 +61,7 @@ int main (void)
     minhaRede = USU_InicializarModulo();
     printf(" \n Bem vindo ao iMigo a sua nova rede de relacionametos\n\n\n");
     do{
-        printf (" Digite o que deseja fazer:\n0- Finalizar execucao\n1- Criar Usuario\n2- Remover Usuario\n3- Adicionar Amigo\n");
+        printf (" Digite o que deseja fazer:\n0- Finalizar execucao\n1- Criar Usuario\n2- Remover Usuario\n3- Adicionar Amigo\n4-Vuscar por nome\n");
         scanf("%d",&opcao);
         switch (opcao)
         {
@@ -72,6 +73,9 @@ int main (void)
                 break;
             case 3:
                 adicionarAmigo(minhaRede);
+                break;
+            case 4:
+                buscarIdUsuario(minhaRede);
                 break;
             default:
                 break;
@@ -111,7 +115,28 @@ void removerUsuario (USU_tppUsuario minhaRede)
 }
 void adicionarAmigo (USU_tppUsuario minhaRede)
 {
+    char nome[50];
+    printf("digite no nome do amigo a adicionar:\n")   ;
+    scanf(" %49[^\n]",nome);
+    USU_AdicionaAmigo(minhaRede,nome);
+}
 
+void buscarIdUsuario (USU_tppUsuario minhaRede)
+{
+    int aux = -1;
+    char nome[50];
+    printf("digite o nome buscado: \n");
+    scanf(" %49[^\n]",nome);
+    
+    printf("Buscando usurio com nome: %s: \n",nome);
+    aux = USU_PegaIdusuario(minhaRede,nome);
+    if(aux >= 0)
+    {
+        printf("Usuario encontrado com Id: %d\n",aux);
+        return;
+    }
+    printf("Usuario nao encontrado \n");
+        return;
 }
 
 int verificaIdade (int idade)
