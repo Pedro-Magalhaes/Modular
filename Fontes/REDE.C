@@ -29,6 +29,8 @@
 
 #include "USUARIO.H"
 
+#define MAXNOME 50
+
    typedef enum {
 
          RED_CondRetOK ,
@@ -61,7 +63,7 @@ int main (void)
     minhaRede = USU_InicializarModulo();
     printf(" \n Bem vindo ao iMigo a sua nova rede de relacionametos\n\n\n");
     do{
-        printf (" Digite o que deseja fazer:\n0- Finalizar execucao\n1- Criar Usuario\n2- Remover Usuario\n3- Adicionar Amigo\n4-Vuscar por nome\n");
+        printf (" Digite o que deseja fazer:\n0- Finalizar execucao\n1- Criar Usuario\n2- Remover Usuario\n3- Adicionar Amigo\n4-Buscar por nome\n");
         scanf("%d",&opcao);
         switch (opcao)
         {
@@ -79,7 +81,7 @@ int main (void)
                 break;
             default:
                 break;
-        }
+        }/* switch */
     } while(opcao != 0);
 
     USU_DestruirUsuarios(minhaRede);
@@ -92,7 +94,7 @@ void criarUsuario (USU_tppUsuario minhaRede)
 {
     RED_tpCondRet RED_retorno;
     USU_tpCondRet USU_retorno;
-    char nome[50];
+    char nome[MAXNOME];
     int idade;
     char genero;
 
@@ -101,30 +103,81 @@ void criarUsuario (USU_tppUsuario minhaRede)
     {
         printf("Perfil correto, inserindo usuario...\n");
         USU_retorno = USU_CriaUsuario(minhaRede,nome,idade,genero);
-        printf ( "\n\n RETORNO CRIA %d\n\n",USU_retorno);
-    }
+        if(USU_retorno == USU_CondRetOK)
+        {
+            printf("Usuario inserido\n");
+            return;
+        }/* if */
+        if(USU_retorno == USU_CondRetFaltouMemoria)
+        {
+            printf("ERRO criar usuario, falta de memoria\n");
+            return;
+        }/* if */
+        if(USU_retorno == USU_CondRetPerfilIncorreto)
+        {// não poderia ocorrer uma vez que o perfil também é verificado na rede, dados deveriam estar corretos
+            printf("ERRO criar usuario, perfil incorreto\n");
+            return;
+        }/* if */
+    }/* if */
     else
     {
         printf("Perfil incorreto voltando pro menu...\n");
-    }
+    }/* else */
 
 }
 void removerUsuario (USU_tppUsuario minhaRede)
 {
+    char * aux;   
+    int num_usuarios; 
+    int num_usuarios_final;
+    aux = USU_PegaNomeUsuarioCorrente(minhaRede);
+    num_usuarios = USU_TotalUsuarios(minhaRede);
+    if(aux != NULL && num_usuarios > 0)
+    {
+        printf("Removendo Usuario: %s (total de usu da rede: %d)\n",aux,num_usuarios);
+        if(USU_DeletarUsuario(minhaRede) == USU_CondRetOK)
+        {
+            num_usuarios_final = USU_TotalUsuarios(minhaRede);
+            printf("Usuario %s removido (total de usu da rede: %d)\n",aux,num_usuarios_final);
+            return;
+        }/* if */
+        else
+        {
+            printf("Usuario %s nao pode ser removido. ERRO.\n",aux);
+        }/* else */
 
+        
+    }/* if */
+    else
+    {
+        printf("Não há usuarios a serem removidos (num usuarios: %d)\n",num_usuarios);
+    }/* else */
+    
 }
 void adicionarAmigo (USU_tppUsuario minhaRede)
 {
-    char nome[50];
-    printf("digite no nome do amigo a adicionar:\n")   ;
+    char nome[MAXNOME];
+    char * nomeUsuarioCorrente;
+    nomeUsuarioCorrente = USU_PegaNomeUsuarioCorrente(minhaRede);
+    if(nomeUsuarioCorrente == NULL)
+    {
+        printf("erro no usuario corrente dentro da funcao RED_adicionarAmigo\n");
+    }/* if */
+    printf("%s digite no nome do amigo a adicionar:\n",nomeUsuarioCorrente);
     scanf(" %49[^\n]",nome);
-    USU_AdicionaAmigo(minhaRede,nome);
+    if( USU_AdicionaAmigo(minhaRede,nome) == USU_CondRetOK)
+    {
+        printf("Usuario adicionado ou ja pertencia a sua rede de contatos\n");
+        return;
+    }/* if */
+    printf("usuario nao encontrado na rede\n");
+    
 }
 
 void buscarIdUsuario (USU_tppUsuario minhaRede)
 {
     int aux = -1;
-    char nome[50];
+    char nome[MAXNOME];
     printf("digite o nome buscado: \n");
     scanf(" %49[^\n]",nome);
     
@@ -134,7 +187,7 @@ void buscarIdUsuario (USU_tppUsuario minhaRede)
     {
         printf("Usuario encontrado com Id: %d\n",aux);
         return;
-    }
+    }/* if */
     printf("Usuario nao encontrado \n");
         return;
 }
@@ -144,7 +197,7 @@ int verificaIdade (int idade)
     if(idade < 1 || idade > 199)
     {
         return 0; 
-    }
+    }/* if */
     return 1;
 }
 
@@ -153,7 +206,7 @@ int verificaGenero (char genero)
     if(genero == 'M' || genero == 'F' || genero == 'O' )
     {
         return 1;
-    }
+    }/* if */
     return 0;
 }
 
@@ -176,11 +229,11 @@ RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero)
         if(++contador > 2)
         {
             return RED_CondRetPerfilIncorreto;
-        }
+        }/* if */
         printf("idade invalida, por favor digite valores entre 1 e 199\n");
         scanf(" %d",idade);
         fflush(stdin);        
-    }
+    }/* while */
     contador = 0;
     /*** GENERO ***/
     printf ("Digite seu genero('M','F' ou 'O' para outros ): ");
@@ -193,14 +246,14 @@ RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero)
         if(++contador > 2)
         {
             return RED_CondRetPerfilIncorreto;
-        }
+        }/* if */
         printf("Genero invalido, por favor digite seu genero('M','F' ou 'O' para outros ): \n");
         scanf(" %c",genero);
         fflush(stdin);
         *genero = toupper(*genero);        
-    }
+    }/* while */
 
-    printf ("\n Voce digitou: Nome:%s: \n idade: %d\n sexo: %c \n", nome,*idade,*genero);
+    printf ("\tVoce digitou: Nome:%s \n\tidade: %d\n\tsexo: %c \n", nome,*idade,*genero);
 
     return RED_CondRetOK;
 }

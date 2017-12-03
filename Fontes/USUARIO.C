@@ -216,6 +216,30 @@ USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, char* nome )
 
 
 /* Fim função: USU  &Cria Usuario */
+/***************************************************************************
+*
+*  Função: USU  &Deletar Usuario
+*  ****/
+
+USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
+{
+        GRA_tpCondRet retorno;
+        if(pUsuario == NULL)
+        {
+                return USU_CondRetNaoInicializado;
+        }
+        retorno = GRA_ExcluirVertice(pUsuario->pGrafo);
+        if(retorno == GRA_CondRetGrafoNulo)
+        {
+                 return USU_CondRetNaoInicializado;
+        }
+    
+        return USU_CondRetOK;
+           
+  
+}
+
+/* Fim função: USU  &Deletar Usuario */
 
 /***************************************************************************
 *
@@ -245,18 +269,19 @@ USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, char* nome )
 *  Função: USU  &pegaNomeUsuarioCorrente
 *  em caso de erro GRA_QntVertices retorna -1
 *  ****/
-char* pegaNomeUsuarioCorrente (USU_tppUsuario pUsuario)
+char* USU_PegaNomeUsuarioCorrente (USU_tppUsuario pUsuario)
 {
-        tpPerfilUsuario aux;
+        tpPerfilUsuario * aux;
         if(pUsuario == NULL)
         {
-                return USU_CondRetNaoInicializado;
+                return NULL;
         }
         aux = GRA_ObterValorCorrente(pUsuario->pGrafo);
         if(aux == NULL)
         {
-                USU_CondRetSemUsuarios;
+                return NULL;
         }
+        return aux->nomeUsuario;
 }
 
 /* Fim função: USU  &Total Usuarios */

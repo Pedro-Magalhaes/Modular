@@ -166,9 +166,9 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 /***********************************************************************
 *
 *  $FC Função: USU  &Deletar Usuario
-*
+*     
 *  $ED Descrição da função
-*     Deleta 
+*     Deleta o usuario corrente do módulo usuario 
 *
 *  $EP Parâmetros
 *     XXXXXXXXXXXX  - 
@@ -182,7 +182,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *     Não será dada mais informação quanto ao problema ocorrido.
 *
 ***********************************************************************/   
-      USU_tpCondRet USU_DeletarUsuario( int id_usuario ) ;   
+      USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario ) ;   
 
 
 /***********************************************************************
@@ -210,7 +210,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *     Em caso de erro retorna -1
 *
 ***********************************************************************/  
-      int USU_TotalUsuarios();
+      int USU_TotalUsuarios(USU_tppUsuario pUsuario);
 
 /***********************************************************************
 *
@@ -224,7 +224,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *     Em caso de erro retorna NULL
 *
 ***********************************************************************/ 
-      char* pegaNomeUsuarioCorrente (USU_tppUsuario pUsuario);
+      char* USU_PegaNomeUsuarioCorrente (USU_tppUsuario pUsuario);
 
 
       /* ainda sem certeza de o que externar */
