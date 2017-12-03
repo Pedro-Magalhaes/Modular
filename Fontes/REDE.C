@@ -14,11 +14,9 @@
 *
 *  $HA Histórico de evolução:
 *     Versão  Autor    Data     Observações*     
-*     1       pfs   17/11/2017 início desenvolvimento
-*     2       pfs   26/11/2017 Continuação do desenvolvimento
-*     3       pfs   29/11/2017 Continuação do desenvolvimento
-*     4       pfs   02/12/2017 Continuação do desenvolvimento
-*     5       pfs   03/12/2017 Continuação do desenvolvimento
+*     1       pfs   01/12/2017 início desenvolvimento
+*     3       pfs   02/12/2017 Continuação do desenvolvimento
+*     3       pfs   03/12/2017 Continuação do desenvolvimento
 *
 ***************************************************************************/
 #include   <stdio.h>
@@ -129,14 +127,22 @@ void criarUsuario (USU_tppUsuario minhaRede)
 }
 void removerUsuario (USU_tppUsuario minhaRede)
 {
-    char * aux;   
+    char * aux;
+    char opcao;
     int num_usuarios; 
     int num_usuarios_final;
     aux = USU_PegaNomeUsuarioCorrente(minhaRede);
     num_usuarios = USU_TotalUsuarios(minhaRede);
     if(aux != NULL && num_usuarios > 0)
     {
-        printf("Removendo Usuario: %s (total de usu da rede: %d)\n",aux,num_usuarios);
+        printf("Removendo Usuario: %s (total de usu da rede: %d) \nDeseja continuar?(s / n)\n",aux,num_usuarios);
+        scanf(" %c",&opcao);
+        fflush(stdin);
+        if( toupper(opcao) == 'N' )
+        {
+            printf("Delecao cancelada...\n");
+            return;
+        }
         if(USU_DeletarUsuario(minhaRede) == USU_CondRetOK)
         {
             num_usuarios_final = USU_TotalUsuarios(minhaRede);

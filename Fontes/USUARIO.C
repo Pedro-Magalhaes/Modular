@@ -17,6 +17,8 @@
 *     1       pfs   17/11/2017 início desenvolvimento
 *     2       pfs   26/11/2017 Continuação do desenvolvimento
 *     3       pfs   29/11/2017 Continuação do desenvolvimento
+*     4       pfs   01/12/2017 Continuação do desenvolvimento
+*     5       pfs   02/12/2017 Continuação do desenvolvimento
 *
 ***************************************************************************/
 #include   <stdio.h>
@@ -85,7 +87,7 @@ static void excluirUsuario (void* usuario);
 
 static void GuardaNoVetor (USU_tppUsuario pUsuario, tpPerfilUsuario * perfil);
 
-static void DeletaDoVetor (USU_tppUsuario pUsuario,tpPerfilUsuario** vetor , tpPerfilUsuario * perfil);
+static void DeletaDoVetor (USU_tppUsuario pUsuario, tpPerfilUsuario * perfil);
 
 #endif
 
@@ -221,7 +223,6 @@ USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
         GRA_tpCondRet retorno;
         #ifdef _DEBUG  // deletando o usuario tambem do vertor de redundâncias
                 tpPerfilUsuario * aux;
-                int i;
                 assert( pUsuario != NULL );                
                 aux = GRA_ObterValorCorrente(pUsuario->pGrafo);
                 DeletaDoVetor(pUsuario,aux);
@@ -301,8 +302,8 @@ char* USU_PegaNomeUsuarioCorrente (USU_tppUsuario pUsuario)
 void USU_DestruirUsuarios (USU_tppUsuario pUsuario)
 {
         #ifdef _DEBUG //limpar usuarios da redundancia
-                assert(pUsuario != NULL);
                 int i;
+                assert(pUsuario != NULL);                
                 for(i=0;i<MAX_USERS;i++)
                 {
                         pUsuario->meus_usuarios[i]=NULL;
@@ -365,11 +366,12 @@ int USU_PegaIdusuario (USU_tppUsuario pUsuario, char* nome)
 
 USU_tpCondRet USU_AdicionaUsuario(USU_tppUsuario pUsuario, tpPerfilUsuario* perfil)
 {
+        LIS_tpCondRet retorno;
         #ifdef _DEBUG
 		 assert( pUsuario != NULL );
                  assert(pUsuario->pGrafo != NULL );
-	#endif
-        LIS_tpCondRet retorno;
+	#endif /* _DEBUG */
+        
         retorno = GRA_InserirVertice( pUsuario->pGrafo , perfil );
         switch ( retorno )
         {

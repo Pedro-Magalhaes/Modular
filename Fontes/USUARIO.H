@@ -15,7 +15,8 @@
 *  Autores: pfs, hfac , yan
 *
 *  $HA Histórico de evolução:
-*     Versão  Autor    Data     Observações*     
+*     Versão  Autor    Data     Observações*   
+*     3       pfs   01/12/2017 Mudança da assinatura das funções e criação de novas  
 *     2       pfs   29/11/2017 Adição de funções e mudança de assinaturas de funções
 *     1       pfs   17/11/2017 início desenvolvimento
 *
