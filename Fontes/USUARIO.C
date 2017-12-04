@@ -323,9 +323,9 @@ void USU_DestruirUsuarios (USU_tppUsuario pUsuario)
 
 /***************************************************************************
 *
-*  Função: USU  &PegaIdusuario
+*  Função: USU  &USU_IrUsuario
 *  ****/
-int USU_PegaIdusuario (USU_tppUsuario pUsuario, char* nome)
+int USU_IrUsuario (USU_tppUsuario pUsuario, char* nome)
 {
         tpPerfilUsuario * aux;
         if(pUsuario == NULL)
@@ -339,7 +339,7 @@ int USU_PegaIdusuario (USU_tppUsuario pUsuario, char* nome)
                 return -1;
         }/* if */
         return aux->idUsuario;
-}/* Fim função: USU  &PegaIdusuario */
+}/* Fim função: USU  &USU_IrUsuario */
 
 
 /****** Fim funções exportadas pelo modulo USU ******/

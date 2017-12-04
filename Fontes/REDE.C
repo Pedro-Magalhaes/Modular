@@ -208,7 +208,7 @@ void buscarIdUsuario (USU_tppUsuario minhaRede)
     scanf(" %49[^\n]",nome);
     
     printf("Buscando usurio com nome: %s: \n",nome);
-    aux = USU_PegaIdusuario(minhaRede,nome);
+    aux = USU_USU_IrUsuario(minhaRede,nome);
     if(aux >= 0)
     {
         printf("Usuario encontrado com Id: %d\n",aux);

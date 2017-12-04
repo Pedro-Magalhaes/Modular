@@ -232,7 +232,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 
       /* ainda sem certeza de o que externar */
 
-      int USU_PegaIdusuario (USU_tppUsuario pUsuario, char* nome);
+      int USU_IrUsuario (USU_tppUsuario pUsuario, char* nome);
 
 #undef USUARIO_EXT
 
