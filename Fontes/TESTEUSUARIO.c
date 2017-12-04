@@ -34,10 +34,11 @@
 static const char INICIAR_MODULO_CMD       [ ] = "=iniciarmodulo"   ;
 static const char CRIAR_USUARIO_CMD        [ ] = "=criarusuario"   ;
 static const char ADICIONAR_AMIGO_CMD      [ ] = "=adicionaramigo"   ;
-static const char EDITARPERFIL_CMD		   [ ] = "=editarperfil"   ;
+static const char EDITAR_PERFIL_CMD		   [ ] = "=editarperfil"   ;
 static const char DELETAR_USUARIO_CMD      [ ] = "=deletarusuario"   ;
 static const char DESTRUIR_USUARIOS_CMD    [ ] = "=destruirusuarios"   ;
 static const char TOTAL_USUARIOS_CMD       [ ] = "=totalusuarios"   ;
+static const char PEGAR_CORRENTE_CMD       [ ] = "=pegarcorrente"   ;
 
 
 
@@ -59,17 +60,7 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 
    static int ValidarInxusuario( int inxusuario , int Modo ) ;
 
-/*****  Definição da struct de teste  *****/
 
-   typedef struct no_teste 
-   {
-	   char nome[31];
-	   char data_nasc[11];
-	   char email[51];
-	   char cidade[31];
-   } no_teste;
-
-	no_teste vtstructs [DIM_VT_USUARIO];
 /*****  Código das funções exportadas pelo módulo  *****/
 
 
@@ -84,11 +75,12 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 *
 *     =iniciarmodulo                inxusuario     
 *     =criarusuario                 inxusuario   string1   int1   string2     CondRetEsp
-*     =adicionaramigo               inxusuario   int1     CondRetEsp
+*     =adicionaramigo               inxusuario   string1     CondRetEsp
 *     =editarperfil                 inxusuario   XXXX     CondRetEsp
 *     =deletarusuario               int1     CondRetEsp
 *     =destruirusuarios             inxusuario     CondRetEsp
-*     =totalusuarios				ValEsp
+*     =totalusuarios				inxusuario	   ValEsp
+*     =pegarcorretne				inxusuario	   string1
 ***********************************************************************/
 
    TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
@@ -97,7 +89,7 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
       int inxusuario  = -1 ,
           numLidos   = -1 ,
           ValEsp = -1 ,
-			inxstruct =-1;
+		  inxstruct =-1;
 
       TST_tpCondRet CondRet ;
 
@@ -105,9 +97,10 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 	  char   StringDado2[  DIM_VALOR ] ;
 	  char   StringDado3[  DIM_VALOR ] ;
 	  char   StringDado4[  DIM_VALOR ] ;
-      no_teste * pDado ;   
+   
 
       int i ;
+	  int intdado1 = 0 ;
 
       
 
@@ -116,24 +109,10 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 	  StringDado3[ 0 ] = 0 ;
 	  StringDado4[ 0 ] = 0 ;
 
-      /* Efetuar reset de teste de usuario */
+      
+      /* Testar iniciar módulo usuário */
 
-         if ( strcmp( ComandoTeste , RESET_usuario_CMD ) == 0 )
-         {
-
-            for( i = 0 ; i < DIM_VT_usuario ; i++ )
-            {
-               vtusuarios[ i ] = NULL ;
-			   
-            } /* for */
-
-            return TST_CondRetOK ;
-
-         } /* fim ativa: Efetuar reset de teste de usuario */
-
-      /* Testar Criarusuario */
-
-         else if ( strcmp( ComandoTeste , CRIAR_usuario_CMD ) == 0 )
+         if ( strcmp( ComandoTeste , INICIAR_MODULO_CMD ) == 0 )
          {
 
             numLidos = LER_LerParametros( "i" ,
@@ -146,36 +125,59 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
             } /* if */
 
             vtusuarios[ inxusuario ] =
-                 USU_Criarusuario( DestruirValor ) ;
+                 USU_InicializarModulo() ;
 
             return TST_CompararPonteiroNulo( 1 , vtusuarios[ inxusuario ] ,
                "Erro em ponteiro de novo usuario."  ) ;
 
          } /* fim ativa: Testar Criar usuario */
 
-      /* Testar Esvaziar usuario */
+      /* Testar Criar usuario */
 
-         else if ( strcmp( ComandoTeste , ESVAZIAR_usuario_CMD ) == 0 )
+         else if ( strcmp( ComandoTeste , CRIAR_USUARIO_CMD ) == 0 )
          {
 
-            numLidos = LER_LerParametros( "i" ,
-                               &inxusuario ) ;
+            numLidos = LER_LerParametros( "isisi" ,
+                       &inxusuario, StringDado1, &intdado1, StringDado2, &ValEsp ) ;
 
-            if ( ( numLidos != 1 )
+            if ( ( numLidos != 5 )
+              || ( ! ValidarInxusuario( inxusuario , VAZIO )))
+            {
+               return TST_CondRetParm ;
+            } /* if */
+
+            CondRet = (TST_tpCondRet) USU_CriaUsuario(vtusuarios[ inxusuario ], StringDado1, intdado1, StringDado2[0] ) ;
+
+            return TST_CompararInt( ValEsp , CondRet ,
+                     "Condicao de retorno errada ao criar usuario.") ;
+
+         } /* fim ativa: Testar Criar usuario */
+
+      /* Testar adicionar amigo */
+
+         else if ( strcmp( ComandoTeste , ADICIONAR_AMIGO_CMD ) == 0 )
+         {
+
+            numLidos = LER_LerParametros( "isi" ,
+                               &inxusuario, StringDado1, &ValEsp ) ;
+
+            if ( ( numLidos != 3 )
               || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )))
             {
                return TST_CondRetParm ;
             } /* if */
 
-            USU_Esvaziarusuario( vtusuarios[ inxusuario ] ) ;
+            CondRet = (TST_tpCondRet) USU_AdicionaAmigo(vtusuarios[ inxusuario ], StringDado1);
 
-            return TST_CondRetOK ;
+            return TST_CompararInt( ValEsp , CondRet ,
+                     "Condicao de retorno errada ao adicionar amigo.") ;
 
-         } /* fim ativa: Testar Esvaziar usuario */
 
-      /* Testar Destruir usuario */
+         } /* fim ativa: Testar adicionar amigo */
 
-         else if ( strcmp( ComandoTeste , DESTRUIR_usuario_CMD ) == 0 )
+      /* Testar editar perfil */
+
+         else if ( strcmp( ComandoTeste , EDITAR_PERFIL_CMD ) == 0 )
          {
 
             numLidos = LER_LerParametros( "i" ,
@@ -192,83 +194,62 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 
             return TST_CondRetOK ;
 
-         } /* fim ativa: Testar Destruir usuario */
+         } /* fim ativa: Testar editar perfil */
 
-      /* Testar inserir vertice */
+      /* Testar deletar usuario */
 
-         else if ( strcmp( ComandoTeste , INS_VERTICE_CMD ) == 0 )
+         else if ( strcmp( ComandoTeste , DELETAR_USUARIO_CMD ) == 0 )
          {
 
-            numLidos = LER_LerParametros( "iissssi" ,
-                       &inxusuario , &inxstruct ,StringDado1, StringDado2, StringDado3, StringDado4 , &ValEsp ) ;
+            numLidos = LER_LerParametros( "ii" ,
+                       &inxusuario, &ValEsp ) ;
 
-            if ( ( numLidos != 7 ) //6
+            if ( ( numLidos != 2 ) 
               || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
 			
-			strcpy( vtstructs[ inxstruct ].nome , StringDado1 ) ;
-			strcpy( vtstructs[ inxstruct ].data_nasc , StringDado2 ) ;
-			strcpy( vtstructs[ inxstruct ].email , StringDado3 ) ;
-			strcpy( vtstructs[ inxstruct ].cidade , StringDado4 ) ;
-
-            pDado =  &vtstructs[ inxstruct ];  
-            if ( pDado == NULL )
-            {
-               return TST_CondRetMemoria ;
-            } /* if */
 
 			
 
 
-            CondRet = (TST_tpCondRet) USU_InserirVertice( vtusuarios[ inxusuario ] , pDado ) ;
+            CondRet = (TST_tpCondRet) USU_DeletarUsuario( vtusuarios[ inxusuario ]) ;
 
-            if ( CondRet != USU_CondRetOK )
-            {
-               //free( pDado ) ; //não foi alocado dinamicamente
-            } /* if */
 
             return TST_CompararInt( ValEsp , CondRet ,
-                     "Condicao de retorno errada ao inserir vertice.") ;
+                     "Condicao de retorno errada ao deletar usuario.") ;
 
-         } /* fim ativa: Testar inserir vertice */
+         } /* fim ativa: Testar deletar usuario */
 
-      /* Testar criar aresta */
+      /* Testar destruir usuarios */
 
-         else if ( strcmp( ComandoTeste , CRIAR_ARESTA_CMD ) == 0 )
+         else if ( strcmp( ComandoTeste , DESTRUIR_USUARIOS_CMD ) == 0 )
          {
 
-             numLidos = LER_LerParametros( "iii" ,
-                       &inxusuario , &inxstruct , &ValEsp ) ;
+             numLidos = LER_LerParametros( "ii" ,
+                       &inxusuario , &ValEsp ) ;
 
-            if ( ( numLidos != 3 ) //6
+            if ( ( numLidos != 2 ) 
               || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
 
-            pDado =  &vtstructs[inxstruct]; //( no_teste * ) malloc( sizeof(no_teste) ) ;
-            if ( pDado == NULL )
-            {
-               return TST_CondRetMemoria ;
-            } /* if */
+            
 
-            CondRet = (TST_tpCondRet) USU_CriarAresta( vtusuarios[ inxusuario ] , pDado ) ;
+            CondRet = (TST_tpCondRet) USU_DestruirUsuarios( vtusuarios[ inxusuario ] ) ;
 
-            if ( CondRet != USU_CondRetOK )
-            {
-               //free( pDado ) ;//não foi alocado dinamicamente
-            } /* if */
+
 
             return TST_CompararInt( ValEsp , CondRet ,
-                     "Condicao de retorno errada ao criar aresta."                   ) ;
+                     "Condicao de retorno errada ao destruir usuarios."                   ) ;
 
-         } /* fim ativa: Testar criar aresta */
+         } /* fim ativa: Testar destruir usuarios */
 
-      /* Testar excluir vertice */
+      /* Testar obter o total de usuarios */
 
-         else if ( strcmp( ComandoTeste , EXC_VERTICE_CMD ) == 0 )
+         else if ( strcmp( ComandoTeste , TOTAL_USUARIOS_CMD ) == 0 )
          {
 
             numLidos = LER_LerParametros( "ii" ,
@@ -281,134 +262,46 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
             } /* if */
 
             return TST_CompararInt( ValEsp ,
-                      USU_ExcluirVertice( vtusuarios[ inxusuario ] ) ,
-                     "Condição de retorno errada ao excluir."   ) ;
+                      USU_TotalUsuarios( vtusuarios[ inxusuario ] ) ,
+                     "Numero de usuarios esperado errado."   ) ;
 
-         } /* fim ativa: Testar excluir vertice */
+         } /* fim ativa: Testar obter total de usuarios */
 
-      /* Testar obter valor do vertice corrente */
+      /* Testar obter nome do usuario corrente */
 
-         else if ( strcmp( ComandoTeste , OBTER_CORRENTE_CMD ) == 0 )
+         else if ( strcmp( ComandoTeste , PEGAR_CORRENTE_CMD ) == 0 )
          {
+			 char* stringtemp;
 
-            numLidos = LER_LerParametros( "issssi" ,
-                       &inxusuario, StringDado1, StringDado2, StringDado3, StringDado4, &ValEsp ) ;
+            numLidos = LER_LerParametros( "is" ,
+                       &inxusuario, StringDado1) ;
 
-            if ( ( numLidos != 6 )
+            if ( ( numLidos != 2 )
               || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
 
-            pDado = ( no_teste * ) USU_ObterValorCorrente( vtusuarios[ inxusuario ] ) ;
+            stringtemp = USU_PegaNomeUsuarioCorrente( vtusuarios[ inxusuario ] ) ;
 
-            if ( ValEsp == 0 )
+            if ( StringDado1 == NULL )
             {
-               return TST_CompararPonteiroNulo( 0 , pDado ,
-                         "Valor não deveria existir." ) ;
+               return TST_CompararPonteiroNulo( 0 , stringtemp ,
+                         "Nome não deveria existir." ) ;
             } /* if */
 
-            if ( pDado == NULL )
+            if ( stringtemp == NULL )
             {
-               return TST_CompararPonteiroNulo( 1 , pDado ,
-                         "Dado tipo um deveria existir." ) ;
+               return TST_CompararPonteiroNulo( 1 , stringtemp ,
+                         "Nome deveria existir." ) ;
             } /* if */
 
-			return (TST_tpCondRet) (TST_CompararString( StringDado1 , pDado->nome ,
-                         "Valor do elemento errado." ) && TST_CompararString( StringDado2 , pDado->data_nasc ,
-                         "Valor do elemento errado." ) && TST_CompararString( StringDado3 , pDado->email ,
-                         "Valor do elemento errado." ) && TST_CompararString( StringDado4 , pDado->cidade ,
-                         "Valor do elemento errado." )) ;
+			return (TST_tpCondRet) (TST_CompararString( StringDado1 , stringtemp ,
+                         "Nome corrente errado." )) ;
 
-         } /* fim ativa: Testar obter valor do vertice corrente */
+         } /* fim ativa: Testar obter nome do usuario corrente */
 
-      /* Testar excluir aresta entre o corrente e o pvalor recebido */
-
-         else if ( strcmp( ComandoTeste , EXC_ARESTA_CMD ) == 0 )
-         {
-
-            numLidos = LER_LerParametros( "iii" , &inxusuario, &inxstruct, &ValEsp ) ; //str1234
-
-            if ( ( numLidos != 3 ) //6
-              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
-            {
-               return TST_CondRetParm ;
-            } /* if */
-
-			 pDado = &vtstructs[inxstruct];//( no_teste * ) malloc( sizeof(no_teste) ) ;
-            if ( pDado == NULL )
-            {
-               return TST_CondRetMemoria ;
-            } /* if */
-
-            CondRet = (TST_tpCondRet) USU_ExcluirAresta( vtusuarios[ inxusuario ] , pDado ) ;
-
-            return TST_CompararInt( ValEsp , CondRet ,
-                     "Condicao de retorno errada ao excluir aresta."                   ) ;
-
-         } /* fim ativa: Testar excluir aresta */
-
-      /* USU  &Ir para o vertice com o indice passado */
-
-         else if ( strcmp( ComandoTeste , IR_VERTICE_CMD ) == 0 )
-         {
-
-            numLidos = LER_LerParametros( "iii" , &inxusuario, &inxstruct, &ValEsp ) ;
-
-            if ( ( numLidos != 3 )
-              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
-            {
-               return TST_CondRetParm ;
-            } /* if */
-
-			 pDado = &vtstructs[ inxstruct ];//( no_teste * ) malloc( sizeof(no_teste) ) ;
-			 
-            if ( pDado == NULL )
-            {
-               return TST_CondRetMemoria ;
-            } /* if */
-
-
-            CondRet = (TST_tpCondRet) USU_IrVertice(vtusuarios[inxusuario], pDado);
-
-           return TST_CompararInt( ValEsp , CondRet ,
-                     "Condicao de retorno errada ao ir para vertice."                   ) ;
-
-         } /* fim ativa: USU  &Ir para o vertice */
-
-		 /*USU &Ver quantidade de vertices*/
-
-		 else if ( strcmp( ComandoTeste , QNT_VERTICE_CMD ) == 0 )
-		 {
-			 numLidos = LER_LerParametros( "ii" , &inxusuario, &ValEsp);
-
-			 if ( ( numLidos != 2 )
-              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
-            {
-               return TST_CondRetParm ;
-            } /* if */
-
-			 return TST_CompararInt( ValEsp , USU_QntVertices(vtusuarios[inxusuario]) ,
-                     "Quantidade de vertices errada."                   ) ;
-
-		 }/* fim ativa: USU &Ver quantidade de vertices */
-
-		 /*USU &Ver quantidade de arestas do vertice corrente*/
-
-		  else if ( strcmp( ComandoTeste , QNT_ARESTA_CMD ) == 0 )
-		 {
-			 numLidos = LER_LerParametros( "ii" , &inxusuario, &ValEsp);
-
-			 if ( ( numLidos != 2 )
-              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
-            {
-               return TST_CondRetParm ;
-            } /* if */
-
-			 return TST_CompararInt( ValEsp , USU_QntArestas(vtusuarios[inxusuario]) ,
-                     "Quantidade de arestas errada."                   ) ;
-
-		 }/* fim ativa: USU &Ver quantidade de arestas do vertice corrente */
+      
 
       return TST_CondRetNaoConhec ;
 
