@@ -49,7 +49,7 @@ void criarUsuario (USU_tppUsuario minhaRede);
 RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero);
 void removerUsuario (USU_tppUsuario minhaRede);
 void adicionarAmigo (USU_tppUsuario minhaRede);
-void buscarIdUsuario (USU_tppUsuario minhaRede);
+void IrUsuario (USU_tppUsuario minhaRede);
 
 int verificaIdade (int idade);
 int verificaGenero (char genero);
@@ -58,13 +58,23 @@ int verificaGenero (char genero);
 int main (void)
 {    
     int opcao;
+    char * nome;
     USU_tppUsuario minhaRede;
     opcao = 1;
     minhaRede = USU_InicializarModulo();
-    printf(" \n Bem vindo ao iMigo a sua nova rede de relacionametos\n\n\n");
+    printf(" \n\t\tBem vindo ao iMigo a sua nova rede de relacionametos\n");
     do{
-        printf ("Digite o que deseja fazer:\n\t0- Finalizar execucao\n\t1- Criar Usuario\n\t2- Remover Usuario\n\t3- Adicionar Amigo\n\t4-Buscar por nome\n");
-        scanf("%d",&opcao);
+        nome = USU_PegaNomeUsuarioCorrente(minhaRede);
+        if(nome != NULL)
+        {
+            printf("\nVoce esta logado como: %s\n",nome);
+        }/* if */
+        else
+        {
+            printf("\nRede atualmente sem usuarios\n");
+        }/* else */
+        printf ("Digite o que deseja fazer:\n\t0- Finalizar execucao\n\t1- Criar Usuario\n\t2- Remover Usuario\n\t3- Adicionar Amigo\n\t4- Ir para usuario por nome\n");
+        scanf("%d",&opcao);        
         switch (opcao)
         {
             case 1:
@@ -77,7 +87,7 @@ int main (void)
                 adicionarAmigo(minhaRede);
                 break;
             case 4:
-                buscarIdUsuario(minhaRede);
+                IrUsuario(minhaRede);
                 break;
             default:
                 break;
@@ -200,15 +210,15 @@ void adicionarAmigo (USU_tppUsuario minhaRede)
     
 }
 
-void buscarIdUsuario (USU_tppUsuario minhaRede)
+void IrUsuario (USU_tppUsuario minhaRede)
 {
     int aux = -1;
     char nome[MAXNOME];
     printf("digite o nome buscado: \n");
     scanf(" %49[^\n]",nome);
     
-    printf("Buscando usurio com nome: %s: \n",nome);
-    aux = USU_USU_IrUsuario(minhaRede,nome);
+    printf("Buscando usuario com nome: %s: ...",nome);
+    aux = USU_IrUsuario(minhaRede,nome);
     if(aux >= 0)
     {
         printf("Usuario encontrado com Id: %d\n",aux);

@@ -12,7 +12,7 @@ c			= ..\Fontes
 [Modulos]
 Lista
 Grafo
-Usuario
+Usuario /D_DEBUG
 Rede
 TESTEREDE
 
