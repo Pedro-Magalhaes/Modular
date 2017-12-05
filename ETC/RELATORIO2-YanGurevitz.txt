@@ -1,7 +1,15 @@
 .LOG
 20:31 01/12/2017
-Comecei o desenvolvimento do módulo TESTECHAT para controlar o teste automatizado do módulo CHAT
+Comecei o desenvolvimento do módulo TESTECHAT para controlar o teste automatizado do módulo CHAT (4:00)
 15:27 02/12/2017
-Fiz o script de teste para o módulo CHAT
+Fiz o script de teste para o módulo CHAT (01:30)
 16:29 02/12/2017
-Correção de pequenos erros no módulo TESTECHAT
+Correção de pequenos erros no módulo TESTECHAT (00:15)
+20:46 02/12/2017
+Continuação do desenvolvimento do módulo TESTEUSUARIO que havia sido iniciado por outro mebro do grupo (02:30)
+17:54 04/12/2017
+Continuação do desenvolvimento do TESTEUSUARIO (03:00). E desenvolvimento do script de teste do módulo usuário (01:30)
+14:29 05/12/2017
+Atualizei o módulo TESTECHAT e o script de teste de chat para testar nova função (00:30)
+15:40 05/12/2017
+Atualizei o módulo TESTEUSUARIO para acomodar as novas funções do módulo USUARIO e continuei o desenvolvimento do script de teste de usuario (1:10)
