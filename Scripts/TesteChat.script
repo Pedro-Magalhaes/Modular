@@ -62,7 +62,7 @@
 == Adicionar integrante corretamente
 =adicionarintegrante  chat0   struct1   nome1   id1   gen1   idade1   OK
 == Verificar se o usuario foi mesmo adicionado
-=enviarmensagem   	 chat0   struct1   "Oi"   OK
+=verificausuario   	 chat0   struct1   OK
 
 == Testar sair do chat cobrindo todas as classes de equivalência
 == Sair de chat não existente
@@ -72,7 +72,7 @@
 == Remover usuário corretamente
 =sairchat  	 chat0   struct1	OK
 == Verificar se o usuário foi mesmo removido
-=enviarmensagem   	 chat0   struct1   "Oi"   NaoEstaNoChaat
+=verificausuario   	 chat0   struct1   NaoEstaNoChaat
 == Remover usuário que não está no chat
 =sairchat  	 chat0   struct1	OK
 
@@ -92,7 +92,7 @@
 == Testar deletar chat conbrindo todas as classes de equivalência
 == Deletar chat não existente
 =deletarchat    chat1   ChatNULL
-=0 Deletar chat corretamente
+== Deletar chat corretamente
 =deletarchat    chat0   OK
 
 
