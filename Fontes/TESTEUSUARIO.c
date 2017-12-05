@@ -16,6 +16,8 @@
 *
 *     1       pfs   29/11/2017 início desenvolvimento
 *	  2		  yan	02/12/2017 continuação do desenvolvimento
+*	  3		  yan	04/12/2017 continuação do desenvolvimento
+*	  4		  yan	05/12/2017 continuação do desenvolvimento
 *
 ***************************************************************************/
 
@@ -39,6 +41,7 @@ static const char DELETAR_USUARIO_CMD      [ ] = "=deletarusuario"   ;
 static const char DESTRUIR_USUARIOS_CMD    [ ] = "=destruirusuarios"   ;
 static const char TOTAL_USUARIOS_CMD       [ ] = "=totalusuarios"   ;
 static const char PEGAR_CORRENTE_CMD       [ ] = "=pegarcorrente"   ;
+static const char IR_USUARIO_CMD		   [ ] = "=irusuario"   ;
 
 
 
@@ -77,10 +80,11 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 *     =criarusuario                 inxusuario   string1   int1   string2     CondRetEsp
 *     =adicionaramigo               inxusuario   string1     CondRetEsp
 *     =editarperfil                 inxusuario   XXXX     CondRetEsp
-*     =deletarusuario               int1     CondRetEsp
-*     =destruirusuarios             inxusuario     CondRetEsp
-*     =totalusuarios				inxusuario	   ValEsp
-*     =pegarcorretne				inxusuario	   string1
+*     =deletarusuario               inxusuairo   CondRetEsp
+*     =destruirusuarios             inxusuario   
+*     =totalusuarios				inxusuario	 ValEsp
+*     =pegarcorretne				inxusuario	 string1
+*     =irusuario					inxusuario   string1     ValEsp
 ***********************************************************************/
 
    TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
@@ -175,6 +179,28 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 
          } /* fim ativa: Testar adicionar amigo */
 
+		 /* Testar mudar usuario corrente */
+
+         else if ( strcmp( ComandoTeste , IR_USUARIO_CMD ) == 0 )
+         {
+
+            numLidos = LER_LerParametros( "isi" ,
+                               &inxusuario, StringDado1, &ValEsp ) ;
+
+            if ( ( numLidos != 3 )
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )))
+            {
+               return TST_CondRetParm ;
+            } /* if */
+
+            intdado1 = USU_IrUsuario(vtusuarios[ inxusuario ], StringDado1);
+
+            return TST_CompararInt( ValEsp , intdado1 ,
+                     "Valor de retorno errado ao ir usuario.") ;
+
+
+         } /* fim ativa: Testar mudar usuario corrente */
+
       /* Testar editar perfil */
 
          else if ( strcmp( ComandoTeste , EDITAR_PERFIL_CMD ) == 0 )
@@ -227,10 +253,10 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
          else if ( strcmp( ComandoTeste , DESTRUIR_USUARIOS_CMD ) == 0 )
          {
 
-             numLidos = LER_LerParametros( "ii" ,
-                       &inxusuario , &ValEsp ) ;
+             numLidos = LER_LerParametros( "i" ,
+                       &inxusuario ) ;
 
-            if ( ( numLidos != 2 ) 
+            if ( ( numLidos != 1 ) 
               || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
@@ -238,12 +264,12 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 
             
 
-            CondRet = (TST_tpCondRet) USU_DestruirUsuarios( vtusuarios[ inxusuario ] ) ;
+            USU_DestruirUsuarios( vtusuarios[ inxusuario ] ) ;
 
 
 
-            return TST_CompararInt( ValEsp , CondRet ,
-                     "Condicao de retorno errada ao destruir usuarios."                   ) ;
+             return TST_CompararPonteiroNulo( 0 , vtusuarios[ inxusuario ] ,
+               "Erro ao destruir usuarios."  ) ;
 
          } /* fim ativa: Testar destruir usuarios */
 
