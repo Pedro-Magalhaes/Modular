@@ -14,6 +14,7 @@
 *  $HA Histórico de evolução:
 *     Versão  Autor    Data     Observações
 *     1       yan   01/12/2017 início desenvolvimento
+*     2       yan   05/12/2017 continuação desenvolvimento
 *
 ***************************************************************************/
 
@@ -36,6 +37,7 @@ static const char SAIR_CHAT_CMD            [ ] = "=sairchat"  ;
 static const char DELETAR_CHAT_CMD         [ ] = "=deletarchat"   ;
 static const char DELETAR_MENSAGEM_CMD     [ ] = "=deletarmensagem"    ;
 static const char PEGAR_MENSAGENS_CMD      [ ] = "=pegarmensagens" ;
+static const char VERIFICA_USUARIO_CMD     [ ] = "=verificausuario" ;
 
 
 
@@ -83,10 +85,11 @@ CHA_tppChat   vtchats[ DIM_VT_CHAT ] ;
 *     =criarchat					inxchat  inxstruct  string1   int1   string2   int2 
 *     =adicionarintgrante			inxchat  inxstruct  string1   int1   string2   int2    CondRetEsp
 *     =enviarmensagem				inxchat  inxstruct  string1   CondRetEsp
-*     =sairchat						inxchat  inxstruct  CondRetEsp
+*     =sairchat						inxchat  inxstruct   CondRetEsp
 *     =deletarchat                  inxchat  CondRetEsp
 *     =deletarmensagem              inxchat  CondRetEsp
 *     =pegarmensagens				inxchat  StringEsp
+*     =verificausuario				inxchat  inxstruct   CondRetEsp
 ***********************************************************************/
 
    TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
@@ -321,7 +324,40 @@ CHA_tppChat   vtchats[ DIM_VT_CHAT ] ;
 
          } /* fim ativa: Testar pegar mensagens */
 
-      
+      /* Testar verificar usuario */
+		 else if ( strcmp( ComandoTeste, VERIFICA_USUARIO_CMD ) == 0 )
+		 {
+
+			 numLidos = LER_LerParametros( "iii" ,
+                       &inxchat, &inxstruct, &ValEsp ) ;
+
+			  if ( ( numLidos != 3 ) 
+              || ( ! ValidarInxChat( inxchat , NAO_VAZIO )) )
+            {
+               return TST_CondRetParm ;
+            } /* if */
+			
+
+
+            pDado = (no_teste*) &vtstructs[ inxstruct ];  
+            if ( pDado == NULL )
+            {
+               return TST_CondRetMemoria ;
+            } /* if */
+
+			
+
+
+            CondRet = (TST_tpCondRet) CHA_VericaUsuario( vtchats[ inxchat ] , pDado ) ;
+
+            if ( CondRet != CHA_CondRetOK )
+            {
+               //free( pDado ) ; //não foi alocado dinamicamente
+            } /* if */
+
+            return TST_CompararInt( ValEsp , CondRet ,
+                     "Condicao de retorno errada ao verificar usuario.") ;
+		 } /* Fim da ativa: Testar verificar usuario */
 
       return TST_CondRetNaoConhec ;
 
