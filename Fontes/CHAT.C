@@ -13,10 +13,11 @@
 *  Autores: pfs, hfac , yan
 *
 *  $HA Histórico de evolução:
-*     Versão  Autor    Data     Observações*     
+*     Versão  Autor    Data     Observações*
 *     1       pfs   17/11/2017 início desenvolvimento
 *     2	      hfac  22/11/2017 continuação do desenvolvimento
 *     3       hfac  01/12/2017 correção e finalização do módulo
+*     4       hfac e pfs  05/12/2017 pequenas edições e criação de pequenas funções
 ***************************************************************************/
 #include   <stdio.h>
 #include   <string.h>
@@ -68,7 +69,7 @@ typedef struct CHA_tagChat {
 
 
 static void ExcluirMensagens(void *msg)
-{	
+{
 	Mensagem * dado = (Mensagem *)msg;
 	free(dado->conteudo);
 	free(msg);
@@ -90,6 +91,14 @@ CHA_tppChat CHA_CriaChat(void* participante, void(*ExcluirValor) (void * pDado))
 	{
 		return NULL;
 	}/*if*/
+	if (participante == NULL)
+	{
+		return NULL;
+	}/*if*/
+	if (ExcluirValor == NULL)
+	{
+		return NULL;
+	}/*if*/
 	pChat->integrantes = LIS_CriarLista(ExcluirValor); //criando uma lista vazia
 	pChat->mensagens = LIS_CriarLista(ExcluirMensagens); //criando uma lista vazia
 	if (LIS_InserirElementoApos(pChat->integrantes, participante) != LIS_CondRetOK)
@@ -99,13 +108,40 @@ CHA_tppChat CHA_CriaChat(void* participante, void(*ExcluirValor) (void * pDado))
 	if (pChat->mensagens == NULL)
 	{
 		return NULL;
-	}
+	}/*if*/
 	LIS_IrInicioLista(pChat->integrantes);
 
 	return pChat;
 }
 
 /* Fim função: CHA  &Criar chat */
+
+/***************************************************************************
+*
+*  Função: CHA  &Verica Usuario
+*  ****/
+
+CHA_tpCondRet CHA_VericaUsuario(CHA_tppChat pChat, void* participante)
+{
+	if (pChat == NULL)
+	{
+		return CHA_CondRetChatNULL;
+	}/*if*/
+	if (participante == NULL)
+	{
+
+		return CHA_CondRetDadoNULL;
+	}/*if*/
+
+	LIS_IrInicioLista(pChat->integrantes);
+	if (LIS_ProcurarValor(pChat->integrantes, participante) != LIS_CondRetOK)
+	{
+		return CHA_CondRetNaoEstaNoChat;
+	}/*if*/
+	return CHA_CondRetOK;
+}
+
+/* Fim função: CHA  &Verica Usuario */
 
 
 /***************************************************************************
@@ -121,19 +157,17 @@ CHA_tpCondRet CHA_AdicionaIntegrante(CHA_tppChat pChat, void* participante)
 	}/*if*/
 	if (participante == NULL)
 	{
-		return CHA_CondRetChatNULL;
+		return CHA_CondRetDadoNULL;
 	}/*if*/
-	
-	LIS_IrInicioLista(pChat->integrantes);
 
-	if (LIS_ProcurarValor(pChat->integrantes, participante) == LIS_CondRetNaoAchou)
+	if (CHA_VericaUsuario(pChat, participante) == CHA_CondRetNaoEstaNoChat)
 	{
 		LIS_IrFinalLista(pChat->integrantes);
 		if (LIS_InserirElementoApos(pChat->integrantes, participante) != LIS_CondRetOK)
 		{
 			return CHA_CondRetFaltouMemoria;
-		}
-	}
+		}/*if*/
+	}/*if*/
 
 	return CHA_CondRetOK;
 }
@@ -147,42 +181,51 @@ CHA_tpCondRet CHA_AdicionaIntegrante(CHA_tppChat pChat, void* participante)
 *  Função: CHA  &Envia Mensagem
 *  ****/
 
-CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat,char* mensagem, char* remetente)
+CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat, char* mensagem, char* remetente)
 {
 	Mensagem *msg;
 	msg = (Mensagem*)malloc(sizeof(Mensagem));
-	msg->conteudo = (char*)malloc(sizeof(char)*145);
+	msg->conteudo = (char*)malloc(sizeof(char) * 145);
 	if (msg == NULL)
 	{
 		return CHA_CondRetFaltouMemoria;
-	}
+	}/*if*/
 	if (pChat == NULL)
 	{
 		return CHA_CondRetChatNULL;
 	}/*if*/
+	if (mensagem == NULL)
+	{
+		return CHA_CondRetDadoNULL;
+	}/*if*/
+	if (remetente == NULL)
+	{
+		return CHA_CondRetDadoNULL;
+	}/*if*/
 
-	strcpy(msg->conteudo,mensagem);
-	msg->remetente=remetente;
-	LIS_IrInicioLista(pChat->integrantes);
-	if (LIS_ProcurarValor(pChat->integrantes, msg->remetente) != LIS_CondRetOK)
+	strcpy_s(msg->conteudo, 145, mensagem);
+	msg->remetente = remetente;
+
+	if (CHA_VericaUsuario(pChat, remetente) != CHA_CondRetOK)
 	{
 		return CHA_CondRetNaoEstaNoChat;
 	}
+
 	LIS_IrFinalLista(pChat->mensagens);
 	if (LIS_InserirElementoApos(pChat->mensagens, (void*)msg) != LIS_CondRetOK)
 	{
 		return CHA_CondRetFaltouMemoria;
-	}
+	}/*if*/
 	if (LIS_ObtemTamanho(pChat->mensagens) > 10)
 	{
 		LIS_IrInicioLista(pChat->mensagens);
 		if (LIS_ExcluirElemento(pChat->mensagens) != LIS_CondRetOK)
 		{
 			return CHA_CondRetSemMensagens; //Não deve atingir esse estado nunca, se atingir, erro no módulo lista
-		}
-	}
+		}/*if*/
+	}/*if*/
 
-	
+
 	return CHA_CondRetOK;
 }
 
@@ -200,15 +243,18 @@ CHA_tpCondRet CHA_SairChat(CHA_tppChat pChat, void* participante)
 	{
 		return CHA_CondRetChatNULL;
 	}/*if*/
-	LIS_IrInicioLista(pChat->integrantes);
-	if (LIS_ProcurarValor(pChat->integrantes, participante) == LIS_CondRetOK)
+	if (participante == NULL)
+	{
+		return CHA_CondRetDadoNULL;
+	}/*if*/
+	if (CHA_VericaUsuario(pChat, participante) == CHA_CondRetNaoEstaNoChat)
 	{
 		LIS_ExcluirElemento(pChat->integrantes);
-	}
+	}/*if*/
 	if (LIS_ObtemTamanho(pChat->integrantes) == 0)
 	{
 		CHA_DeletarChat(pChat);
-	}
+	}/*if*/
 	return CHA_CondRetOK;
 }
 
@@ -251,7 +297,7 @@ CHA_tpCondRet CHA_DeletarMensagem(CHA_tppChat pChat)
 	{
 		LIS_IrFinalLista(pChat->mensagens);
 		LIS_ExcluirElemento(pChat->mensagens);
-	}
+	}/*if*/
 	return CHA_CondRetOK;
 }
 
@@ -268,13 +314,13 @@ char* CHA_PegaMensagens(CHA_tppChat pChat)
 	char *aux;
 	int j = 0;
 	int i = 0;
-	
-	
+
+
 
 	Mensagem *m;
 	if (pChat == NULL)
 	{
-		
+
 		return NULL;
 	}/*if*/
 
@@ -290,7 +336,7 @@ char* CHA_PegaMensagens(CHA_tppChat pChat)
 			for (i = 0; aux[i] != '\0'; i++, j++)
 			{
 				mensagens[j] = aux[i];
-			}
+			}/*for*/
 			mensagens[j] = ':';
 			j++;
 			mensagens[j] = ' ';
@@ -300,16 +346,18 @@ char* CHA_PegaMensagens(CHA_tppChat pChat)
 			for (i = 0; aux[i] != '\0'; i++, j++)
 			{
 				mensagens[j] = aux[i];
-			}
+			}/*for*/
 			mensagens[j] = '\n';
 			j++;
 		} while (LIS_AvancarElementoCorrente(pChat->mensagens, 1) == LIS_CondRetOK);
 		mensagens[j] = '\0';
 		return mensagens;
-	}
+	}/*if*/
 	else
 		free(mensagens);
-		return NULL;
+	return NULL;
 }
 
 /* Fim função: CHA  &Pega mensagens */
+
+
