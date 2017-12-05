@@ -15,31 +15,32 @@
 *  Autores: pfs, hfac , yan
 *
 *  $HA Histórico de evolução:
-*     Versão  Autor    Data     Observações*     
+*     Versão  Autor    Data     Observações*
 *     1       pfs   17/11/2017 início desenvolvimento
 *     2	      hfac  22/11/2017 continuação do desenvolvimento
 *     3       hfac  01/12/2017 correção e finalização do módulo
+*     4       hfac e pfs  05/12/2017 pequenas edições e criação de pequenas funções
 *
 *  $ED Descrição do módulo
 *     Implementa o módulo chat da rede de relacionamentos, contém os
-*     usuarios participantes e mensagens armazenadas. 
+*     usuarios participantes e mensagens armazenadas.
 *
 *     Cada chat possui um vetor para seus integrantes e até 10 mensagens armazenadas onde
 *	  as mais antigas serão deletadas
 *
 ***************************************************************************/
- 
+
 #if defined( CHAT_OWN )
-   #define CHAT_EXT
+#define CHAT_EXT
 #else
-   #define CHAT_EXT extern
+#define CHAT_EXT extern
 #endif
 
 /***** Declarações exportadas pelo módulo *****/
 
 /* Tipo referência para um Chat */
 
-typedef struct CHA_tagChat * CHA_tppChat ;
+typedef struct CHA_tagChat * CHA_tppChat;
 
 
 /***********************************************************************
@@ -52,30 +53,33 @@ typedef struct CHA_tagChat * CHA_tppChat ;
 *
 ***********************************************************************/
 
-   typedef enum {
+typedef enum {
 
-         CHA_CondRetOK ,
-               /* Concluiu corretamente */
+	CHA_CondRetOK,
+	/* Concluiu corretamente */
 
-         CHA_CondRetChatVazia ,
-               /* O chat nao possui participantes */
+	CHA_CondRetChatVazia,
+	/* O chat nao possui participantes */
 
-		CHA_CondRetChatNULL,
-			   /* O chat nao existe */
+	CHA_CondRetChatNULL,
+	/* O chat nao existe */
 
-         CHA_CondRetSemMensagens ,
-               /* O chat nao possui mensagens */
+	CHA_CondRetSemMensagens,
+	/* O chat nao possui mensagens */
 
-         CHA_CondRetNaoAchou ,
-               /* Nao encontrou o chat procurado */
+	CHA_CondRetNaoAchou,
+	/* Nao encontrou o chat procurado */
 
-         CHA_CondRetFaltouMemoria ,
-               /* Faltou memoria ao tentar criar um chat */
+	CHA_CondRetFaltouMemoria,
+	/* Faltou memoria ao tentar criar um chat */
 
-	     CHA_CondRetNaoEstaNoChat
-			   /* Nao está incluido no chat em que deseja interagir */
+	CHA_CondRetNaoEstaNoChat,
+	/* Nao está incluido no chat em que deseja interagir */
 
-   } CHA_tpCondRet ;
+	CHA_CondRetDadoNULL
+	/* Dado enviado e nulo */
+
+} CHA_tpCondRet;
 
 
 /***********************************************************************
@@ -83,7 +87,7 @@ typedef struct CHA_tagChat * CHA_tppChat ;
 *  $FC Função: CHA  &Criar Chat
 *
 *  $ED Descrição da função
-*     Cria um chat. 
+*     Cria um chat.
 *     Os integrantes são desconhecidos a priori.
 *
 *  $EP Parâmetros
@@ -97,9 +101,9 @@ typedef struct CHA_tagChat * CHA_tppChat ;
 *     a função retornará NULL.
 *     Não será dada mais informação quanto ao problema ocorrido.
 *
-***********************************************************************/  
+***********************************************************************/
 
-   CHA_tppChat CHA_CriaChat(void* participante, void(*ExcluirValor) (void * pDado));
+CHA_tppChat CHA_CriaChat(void* participante, void(*ExcluirValor) (void * pDado));
 
 /***********************************************************************
 *
@@ -117,11 +121,12 @@ typedef struct CHA_tagChat * CHA_tppChat ;
 *     Se o integrante a ser adicionado já existir no chat, retorna CHA_CondRetOK
 *     Se faltar memoria, retorna CHA_CondRetFaltouMemoria
 *	  Se o chat enviado for NULL, retorna CHA_CondRetChatNULL
-*     
+*     Se o integrante for NULL, retorna CHA_CondRetDadoNULL
+*
 *
 ***********************************************************************/
 
-   CHA_tpCondRet CHA_AdicionaIntegrante(CHA_tppChat pChat, void* participante);
+CHA_tpCondRet CHA_AdicionaIntegrante(CHA_tppChat pChat, void* participante);
 
 /***********************************************************************
 *
@@ -142,10 +147,11 @@ typedef struct CHA_tagChat * CHA_tppChat ;
 *     CHA_CondRetSemMensagens	- Se não tiver mensagens após o envio da decima primeira mensagem,
 *								  indica erro no modulo lista
 *     CHA_CondRetOK				- Se tudo tiver dado certo
+*     CHA_CondRetDadoNULL       - Se o remetente for NULL ou se a mensagem for NULL
 *
-***********************************************************************/  
+***********************************************************************/
 
-   CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat, char* mensagem, char* remetente) ;
+CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat, char* mensagem, char* remetente);
 
 /***********************************************************************
 *
@@ -161,10 +167,11 @@ typedef struct CHA_tagChat * CHA_tppChat ;
 *  $FV Valor retornado
 *	  CHA_CondRetChatNULL	- Se o ponteiro para o chat for igual a NULL
 *	  CHA_CondRetOK			- Se tudo tiver dado certo
+*     CHA_CondRetDadoNULL   - Se o participante for NULL
 *
-***********************************************************************/  
+***********************************************************************/
 
-   CHA_tpCondRet CHA_SairChat(CHA_tppChat pChat, void * participante);
+CHA_tpCondRet CHA_SairChat(CHA_tppChat pChat, void * participante);
 
 /***********************************************************************
 *
@@ -180,9 +187,9 @@ typedef struct CHA_tagChat * CHA_tppChat ;
 *	  CHA_CondRetChatNULL	- Se o ponteiro para o chat for igual a NULL
 *	  CHA_CondRetOK			- Se tudo tiver dado certo
 *
-***********************************************************************/  
+***********************************************************************/
 
-   CHA_tpCondRet CHA_DeletarChat(CHA_tppChat pChat);
+CHA_tpCondRet CHA_DeletarChat(CHA_tppChat pChat);
 
 /***********************************************************************
 *
@@ -198,27 +205,46 @@ typedef struct CHA_tagChat * CHA_tppChat ;
 *	  CHA_CondRetChatNULL	- Se o ponteiro para o chat for igual a NULL
 *	  CHA_CondRetOK			- Se tudo tiver dado certo
 *
-***********************************************************************/  
+***********************************************************************/
 
-   CHA_tpCondRet CHA_DeletarMensagem(CHA_tppChat pChat);
+CHA_tpCondRet CHA_DeletarMensagem(CHA_tppChat pChat);
 
-   /***********************************************************************
-   *
-   *  $FC Função: CHA  &Pega Mensagens
-   *
-   *  $ED Descrição da função
-   *     Pega as mensagens do chat e monta uma string com o ID do remetente
-   *
-   *  $EP Parâmetros
-   *     pChat - Ponteiro para o chat em questão
-   *
-   *  $FV Valor retornado
-   *	  NULL - Se não tiver conseguido alocar memoria, ou caso não tenha mensagens no chat
-   *	  char* - Ponteiro para uma string que contem todas as mensagens formatadas
-   *
-   ***********************************************************************/
+/***********************************************************************
+*
+*  $FC Função: CHA  &Pega Mensagens
+*
+*  $ED Descrição da função
+*     Pega as mensagens do chat e monta uma string com o ID do remetente
+*
+*  $EP Parâmetros
+*     pChat - Ponteiro para o chat em questão
+*
+*  $FV Valor retornado
+*	  NULL - Se não tiver conseguido alocar memoria, ou caso não tenha mensagens no chat
+*	  char* - Ponteiro para uma string que contem todas as mensagens formatadas
+*
+***********************************************************************/
 
-   char* CHA_PegaMensagens(CHA_tppChat pChat);
+char* CHA_PegaMensagens(CHA_tppChat pChat);
+
+/***********************************************************************
+*
+*  $FC Função: CHA  &Verica Usuario
+*
+*  $ED Descrição da função
+*     Verifica se um determinado participante pertence ao chat em questão
+*
+*  $EP Parâmetros
+*     pChat - Ponteiro para o chat em questão
+*     participante - Ponteiro para o participante em questão
+*
+*  $FV Valor retornado
+*	  CHA_CondRetNaoEstaNoChat  - Se o participante não pertence ao chat enviado
+*	  CHA_CondRetOK			    - Se o participante pertencer ao chat enviado
+*
+***********************************************************************/
+
+CHA_tpCondRet CHA_VericaUsuario(CHA_tppChat pChat, void* participante);
 
 #undef CHAT_EXT
 
