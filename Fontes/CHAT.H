@@ -107,6 +107,25 @@ CHA_tppChat CHA_CriaChat(void* participante, void(*ExcluirValor) (void * pDado))
 
 /***********************************************************************
 *
+*  $FC Função: CHA  &Verica Usuario
+*
+*  $ED Descrição da função
+*     Verifica se um determinado participante pertence ao chat em questão
+*
+*  $EP Parâmetros
+*     pChat - Ponteiro para o chat em questão
+*     participante - Ponteiro para o participante em questão
+*
+*  $FV Valor retornado
+*	  CHA_CondRetNaoEstaNoChat  - Se o participante não pertence ao chat enviado
+*	  CHA_CondRetOK			    - Se o participante pertencer ao chat enviado
+*
+***********************************************************************/
+
+CHA_tpCondRet CHA_VericaUsuario(CHA_tppChat pChat, void* participante);
+
+/***********************************************************************
+*
 *  $FC Função: CHA  &Adiciona Integrante
 *
 *  $ED Descrição da função
@@ -226,25 +245,6 @@ CHA_tpCondRet CHA_DeletarMensagem(CHA_tppChat pChat);
 ***********************************************************************/
 
 char* CHA_PegaMensagens(CHA_tppChat pChat);
-
-/***********************************************************************
-*
-*  $FC Função: CHA  &Verica Usuario
-*
-*  $ED Descrição da função
-*     Verifica se um determinado participante pertence ao chat em questão
-*
-*  $EP Parâmetros
-*     pChat - Ponteiro para o chat em questão
-*     participante - Ponteiro para o participante em questão
-*
-*  $FV Valor retornado
-*	  CHA_CondRetNaoEstaNoChat  - Se o participante não pertence ao chat enviado
-*	  CHA_CondRetOK			    - Se o participante pertencer ao chat enviado
-*
-***********************************************************************/
-
-CHA_tpCondRet CHA_VericaUsuario(CHA_tppChat pChat, void* participante);
 
 #undef CHAT_EXT
 
