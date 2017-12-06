@@ -70,10 +70,35 @@
 =pegarcorrente   usuario0   nome0
 
 == Testar editar nome do corrente cobrindo todas as classes de equivalência
+== Editar nome em módulo não inicializado
+=editarnome   usuario1   nome0   NaoInicializado
+== Mudar nome para um já em uso
+=editarnome   usuario0   nome1   PerfilIncorreto
+== Editar nome corretamente e verificar se foi editado
+=editarnome   usuario0   nome3   OK
+=pegarcorrente   usuario0   nome3
+== Reverter para nome original
+=editarnome   usuario0   nome0   OK
 
 == Testar editar idade do corrente cobrindo todas as classes de equivalência
+== Editar idade em módulo não inicializado
+=editaridade   usuario1   idade0   NaoInicializado
+== Mudar para uma idade inválida
+=editaridade   usuario0   -1   PerfilIncorreto
+== Editar idade corretamente
+=editaridade   usuario0   idade3   OK
+== Reverter para idade original
+=editaridade   usuario0   idade0   OK
 
-== Testar editar genero do corrente cobrindo todas as classes de equivalência
+== Testar editar gênero do corrente cobrindo todas as classes de equivalência
+== Editar gênero em módulo não inicializado
+=editargenero   usuario1   gen0   NaoInicializado
+== Mudar para um gênero inválido
+=editargenero   usuario0   string0   PerfilIncorreto
+== Editar gênero corretamente
+=editargenero   usuario0   gen3   OK
+== Reverter para gênero original
+=editargenero   usuario0   gen0   OK
 
 == Testar mudar usuário corrente cobrindo todas as classes de equivalência
 == Mudar corrente em módulo não inicializado
