@@ -1,0 +1,14 @@
+#arquivos de composição que não são necessarios para a entrega#
+*.list
+*.make
+
+# objetos #
+*.obj
+*.build
+
+# exe do produto #
+Produto/*exe
+
+# gerais #
+.err
+.log
