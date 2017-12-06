@@ -255,12 +255,30 @@ USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
 
 /***************************************************************************
 *
-*  Função: USU  &Cria Usuario
+*  Função: USU  &Editar Nome
 *  ****/
 
- USU_tpCondRet USU_EditarPerfil() ;
+ USU_tpCondRet USU_EditarNome() ;
 
-/* Fim função: USU  &Cria Usuario */
+/* Fim função: USU  &Editar Nome */
+
+/***************************************************************************
+*
+*  Função: USU  &Editar idade
+*  ****/
+
+ USU_tpCondRet USU_EditarNome() ;
+
+/* Fim função: USU  &Editar idade */
+
+/***************************************************************************
+*
+*  Função: USU  &Editar Genero
+*  ****/
+
+ USU_tpCondRet USU_EditarNome() ;
+
+/* Fim função: USU  &Editar Genero */
 
 
 /***************************************************************************

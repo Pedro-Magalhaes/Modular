@@ -42,7 +42,9 @@
    #define USUARIO_EXT extern
 #endif
 
-#include   "GRAFO.H"
+#include "GRAFO.H"
+#include "CHAT.H"
+#include "LISTA.H"	
 
 /***** Declarações exportadas pelo módulo *****/
 
@@ -144,26 +146,58 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 ***********************************************************************/    
       USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, char* nome ) ;
 
+
 /***********************************************************************
 *
-*  $FC Função: USU  &Editar Perfil
-*
-*  $ED Descrição da função
+*  $FC Função: USU  &Editar Nome
 *     
-*
+*  $ED Descrição da função
+*     Substitui o genero antigo pelo nome passado para a função 
 *  $EP Parâmetros
-*     XXXXXXXXXXXX  - 
+*     pUsuario - ponteiro para a cabeça do modulo usuário
+*     genero - char com 'M' - masculino 'F' - feminino 'O' - outros  
 *
 *  $FV Valor retornado
-*     Se executou corretamente retorna o ponteiro para a lista.
-*     Este ponteiro será utilizado pelas funções que manipulem esta lista.
+*   se ponteiro pUsuario for null - USU_CondRetNaoInicializado
+*   se conseguiu fazer a alteração desejada - USU_CondRetOK
+*   Se não consegur -- USU_CondRetPerfilIncorreto
 *
-*     Se ocorreu algum erro, por exemplo falta de mem�ria ou dados errados,
-*     a função retornará NULL.
-*     Não será dada mais informação quanto ao problema ocorrido.
+***********************************************************************/ 
+      USU_tpCondRet USU_EditarGenero(USU_tppUsuario pUsuario, char genero);
+/***********************************************************************
 *
-***********************************************************************/   
-      USU_tpCondRet USU_EditarPerfil( ) ; 
+*  $FC Função: USU  &Editar Idade
+*     
+*  $ED Descrição da função
+*     Substitui a idade antiga pela passada para a função 
+*  $EP Parâmetros
+*     pUsuario - ponteiro para a cabeça do modulo usuário
+*     Idade - Inteiro entre 1 e 199  
+*
+*  $FV Valor retornado
+*   se ponteiro pUsuario for null - USU_CondRetNaoInicializado
+*   se conseguiu fazer a alteração desejada - USU_CondRetOK
+*   Se não consegur -- USU_CondRetPerfilIncorreto
+*
+***********************************************************************/ 
+      USU_tpCondRet USU_EditarIdade(USU_tppUsuario pUsuario, int idade);
+/***********************************************************************
+*
+*  $FC Função: USU  &Editar Nome
+*     
+*  $ED Descrição da função
+*     Substitui o nome antigo pelo nome passado para a função 
+*  $EP Parâmetros
+*     pUsuario - ponteiro para a cabeça do modulo usuário
+*     Nome - vetor de char com até 50 caracteres  
+*
+*  $FV Valor retornado
+*   se ponteiro pUsuario for null - USU_CondRetNaoInicializado
+*   se conseguiu fazer a alteração desejada - USU_CondRetOK
+*   Se não consegur -- USU_CondRetPerfilIncorreto
+*
+***********************************************************************/ 
+      USU_tpCondRet USU_EditarNome(USU_tppUsuario pUsuario, char* nome);
   
 
 /***********************************************************************

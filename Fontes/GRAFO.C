@@ -18,6 +18,7 @@
 *	  2		  Hfac & Pfm   14/out/2017   continuação do desenvolvimento
 *	  3		  Pfm		   15/out/2017   continuação do desenvolvimento e Modulo pronto para etapa de testes
 *	  4		Hfac & Pfm	   16/out/2017   Finalização do modulo; Testes concluidos; Melhor definição das funçoes no .H
+*	  5       Pfm 		   06/dez/2017   adicionados: Instrumentação, função de verificação,de recuperação e deturpação
 *
 ***************************************************************************/
 #include   <stdio.h>
@@ -30,6 +31,15 @@
 #define GRAFO_OWN
 #include "GRAFO.h"
 #undef GRAFO_OWN
+
+#define _DEBUG  // TIRAR ???
+
+#ifdef _DEBUG
+#include "CESPDIN.H"
+#include "CONTA.H"
+#include "GENERICO.H"
+#endif // _DEBUG
+
 
 /***********************************************************************
 *
@@ -45,6 +55,12 @@ typedef struct tagVerticeGrafo {
 
 	void * valor;
 	/* Ponteiro para o conteudo do vertice */
+#ifdef _DEBUG
+	int idGrafo;
+	/* identificador do grafo a qual pertence o vertice*/
+	int numArestas;
+	/* Numero de arestas do vértice*/
+#endif
 
 
 } tpVerticeGrafo;
@@ -60,10 +76,6 @@ typedef struct GRA_tagGrafo {
 
 	LIS_tppLista pOrigemGrafo;
 	/* Ponteiro para a origem do grafo */
-	#ifdef _DEBUG
-		LIS_tppLista _pOrigemGrafoRedundante;
-	/* Cópia do Ponteiro para a origem do grafo */
-	#endif
 
 	tpVerticeGrafo * pVertice;
 	/* Ponteiro para o vertice corrente do grafo */
@@ -74,7 +86,26 @@ typedef struct GRA_tagGrafo {
 	void(*ExcluirValor) (void * pValor);
 	/* Ponteiro para a função de destruição do valor contido em um elemento */
 
+#ifdef _DEBUG
+	LIS_tppLista _pOrigemGrafoRedundante;
+	/* Cópia do Ponteiro para a origem do grafo */
+	int numVertices;
+	/* Redundancia para saber o numero de elementos */
+	int idGrafo;
+	/* identificador do grafo seus vertices devem ter o mesmo id*/
+
+#endif
+
 } GRA_tpGrafo;
+
+#ifdef _DEBUG
+enum GRA_tipoDeDado
+{
+	GRA_TipoCabeca,
+	GRA_TipoVertice
+};
+#endif // DEBUG
+
 
 /***** Protótipos das funções encapuladas no módulo *****/
 
@@ -91,6 +122,12 @@ static void LimparCabeca(GRA_tppGrafo pGrafo);  /* por enquanto nao foi utilizad
 
 static void naoExclui(void * pDado);
 
+#ifdef _DEBUG
+GRA_tpCondRet GRA_VerificaCabeca(GRA_tppGrafo pGrafo);
+GRA_tpCondRet GRA_VerificaVertice(GRA_tppGrafo pGrafo);
+GRA_tpCondRet GRA_VerificaTamanho(GRA_tppGrafo pGrafo);
+GRA_tpCondRet GRA_VerificaId(GRA_tppGrafo pGrafo);
+#endif
 /*****  Código das funções exportadas pelo módulo  *****/
 
 /***************************************************************************
@@ -101,6 +138,10 @@ static void naoExclui(void * pDado);
 GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 {
 	GRA_tpGrafo * pGrafo = NULL;
+
+#ifdef _DEBUG
+	CNT_CONTAR("GRA_CriarGrafo");
+#endif
 
 	pGrafo = (GRA_tpGrafo *)malloc(sizeof(GRA_tpGrafo));
 	if (pGrafo == NULL)
@@ -113,6 +154,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	pGrafo->pVertice = NULL;
 	
 	#ifdef _DEBUG
+	CED_DefinirTipoEspaco(pGrafo, GRA_TipoCabeca);
 	pGrafo->_pOrigemGrafoRedundante = pGrafo->pOrigemGrafo;
 	#endif
 
@@ -130,7 +172,8 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
    {
 
     #ifdef _DEBUG
-      assert( pGrafo != NULL ) ;
+	 CNT_CONTAR("GRA_DestruirGrafo");
+     assert( pGrafo != NULL ) ;
     #endif
 	  if (pGrafo == NULL)
 	  {//nada a ser feito
@@ -156,7 +199,8 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 LIS_tppLista Elem = pGrafo->pOrigemGrafo;
 	 tpVerticeGrafo * atual;
 	 #ifdef _DEBUG
-		 assert(pGrafo != NULL) ;
+		CNT_CONTAR("GRA_EsvaziarGrafo");
+		assert(pGrafo != NULL) ;
 	#endif
 	 if (pGrafo == NULL)
 	 {
@@ -208,7 +252,8 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  {	
 	tpVerticeGrafo* pVerticeAux = NULL;
 	#ifdef _DEBUG
-		 assert(pGrafo != NULL) ;
+		CNT_CONTAR("GRA_InserirVertice");
+		assert(pGrafo != NULL) ;
 	#endif
 	if (pGrafo == NULL)
 	{
@@ -255,6 +300,12 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  GRA_tpCondRet GRA_ExcluirVertice(GRA_tppGrafo pGrafo)
  {
 	 tpVerticeGrafo *vizinho = LIS_ObterValor(pGrafo->pArestas);
+
+#ifdef _DEBUG
+	 CNT_CONTAR("GRA_ExcluirVertice");
+#endif // _DEBUG
+
+	 
 	 if (pGrafo == NULL || pGrafo->pVertice == NULL)
 	 {
 		 return GRA_CondRetGrafoNulo;
@@ -307,6 +358,9 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 GRA_tppGrafo gAux = pGrafo;
 	 tpVerticeGrafo* vAux;
 	 GRA_tpCondRet CondRet;
+#ifdef _DEBUG
+	 CNT_CONTAR("GRA_ExcluirAresta");
+#endif
 	 if (pGrafo == NULL)
 	 {
 		 return GRA_CondRetGrafoNulo;  
@@ -328,6 +382,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  {
 	tpVerticeGrafo* vertAux;
 	#ifdef _DEBUG
+		CNT_CONTAR("GRA_IrVertice");
 		assert(pGrafo != NULL);
 	#endif
 	if (pGrafo == NULL)
@@ -362,6 +417,8 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  void* GRA_ObterValorCorrente(GRA_tppGrafo pGrafo)
  {
 	#ifdef _DEBUG
+
+	 CNT_CONTAR("GRA_ObterValorCorrente");
 	 assert(pGrafo != NULL);
 	#endif
 	 if (pGrafo != NULL && pGrafo->pVertice != NULL)
@@ -385,9 +442,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	
 
 	tpVerticeGrafo *aux;
-	#ifdef _DEBUG
-		 assert(pGrafo != NULL);
-	#endif
+#ifdef _DEBUG
+	CNT_CONTAR("GRA_CriarAresta");
+	assert(pGrafo != NULL);
+#endif
 	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo; 
@@ -408,7 +466,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 		 }/*if*/
 		 else
 		 {
-			 return GRA_CondRetOK;  
+			 return GRA_CondRetVerticeJaExiste;  
 		 }/*else*/
 		 
 		 LIS_IrInicioLista(aux->pVerticeArestas);
@@ -435,6 +493,9 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
  int GRA_QntVertices(GRA_tppGrafo pGrafo)
  {
+#ifdef _DEBUG
+	 CNT_CONTAR("GRA_QntVertices");
+#endif
 	 if (pGrafo == NULL || pGrafo->pOrigemGrafo == NULL)
 	 {
 		 return -1;					
@@ -451,6 +512,9 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 
  int GRA_QntArestas(GRA_tppGrafo pGrafo)
  {
+#ifdef _DEBUG
+	 CNT_CONTAR("GRA_QntArestas");
+#endif
 	 if (pGrafo == NULL)
 	 {
 		 return -1;					
@@ -468,6 +532,9 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
                                               int numElem ) 
 {
 	LIS_tpCondRet retorno;
+#ifdef _DEBUG
+	CNT_CONTAR("GRA_AvancarElementoCorrente");
+#endif
 	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo;
@@ -494,9 +561,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  *  ****/
  void GRA_IrInicioOrigens( GRA_tppGrafo pGrafo )
  {
-	#ifdef _DEBUG
-		assert(pGrafo != NULL);
-	#endif
+#ifdef _DEBUG
+	CNT_CONTAR("GRA_IrInicioOrigens");
+	assert(pGrafo != NULL);
+#endif
 
 	LIS_IrInicioLista(pGrafo->pOrigemGrafo);
 	pGrafo->pVertice = LIS_ObterValor(pGrafo->pOrigemGrafo);
@@ -512,9 +580,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  *  ****/
 void GRA_IrFinalOrigens( GRA_tppGrafo pGrafo )
 {
-	#ifdef _DEBUG
-		assert(pGrafo != NULL);
-	#endif
+#ifdef _DEBUG
+	CNT_CONTAR("GRA_IrFinalOrigens");
+	assert(pGrafo != NULL);
+#endif
 
 	LIS_IrFinalLista(pGrafo->pOrigemGrafo);
 	pGrafo->pVertice = LIS_ObterValor(pGrafo->pOrigemGrafo);
@@ -528,6 +597,9 @@ void GRA_IrFinalOrigens( GRA_tppGrafo pGrafo )
 
 #ifdef _DEBUG
 /***************************************************************************
+ * 	FUNÇÕES DE DEBUG ENCAPSULADAS PELO MODULO
+ *  
+/***************************************************************************
  *  Função: GRA  &Deturpa Cabeca
  * Torna o ponteiro pra cabeça do grafo null
  *  ****/
@@ -537,24 +609,207 @@ GRA_tpCondRet GRA_DeturpaCabeca (GRA_tppGrafo pGrafo)
 	if(pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo;
-	}
-	pGrafo = NULL;
+	}/* if */
+	pGrafo->pOrigemGrafo = NULL;
 	return GRA_CondRetOK;
 }
 
 /* Fim Função: GRA  &Deturpa Cabeca */
 
 /***************************************************************************
+ *  Função: GRA  &Verificadora
+ * Torna o ponteiro pra cabeça do grafo null
+ *  ****/
+GRA_tpCondRet GRA_Verificadora(GRA_tppGrafo pGrafo)
+{
+	GRA_tpCondRet retorno;
+	if (pGrafo == NULL)
+	{
+		return GRA_CondRetGrafoNulo;
+	}/* if */
+
+	/* Faz duas verificações se o tipo da cabeça está correto e se a origem foi perdida,
+		no segundo caso vamos usar a redundancia para recupera-la
+	 */
+	retorno = GRA_VerificaCabeca(pGrafo);
+	if (retorno != GRA_CondRetOK)
+	{
+		if ( retorno = GRA_CondRetOrigemPerdida )
+		{//vou usar a função de recuperação
+			GRA_RecuperaCabeca(pGrafo);
+		}/* if */
+		else
+		{
+			return retorno;
+		}/* else */
+		
+	}/* if */
+	
+	/* Percorre todos os vertices do grafo verificando:
+ * 		1- Se o tipo alocado está correto 
+ * 		2- Se o numero de arestas está correto	
+ * 		3- Se o id dos vertices é o mesmo do grafo a que pertence */
+	retorno = GRA_VerificaVertice(pGrafo);
+	
+	if (retorno != GRA_CondRetOK)
+	{
+		return retorno;
+	}/* if */
+
+	return GRA_CondRetOK;
+}
+/***************************************************************************
  *  Função: GRA  &Recupera Cabeca
+ *  		Função corretora
  * Utiliza a estrutura auxiliar para recuperar o ponteiro pra cabeça
  *  ****/
 GRA_tpCondRet GRA_RecuperaCabeca (GRA_tppGrafo pGrafo)
 {
-	if ( pGrafo->_pOrigemGrafoRedundante == NULL )
+	if (pGrafo == NULL || pGrafo->_pOrigemGrafoRedundante == NULL )
+	{
+		return GRA_CondRetGrafoNulo;		
+	} /* if */
+	pGrafo->pOrigemGrafo = pGrafo->_pOrigemGrafoRedundante;
+	return GRA_CondRetOK;
+
+}
+
+/***************************************************************************
+ * 	FUNÇÕES DE DEBUG ENCAPSULADAS PELO MODULO
+ *  
+ /***************************************************************************
+ *  Função: GRA  &Verifica Cabeca
+ * Verifica se o tipo definido na alocação da memoria da cabeça do grafo está correto
+ *  ****/
+
+GRA_tpCondRet GRA_VerificaCabeca(GRA_tppGrafo pGrafo)
+{
+	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo;
+	}/* if */
+	if( TST_CompararInt(GRA_TipoCabeca,
+		CED_ObterTipoEspaco(pGrafo),
+		"Tipo cabeça errado") != TST_CondOK)
+			{
+				return GRA_CondRetTipoIncorreto;
+			}
+	return GRA_CondRetOK;	
+}
+
+ /***************************************************************************
+ *  Função: GRA  &Verifica Vertice
+ * Percorre todos os vertices do grafo verificando:
+ * 		1- Se o tipo alocado está correto 
+ * 		2- Se o numero de arestas está correto	
+ * 		3- Se o id dos vertices é o mesmo do grafo a que pertence
+ * Casos de retorno:
+ * 		1- GRA_CondRetTipoIncorreto
+ * 		2- GRA_CondRetNumeroArestaIncorreto
+ * 		3- GRA_CondRetVerticeNaoPertenceGrafo
+ * 	GRA_CondRetGrafoNulo - ponteiro do grafo nulo
+ *  GRA_CondRetGrafoVazia - não há elementos no grafo
+ *   ****/
+GRA_tpCondRet GRA_VerificaVertice(GRA_tppGrafo pGrafo)
+{
+	tpVerticeGrafo * auxiliar;
+	tpVerticeGrafo * verticeInicial;
+	GRA_tpCondRet retorno;
+
+	if (pGrafo == NULL)
+	{
+		return GRA_CondRetGrafoNulo;
+	}/* if */
+
+	verticeInicial = LIS_ObterValor(pGrafo->pOrigemGrafo);
+
+	if( verticeInicial == NULL )
+	{
+		return GRA_CondRetGrafoVazia;
+	}/* if */
+	LIS_IrInicioLista(pGrafo->pOrigemGrafo);
+	do{
+		auxiliar = LIS_ObterValor(pGrafo->pOrigemGrafo);
+
+		if(auxiliar == NULL)
+		{//não poderia entrar aqui por causa da assertiva do verticeInicial
+			return GRA_CondRetGrafoVazia;
+		}/* if */
+
+		if(TST_CompararInt(GRA_TipoVertice,
+			CED_ObterTipoEspaco(auxiliar),
+			"Tipo vertice errado") != TST_CondOK)
+			{
+				return GRA_CondRetTipoIncorreto;
+			}/* if */
+		
+		if( auxiliar->numArestas != LIS_ObtemTamanho(auxiliar->pVerticeArestas) )
+		{
+			return GRA_CondRetNumeroArestaIncorreto;
+		}
+		retorno = GRA_VerificaId(pGrafo,auxiliar);
+		if ( retorno != GRA_CondRetOK)
+		{//pode retornar grafo null, grafo vazio ou vertice nao pertence ao grafo
+			return retorno;
+		}
+	}while(LIS_AvancarElementoCorrente(pGrafo->pOrigemGrafo,1) == LIS_CondRetOK);
+
+	if( auxiliar != verticeInicial ) //recuperando o vertice corrente
+	{
+		LIS_ProcurarValor(pGrafo->pOrigemGrafo,verticeInicial);
+	}		
+	return GRA_CondRetOK;	
+}
+
+ /***************************************************************************
+ *  Função: GRA  &Verifica Tamanho
+ * 		Verifica se a quantidade de elementos na lista é o mesmo que o numero de 
+ * 		elementos que foram alocados
+ *  ****/
+
+GRA_tpCondRet GRA_VerificaTamanho(GRA_tppGrafo pGrafo)
+{
+	tpVerticeGrafo * auxiliar;
+	tpVerticeGrafo * verticeInicial;
+
+	if (pGrafo == NULL)
+	{
+		return GRA_CondRetGrafoNulo;
+	}/* if */
+
+	if (pGrafo->pOrigemGrafo == NULL)
+	{
+		return GRA_CondRetGrafoVazia;
+	}/* if */
+
+	if ( pGrafo->numVertices != LIS_ObtemTamanho(pGrafo->pOrigemGrafo) )
+	{
+		return GRA_CondRetNumeroVerticeIncorreto;
+	}/* if */
+
+	return GRA_CondRetOK;
+}
+
+/***************************************************************************
+ *  Função: GRA  &Verifica Id
+ * 		Verifica se o id do vertice é o mesmo id do grafo que o contém
+ * 		
+ *  ****/
+GRA_tpCondRet GRA_VerificaId(GRA_tppGrafo pGrafo , tpVerticeGrafo * vertice)
+{
+	if (pGrafo == NULL)
+	{// não deve ocorerr pois a função que chama já trata isso
+		return GRA_CondRetGrafoNulo;
+	}/* if */
+	if (vertice == NULL)
+	{//se recebi nulo significa que a lista de origens estava vazia
+		GRA_CondRetGrafoVazia;
+	}/* if */
+	
+	if (pGrafo->idGrafo != vertice->idGrafo)
+	{
+		return GRA_CondRetVerticeNaoPertenceGrafo;
 	}
-	pGrafo->pOrigemGrafo = pGrafo->_pOrigemGrafoRedundante;
 	return GRA_CondRetOK;
 }
 
@@ -649,11 +904,18 @@ GRA_tpCondRet GRA_RecuperaCabeca (GRA_tppGrafo pGrafo)
  static tpVerticeGrafo* CriarElemento( void* pValor)
  {
 	 tpVerticeGrafo* pVertice = (tpVerticeGrafo *)malloc(sizeof(tpVerticeGrafo));
+#ifdef _DEBUG
+	 CNT_CONTAR("GRA_CriarElemento");
+#endif
 	 if (pVertice == NULL)
 	 {
 		 return NULL;
 	 }/*if*/
 	 pVertice->valor = pValor;
+
+#ifdef _DEBUG
+	 CED_DefinirTipoEspaco(pValor, GRA_TipoVertice);
+#endif
 
 	 //criando a lista de arestas com a função que nao desaloca os vertices(ao exluir arestas nao queremos desalocar vertices) 
 	 pVertice->pVerticeArestas = LIS_CriarLista(naoExclui);

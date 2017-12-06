@@ -19,6 +19,7 @@
 *	  2		  Hfac & Pfm   14/out/2017   continuação do desenvolvimento
 *	  3		  Pfm		   15/out/2017   continuação do desenvolvimento e Modulo pronto para etapa de testes
 *	  4		Hfac & Pfm	   16/out/2017   Finalização do modulo; Testes concluidos; Melhor definição das funçoes no .H
+*	  5        Pfm		   05/dez/2017   Instrumentação novas e novas funcionalidades
 *
 *  $ED Descrição do módulo
 *     Implementa grafos com cabeça genéricos.
@@ -94,9 +95,22 @@ typedef enum {
 
 	GRA_CondRetGrafoNulo,
 	/* Grafo é NULL */
+
 	GRA_CondRetVerticeJaExiste
 	/*vertice já existe ao tentar inserir na lista de vertices ou na lista de arestas*/
 
+#ifdef _DEBUG
+	, GRA_CondRetTipoIncorreto,
+	/* tipo alocado na memoria não corresponde ao esperado */
+	GRA_CondRetNumeroArestaIncorreto,
+	/* Numero de arestas é menor que o numero esperado para o vertice */
+	GRA_CondRetNumeroVerticeIncorreto,
+	/* numero de elementos da lista é diferente do numero de vertices inseridos*/
+	GRA_CondRetOrigemPerdida,
+	/* ponteiro para a Origem do grafo foi perdido  */
+	GRA_CondRetVerticeNaoPertenceGrafo
+	/*id do vertice não é o mesmo do vertice que o contém*/
+#endif
 } GRA_tpCondRet;
 
 
@@ -186,9 +200,9 @@ void GRA_EsvaziarGrafo(GRA_tppGrafo pGrafo);
 *
 *  $FV Valor retornado
 *     Valor retornado
-*	 GRA_CondRetGrafoNulo
-*        GRA_CondRetOK
-*        GRA_CondRetFaltouMemoria
+*	 GRA_CondRetGrafoNulo  -  ponteiro recebido null
+*    GRA_CondRetOK  -  vertie inserido
+*    GRA_CondRetFaltouMemoria -  não conseguiu fazer alocação dinamica de memoria
 *
 ***********************************************************************/
 
@@ -208,8 +222,8 @@ GRA_tpCondRet GRA_InserirVertice(GRA_tppGrafo pGrafo,
 *     pGrafo    - ponteiro para a grafo na qual deve excluir o vertice corrente.
 *
 *  $FV Valor retornado
-*     GRA_CondRetGrafoNulo
-*     GRA_CondRetOK
+*     GRA_CondRetGrafoNulo  -  ponteiro recebido null
+*     GRA_CondRetOK  -  vertice excluido com sucesso
 *
 ***********************************************************************/
 
@@ -230,9 +244,9 @@ GRA_tpCondRet GRA_ExcluirVertice(GRA_tppGrafo pGrafo);
 *     valor	- Ponteiro para o valor cujo vertice possui.
 *
 *  $FV Valor retornado
-*     GRA_CondRetGrafoNulo
-*     GRA_CondRetOK
-*     GRA_CondRetGrafoVazia
+*     GRA_CondRetGrafoNulo -  ponteiro recebido null
+*     GRA_CondRetOK  -  aresta excluida com sucesso
+*     GRA_CondRetGrafoVazia -  não há o que ser excluido
 *
 ***********************************************************************/
 
@@ -273,9 +287,10 @@ void* GRA_ObterValorCorrente(GRA_tppGrafo pGrafo);
 *     valor	- valor contido no vertice destino 
 *
 *  $FV Valor retornado
-*     GRA_CondRetGrafoNulo  
-*     GRA_CondRetOK         
-*     GRA_CondRetNaoAchou   
+*     GRA_CondRetGrafoNulo  -  ponteiro recebido null
+*     GRA_CondRetOK  -  Aresta criada      
+*     GRA_CondRetNaoAchou - não achou vertice destino da aresta
+*	  GRA_CondRetVerticeJaExiste - se já existe uma aresta para o vertice
 *      
 *
 ***********************************************************************/
@@ -298,9 +313,9 @@ GRA_tpCondRet GRA_CriarAresta(GRA_tppGrafo pGrafo,
 *				deseja chegar
 *
 *  $FV Valor retornado
-*     GRA_CondRetGrafoNulo
-*     GRA_CondRetOK  
-*     GRA_CondRetNaoEncontrou 
+*     GRA_CondRetGrafoNulo  -  ponteiro recebido null
+*     GRA_CondRetOK  -  vertice corrente foi alterado
+*     GRA_CondRetNaoEncontrou -  Não encontrou o vertice desejado
 *
 ***********************************************************************/
 
@@ -405,9 +420,16 @@ int GRA_QntVertices(GRA_tppGrafo pGrafo);
 
 int GRA_QntArestas(GRA_tppGrafo pGrafo);
 
+/***********************************************************************
+*
+*Funções esclusivas do modo _DEBUG
+*
+***********************************************************************/
+
 #ifdef _DEBUG
-GRA_tpCondRet GRA_DeturpaCabeca (GRA_tppGrafo pGrafo);
-GRA_tpCondRet GRA_RecuperaCabeca (GRA_tppGrafo pGrafo);
+GRA_tpCondRet GRA_DeturpaCabeca(GRA_tppGrafo pGrafo);
+GRA_tpCondRet GRA_Verificadora(GRA_tppGrafo pGrafo);
+GRA_tpCondRet GRA_RecuperaCabeca(GRA_tppGrafo pGrafo);
 #endif
 
 #undef GRAFO_EXT
