@@ -6,6 +6,8 @@ del ..\produto\*.err
 del ..\produto\TesteGrafo.exe
 del ..\produto\TesteLista.exe
 del ..\produto\Usuario.exe
+del ..\produto\Chat.exe
+del ..\produto\Rede.exe
 del ..\objetos\*.obj
 
 REM compila TesteGrafo
@@ -14,18 +16,21 @@ nmake /F..\Compos\TesteGrafo.make
 del ..\objetos\*.obj
 
 REM Compila TesteLista
-pushd .
+
 nmake /F..\Compos\TesteLista.make
 del ..\objetos\*.obj
 
 REM Compila Usuario
-pushd .
+
 nmake /F..\Compos\Usuario.make
 del ..\objetos\*.obj
 
 REM Compila Rede
-pushd .
+
 nmake /F..\Compos\Rede.make
+del ..\objetos\*.obj
+
+nmake /F..\Compos\Chat.make
 del ..\objetos\*.obj
 
 popd

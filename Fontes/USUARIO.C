@@ -128,6 +128,12 @@ USU_tpCondRet USU_CriaUsuario(USU_tppUsuario pUsuario, char * nome , int idade ,
 {
       tpPerfilUsuario * perfil = NULL;
       USU_tpCondRet retorno;
+      
+      if (pUsuario == NULL)
+      {
+              return USU_CondRetNaoInicializado;
+      }
+
       perfil =(tpPerfilUsuario*) malloc(sizeof(tpPerfilUsuario));
 
       if (perfil == NULL)

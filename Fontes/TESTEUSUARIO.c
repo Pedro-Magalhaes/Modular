@@ -93,22 +93,22 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
       int inxusuario  = -1 ,
           numLidos   = -1 ,
           ValEsp = -1 ,
-		  inxstruct =-1;
+		      inxstruct =-1;
 
       TST_tpCondRet CondRet ;
 
-      char   StringDado1[  DIM_VALOR ] ;
+    char   StringDado1[  DIM_VALOR ] ;
 	  char   StringDado2[  DIM_VALOR ] ;
 	  char   StringDado3[  DIM_VALOR ] ;
 	  char   StringDado4[  DIM_VALOR ] ;
    
 
-      int i ;
+    int i = 0;
 	  int intdado1 = 0 ;
 
       
 
-      StringDado1[ 0 ] = 0 ;
+    StringDado1[ 0 ] = 0 ;
 	  StringDado2[ 0 ] = 0 ;
 	  StringDado3[ 0 ] = 0 ;
 	  StringDado4[ 0 ] = 0 ;
@@ -215,7 +215,7 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
                return TST_CondRetParm ;
             } /* if */
 
-            USU_Destruirusuario( vtusuarios[ inxusuario ] ) ;
+            USU_DestruirUsuarios( vtusuarios[ inxusuario ] ) ;
             vtusuarios[ inxusuario ] = NULL ;
 
             return TST_CondRetOK ;
@@ -361,7 +361,7 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
    {
 
       if ( ( inxusuario <  0 )
-        || ( inxusuario >= DIM_VT_usuario ))
+        || ( inxusuario >= DIM_VT_USUARIO ))
       {
          return FALSE ;
       } /* if */
