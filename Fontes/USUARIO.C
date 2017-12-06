@@ -224,7 +224,7 @@ USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
         #ifdef _DEBUG  // deletando o usuario tambem do vertor de redundâncias
                 tpPerfilUsuario * aux;
                 assert( pUsuario != NULL );                
-                aux = (tpPerfilUsuario*) GRA_ObterValorCorrente(pUsuario->pGrafo);
+                aux = GRA_ObterValorCorrente(pUsuario->pGrafo);
                 DeletaDoVetor(pUsuario,aux);
                 
         #endif /* _DEBUG */
@@ -285,7 +285,7 @@ char* USU_PegaNomeUsuarioCorrente (USU_tppUsuario pUsuario)
         {
                 return NULL;
         }/* if */
-        aux = (tpPerfilUsuario*) GRA_ObterValorCorrente(pUsuario->pGrafo);
+        aux = GRA_ObterValorCorrente(pUsuario->pGrafo);
         if(aux == NULL)
         {
                 return NULL;
