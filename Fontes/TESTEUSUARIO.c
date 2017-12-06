@@ -18,6 +18,7 @@
 *	  2		  yan	02/12/2017 continuação do desenvolvimento
 *	  3		  yan	04/12/2017 continuação do desenvolvimento
 *	  4		  yan	05/12/2017 continuação do desenvolvimento
+*	  5		  yan	06/12/2017 continuação do desenvolvimento
 *
 ***************************************************************************/
 
@@ -36,7 +37,9 @@
 static const char INICIAR_MODULO_CMD       [ ] = "=iniciarmodulo"   ;
 static const char CRIAR_USUARIO_CMD        [ ] = "=criarusuario"   ;
 static const char ADICIONAR_AMIGO_CMD      [ ] = "=adicionaramigo"   ;
-static const char EDITAR_PERFIL_CMD		   [ ] = "=editarperfil"   ;
+static const char EDITAR_NOME_CMD		   [ ] = "=editarnome"   ;
+static const char EDITAR_IDADE_CMD		   [ ] = "=editaridade"   ;
+static const char EDITAR_GENERO_CMD		   [ ] = "=editargenero"   ;
 static const char DELETAR_USUARIO_CMD      [ ] = "=deletarusuario"   ;
 static const char DESTRUIR_USUARIOS_CMD    [ ] = "=destruirusuarios"   ;
 static const char TOTAL_USUARIOS_CMD       [ ] = "=totalusuarios"   ;
@@ -79,7 +82,9 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 *     =iniciarmodulo                inxusuario     
 *     =criarusuario                 inxusuario   string1   int1   string2     CondRetEsp
 *     =adicionaramigo               inxusuario   string1     CondRetEsp
-*     =editarperfil                 inxusuario   XXXX     CondRetEsp
+*     =editarnome                   inxusuario   string1     CondRetEsp
+*     =editaridade                  inxusuario   int1        CondRetEsp
+*     =editargenero                 inxusuario   string1     CondRetEsp
 *     =deletarusuario               inxusuairo   CondRetEsp
 *     =destruirusuarios             inxusuario   
 *     =totalusuarios				inxusuario	 ValEsp
@@ -201,26 +206,71 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 
          } /* fim ativa: Testar mudar usuario corrente */
 
-      /* Testar editar perfil */
+      /* Testar editar nome */
 
-         else if ( strcmp( ComandoTeste , EDITAR_PERFIL_CMD ) == 0 )
+         else if ( strcmp( ComandoTeste , EDITAR_NOME_CMD ) == 0 )
          {
 
-            numLidos = LER_LerParametros( "i" ,
-                               &inxusuario ) ;
+            numLidos = LER_LerParametros( "isi" ,
+                               &inxusuario, StringDado1, &ValEsp ) ;
 
-            if ( ( numLidos != 1 )
+            if ( ( numLidos != 3 )
               || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )))
             {
                return TST_CondRetParm ;
             } /* if */
 
-            USU_DestruirUsuarios( vtusuarios[ inxusuario ] ) ;
-            vtusuarios[ inxusuario ] = NULL ;
+            CondRet = (TST_tpCondRet) USU_EditarNome( vtusuarios[ inxusuario ] , StringDado1 ) ;
+            
 
-            return TST_CondRetOK ;
+            return TST_CompararInt( ValEsp , CondRet ,
+                     "Condicao de retorno errada ao editar nome.") ;
 
-         } /* fim ativa: Testar editar perfil */
+         } /* fim ativa: Testar editar nome */
+
+		  /* Testar editar idade */
+
+         else if ( strcmp( ComandoTeste , EDITAR_IDADE_CMD ) == 0 )
+         {
+
+            numLidos = LER_LerParametros( "iii" ,
+                               &inxusuario, &intdado1, &ValEsp ) ;
+
+            if ( ( numLidos != 3 )
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )))
+            {
+               return TST_CondRetParm ;
+            } /* if */
+
+            CondRet = (TST_tpCondRet) USU_EditarIdade( vtusuarios[ inxusuario ] , intdado1 ) ;
+            
+
+            return TST_CompararInt( ValEsp , CondRet ,
+                     "Condicao de retorno errada ao editar idade.") ;
+
+         } /* fim ativa: Testar editar idade */
+
+		  /* Testar editar genero */
+
+         else if ( strcmp( ComandoTeste , EDITAR_GENERO_CMD ) == 0 )
+         {
+
+            numLidos = LER_LerParametros( "isi" ,
+                               &inxusuario, StringDado1, &ValEsp ) ;
+
+            if ( ( numLidos != 3 )
+              || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )))
+            {
+               return TST_CondRetParm ;
+            } /* if */
+
+            CondRet = (TST_tpCondRet) USU_EditarGenero( vtusuarios[ inxusuario ] , StringDado1[0] ) ;
+            
+
+            return TST_CompararInt( ValEsp , CondRet ,
+                     "Condicao de retorno errada ao editar genero.") ;
+
+         } /* fim ativa: Testar editar genero */
 
       /* Testar deletar usuario */
 
