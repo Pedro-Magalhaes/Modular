@@ -60,8 +60,6 @@
 == Adicionar amigo em módulo não inicializado
 =adicionaramigo   usuario1   nome0   NaoInicializado
 
-== Testar editar perfil do usuario cobrindo todas as classes de equivalência
-
 == Testar pegar nome do usuário corrente cobrindo todas as classes de equivalência
 == Pegar nome em módulo não inicializado
 =pegarcorrente   usuario1   NULL
@@ -70,6 +68,12 @@
 =pegarcorrente   usuario2   NULL
 == Pegar corrente corretamente
 =pegarcorrente   usuario0   nome0
+
+== Testar editar nome do corrente cobrindo todas as classes de equivalência
+
+== Testar editar idade do corrente cobrindo todas as classes de equivalência
+
+== Testar editar genero do corrente cobrindo todas as classes de equivalência
 
 == Testar mudar usuário corrente cobrindo todas as classes de equivalência
 == Mudar corrente em módulo não inicializado
