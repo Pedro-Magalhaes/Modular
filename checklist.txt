@@ -21,4 +21,5 @@ chat:
 
 
 grafo:
-
+- fazer a composição de teste com contadores por arestas na função verificadora
+- tirar os contadores de outros lugares ou criar um novo script apenas para a verificadora?
