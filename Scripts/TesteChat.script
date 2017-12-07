@@ -38,49 +38,49 @@
 =declararparm   SemMensagens    int  3
 =declararparm   NaoAchou   		int  4
 =declararparm   FaltouMemoria   int  5
-=declararparm	NaoEstaNoChat	int  6
+=declararparm	  NaoEstaNoChat	int  6
 
 =declararparm   pNULL          int  0
 =declararparm   pNaoNULL       int  1
 
-== Criar o chat 0
+// Criar o chat 0
 =criarchat      chat0   struct0   nome0   id0   gen0   idade0
 
-== Testar diferentes condições de enviar mensagem cobrindo todas as classes de equivalência
-== Enviar mensagem de usuário não existente no chat
+// Testar diferentes condições de enviar mensagem cobrindo todas as classes de equivalência
+// Enviar mensagem de usuário não existente no chat
 =enviarmensagem   	 chat0   struct1   "Oi"   NaoEstaNoChaat
-== Enviar mensagem em chat corretamente 
+// Enviar mensagem em chat corretamente 
 =enviarmensagem   	 chat0   struct0   "Oi"   OK
 
-== Testar adicionar integrante cobrindo todas as classes de equivalência
-== Adicionar um integrante que já está no chat
+// Testar adicionar integrante cobrindo todas as classes de equivalência
+// Adicionar um integrante que já está no chat
 =adicionarintegrante  chat0   struct0   nome0   id0   gen0   idade0   OK
-== Adicionar integrante corretamente
+// Adicionar integrante corretamente
 =adicionarintegrante  chat0   struct1   nome1   id1   gen1   idade1   OK
-== Verificar se o usuario foi mesmo adicionado
+// Verificar se o usuario foi mesmo adicionado
 =verificausuario   	 chat0   struct1   OK
 
-== Testar sair do chat cobrindo todas as classes de equivalência
-== Remover usuário não existente
+// Testar sair do chat cobrindo todas as classes de equivalência
+// Remover usuário não existente
 =sairchat  	 chat0   struct2	OK
-== Remover usuário corretamente
+// Remover usuário corretamente
 =sairchat  	 chat0   struct1	OK
-== Verificar se o usuário foi mesmo removido
+// Verificar se o usuário foi mesmo removido
 =verificausuario   	 chat0   struct1   NaoEstaNoChaat
-== Remover usuário que não está no chat
+// Remover usuário que não está no chat
 =sairchat  	 chat0   struct1	OK
 
-== Testar pegar mensagens cobrindo todas as classes de equivalência
-== Pegar mensagens corretmaente
+// Testar pegar mensagens cobrindo todas as classes de equivalência
+// Pegar mensagens corretmaente
 =pegarmensagens    chat0   "Ansem: Oi\nFaker: Oi\n"
 
-== Testar deletar mensagem cobrindo todas as classes de equivalência
-== Deletar mensagem corretamente e verificar se foi deletada
+// Testar deletar mensagem cobrindo todas as classes de equivalência
+// Deletar mensagem corretamente e verificar se foi deletada
 =deletarmensagem    chat0   OK
 =pegarmensagens    chat0   NULL
 
-== Testar deletar chat conbrindo todas as classes de equivalência
-== Deletar chat corretamente
+// Testar deletar chat conbrindo todas as classes de equivalência
+// Deletar chat corretamente
 =deletarchat    chat0   OK
 
 
