@@ -57,12 +57,8 @@
 =adicionaramigo   usuario0   nome2   NaoAchou
 == Adicionar amigo corretamente
 =adicionaramigo   usuario0   nome1   OK
-== Adicionar amigo em módulo não inicializado
-=adicionaramigo   usuario1   nome0   NaoInicializado
 
 == Testar pegar nome do usuário corrente cobrindo todas as classes de equivalência
-== Pegar nome em módulo não inicializado
-=pegarcorrente   usuario1   NULL
 == Pegar corrente em módulo com 0 usuários
 =iniciarusuario      usuario2
 =pegarcorrente   usuario2   NULL
@@ -70,8 +66,6 @@
 =pegarcorrente   usuario0   nome0
 
 == Testar editar nome do corrente cobrindo todas as classes de equivalência
-== Editar nome em módulo não inicializado
-=editarnome   usuario1   nome0   NaoInicializado
 == Mudar nome para um já em uso
 =editarnome   usuario0   nome1   PerfilIncorreto
 == Editar nome corretamente e verificar se foi editado
@@ -81,8 +75,6 @@
 =editarnome   usuario0   nome0   OK
 
 == Testar editar idade do corrente cobrindo todas as classes de equivalência
-== Editar idade em módulo não inicializado
-=editaridade   usuario1   idade0   NaoInicializado
 == Mudar para uma idade inválida
 =editaridade   usuario0   -1   PerfilIncorreto
 == Editar idade corretamente
@@ -91,8 +83,6 @@
 =editaridade   usuario0   idade0   OK
 
 == Testar editar gênero do corrente cobrindo todas as classes de equivalência
-== Editar gênero em módulo não inicializado
-=editargenero   usuario1   gen0   NaoInicializado
 == Mudar para um gênero inválido
 =editargenero   usuario0   string0   PerfilIncorreto
 == Editar gênero corretamente
@@ -101,8 +91,6 @@
 =editargenero   usuario0   gen0   OK
 
 == Testar mudar usuário corrente cobrindo todas as classes de equivalência
-== Mudar corrente em módulo não inicializado
-=irusuario    usuario1   nome0   -1
 == Mudar corrente para um usuário que não existe
 =irusuario    usuario0   nome2   -1
 == Mudar corrente para usuário de nome1 e verificar se foi corretamnte
@@ -110,8 +98,6 @@
 =pegarcorrente   usuario0   nome1
 
 == Testar deletar usuario cobrindo todas as classes de equivalência
-== Deletar usuario corrente em módulo não inicializado
-=deletarusuario    usuario1   NaoInicializado
 == Deletar usuário corrente em módulo com 0 usuários
 =deletarusuario    usuario2   NaoInicializado
 == Deletar usuário corrente corretamente e verificar se foi deletado
@@ -119,8 +105,6 @@
 =totalusuarios		 usuario0   1
 
 == Testar destruir usuários cobrindo todas as classes de equivalência
-== Destruir usuário que já é NULL
-=destruirusuarios   usuario1
 == Destruir usuarios em módulo inicializado
 =destruirusuarios   usuario0
 
