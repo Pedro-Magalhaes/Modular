@@ -44,7 +44,7 @@
 =declararparm   pNaoNULL       int  1
 
 == Criar o chat 0
-=criarchat      chat0   0   nome0   id0   gen0   idade0
+=criarchat      chat0   struct0   nome0   id0   gen0   idade0
 
 == Testar diferentes condições de enviar mensagem cobrindo todas as classes de equivalência
 == Enviar mensagem em chat não existente 
