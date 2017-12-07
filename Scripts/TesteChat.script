@@ -47,8 +47,6 @@
 =criarchat      chat0   struct0   nome0   id0   gen0   idade0
 
 == Testar diferentes condições de enviar mensagem cobrindo todas as classes de equivalência
-== Enviar mensagem em chat não existente 
-=enviarmensagem   	 chat1   struct0   "Oi"   ChatNULL
 == Enviar mensagem de usuário não existente no chat
 =enviarmensagem   	 chat0   struct1   "Oi"   NaoEstaNoChaat
 == Enviar mensagem em chat corretamente 
@@ -57,16 +55,12 @@
 == Testar adicionar integrante cobrindo todas as classes de equivalência
 == Adicionar um integrante que já está no chat
 =adicionarintegrante  chat0   struct0   nome0   id0   gen0   idade0   OK
-== Adicionar integrante em chat não existente
-=adicionarintegrante  chat1   struct0   nome0   id0   gen0   idade0   ChatNULL 
 == Adicionar integrante corretamente
 =adicionarintegrante  chat0   struct1   nome1   id1   gen1   idade1   OK
 == Verificar se o usuario foi mesmo adicionado
 =verificausuario   	 chat0   struct1   OK
 
 == Testar sair do chat cobrindo todas as classes de equivalência
-== Sair de chat não existente
-=sairchat  	 chat1   struct0	ChatNULL
 == Remover usuário não existente
 =sairchat  	 chat0   struct2	OK
 == Remover usuário corretamente
@@ -77,21 +71,15 @@
 =sairchat  	 chat0   struct1	OK
 
 == Testar pegar mensagens cobrindo todas as classes de equivalência
-== Pegar mensagens em chat não existente
-=pegarmensagens    chat1   NULL
 == Pegar mensagens corretmaente
 =pegarmensagens    chat0   "Ansem: Oi\nFaker: Oi\n"
 
 == Testar deletar mensagem cobrindo todas as classes de equivalência
-== Deletar mensagem de chat não existente
-=deletarmensagem    chat1   ChatNULL
 == Deletar mensagem corretamente e verificar se foi deletada
 =deletarmensagem    chat0   OK
 =pegarmensagens    chat0   NULL
 
 == Testar deletar chat conbrindo todas as classes de equivalência
-== Deletar chat não existente
-=deletarchat    chat1   ChatNULL
 == Deletar chat corretamente
 =deletarchat    chat0   OK
 
