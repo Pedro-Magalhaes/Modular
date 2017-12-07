@@ -316,7 +316,7 @@ USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
         }/* if */
         if (verificaGenero(genero) == USU_CondRetOK)
         {
-                auxiliar->generoUsuario = toupper(genero);
+                auxiliar->generoUsuario =(char) toupper(genero);
                 return USU_CondRetOK;
         }/* if */
          return USU_CondRetPerfilIncorreto;

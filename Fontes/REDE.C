@@ -39,18 +39,21 @@
          RED_CondRetPerfilIncorreto ,
                /* O perfil do usuário está incorreto */
 
-         RED_CondRetFaltouMemoria
+         RED_CondRetFaltouMemoria,
                /* Faltou memória ao tentar criar um elemento de lista */
+        RED_CondRetRedeNula
 
    } RED_tpCondRet ;
 
-
+RED_tpCondRet pegaNome(USU_tppUsuario minhaRede,char * nome);
+RED_tpCondRet pegaIdade(int * idade);
+RED_tpCondRet pegaGenero(char * genero);
+RED_tpCondRet pegaAtributosUsuario(USU_tppUsuario minhaRede,char * nome, int * idade, char * genero);
 void criarUsuario (USU_tppUsuario minhaRede);
-RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero);
 void removerUsuario (USU_tppUsuario minhaRede);
 void adicionarAmigo (USU_tppUsuario minhaRede);
 void IrUsuario (USU_tppUsuario minhaRede);
-void editarPerfil(USU_tppUsuario minhaRede,char* nome);
+RED_tpCondRet editarPerfil(USU_tppUsuario minhaRede,char* nome);
 
 RED_tpCondRet verificaIdade (int idade);
 RED_tpCondRet verificaGenero (char genero);
@@ -111,8 +114,7 @@ void criarUsuario (USU_tppUsuario minhaRede)
     char nome[MAXNOME];
     int idade;
     char genero;
-
-    RED_retorno = pegaAtributosUsuario(nome, &idade , &genero);
+    RED_retorno = pegaAtributosUsuario(minhaRede,nome, &idade , &genero);
     if(RED_retorno == RED_CondRetOK)
     {
         printf("Perfil correto, inserindo usuario...\n");
@@ -250,48 +252,105 @@ RED_tpCondRet verificaGenero (char genero)
     return RED_CondRetPerfilIncorreto;
 }
 
-void editarPerfil(USU_tppUsuario minhaRede,char * nome)
+RED_tpCondRet editarPerfil(USU_tppUsuario minhaRede,char * nome)
 {
     int escolha;
+    int idade;
+    char genero;
     char novoNome[MAXNOME];
     printf("%s ,digite:\n\t0- Voltar\n\t1- Para alterar nome\n\t2- genero\n\t3- Idade\n",nome);
     scanf("%d",&escolha);
     switch (escolha)
     {
         case 1:
-            printf("digite o novo nome: ");
-            scanf(" %50[^\n]",novoNome);
-            USU_EditarNome(minhaRede,novoNome);
+            if(pegaNome(minhaRede,novoNome)==RED_CondRetOK)
+            {
+                USU_EditarNome(minhaRede,novoNome);
+                return RED_CondRetOK;
+            }            
             break;
         case 2:
-            printf("digite o novo genero: ");
-            scanf(" %c",&novoNome[0]);
-            USU_EditarGenero(minhaRede,novoNome[0]);
+            if(pegaGenero(&genero)==RED_CondRetOK)
+            {
+             USU_EditarGenero(minhaRede,genero);
+             return RED_CondRetOK;
+            }
             break;
         case 3:
-            printf("digite a nova idade: ");
-            scanf(" %d",&escolha);
-            USU_EditarIdade(minhaRede,escolha);
+            if(pegaIdade(&idade)==RED_CondRetOK)
+            {
+             USU_EditarIdade(minhaRede,idade);            
+            }            
             break;
         default:
+            return RED_CondRetOK;
             break;
-    }
+    }/* switch */
+
+    return RED_CondRetPerfilIncorreto;
 }
 
-RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero)
+RED_tpCondRet pegaAtributosUsuario(USU_tppUsuario minhaRede,char * nome, int * idade, char * genero)
 {
-    int contador; // se passar de 3 tentativas vou retornar erro
+    if( (pegaNome(minhaRede,nome) == RED_CondRetPerfilIncorreto) ||
+        (pegaIdade(idade) == RED_CondRetPerfilIncorreto)||
+        (pegaGenero(genero) == RED_CondRetPerfilIncorreto))
+    {
+        return  RED_CondRetPerfilIncorreto;
+    }/* if */
 
-    /*** NOME ***/
+    printf ("\tVoce digitou: Nome:%s \n\tidade: %d\n\tsexo: %c \n", nome,*idade,*genero);
+
+    return RED_CondRetOK;
+}
+
+RED_tpCondRet pegaNome(USU_tppUsuario minhaRede,char * nome)
+{
+    char * nomeCorrente;
+    int contador = 0;
+    int idCorrente;
+    int idRecebido;
+    if (minhaRede == NULL)
+    {
+        return RED_CondRetRedeNula;
+    }/* if */
+    
+    nomeCorrente = USU_PegaNomeUsuarioCorrente(minhaRede); //guardando o usuario inicial 
+    idCorrente = USU_IrUsuario(minhaRede,nomeCorrente); //guardando id inicial
     printf ("Digite o nome do usuario(max 50 caracteres): ");
     scanf(" %50[^\n]",nome);
     fflush(stdin);
+    /*** NOME ***/
+    while ((idRecebido = USU_IrUsuario(minhaRede,nome)) != -1)
+    {
+        if(idRecebido == idCorrente)
+        {
+            return RED_CondRetOK;
+        }
+        printf ("Nome '%s' já utilizado digite outro (max 50 caracteres): ",nome);
+        scanf(" %50[^\n]",nome);
+        fflush(stdin);
+        if(contador > 2)
+        {
+            USU_IrUsuario(minhaRede,nomeCorrente);
+            return RED_CondRetPerfilIncorreto;
+        }/* if */
+        contador++;
+    }/* while */
+    if(contador != 0)
+    {
+        USU_IrUsuario(minhaRede,nomeCorrente);
+    }
 
+    return RED_CondRetOK;
+}
+RED_tpCondRet pegaIdade(int * idade)
+{
+    int contador = 0;
     /*** IDADE ***/
     printf ("Digite sua idade: ");
     scanf(" %d",idade);
     fflush(stdin);
-    contador = 0;
     while(verificaIdade(*idade) == RED_CondRetPerfilIncorreto)
     {
         if(++contador > 2)
@@ -302,12 +361,16 @@ RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero)
         scanf(" %d",idade);
         fflush(stdin);        
     }/* while */
-    contador = 0;
+    return RED_CondRetOK;
+}
+RED_tpCondRet pegaGenero(char * genero)
+{
+     int contador = 0;
     /*** GENERO ***/
     printf ("Digite seu genero('M','F' ou 'O' para outros ): ");
     scanf(" %c",genero);
     fflush(stdin);
-    *genero = toupper(*genero);
+    *genero =(char) toupper(*genero);
 
     while(verificaGenero(*genero) == RED_CondRetPerfilIncorreto)
     {
@@ -318,10 +381,8 @@ RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero)
         printf("Genero invalido, por favor digite seu genero('M','F' ou 'O' para outros ): \n");
         scanf(" %c",genero);
         fflush(stdin);
-        *genero = toupper(*genero);        
+        *genero =(char) toupper(*genero);        
     }/* while */
-
-    printf ("\tVoce digitou: Nome:%s \n\tidade: %d\n\tsexo: %c \n", nome,*idade,*genero);
 
     return RED_CondRetOK;
 }
