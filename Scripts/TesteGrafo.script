@@ -4,6 +4,12 @@
 // Prop�sito: Testar superficialmente o módulo grafo
 //
 
+
+== Inicializar contadores
+
+=inicializarcontadores  ""
+=lercontadores          "..\\scripts\\grafo"
+=iniciarcontagem
 == Inicializar valores
 =declararparm   grafo0  int 0
 =declararparm   grafo1  int 1
@@ -151,9 +157,13 @@
 =qntaresta    grafo2   1
 =qntvertice   grafo2   3
 
-== Deturpar Cabeca do grafo e recuperar
+== Verificadora em condicoes normais
+=verificadora grafo2   OK
+
+== Deturpar Cabeca do grafo e recuperar com verificadora
 =deturpacabeca  grafo2   OK
-=recuperacabeca grafo2   OK
+=verificadora grafo2   OK
+
 
 == Avancando na lista de origens apos deturpar e recuperar
 =qntvertice    grafo2   3
@@ -180,4 +190,11 @@
 
 == Destruir o grafo
 =destruirgrafo   grafo2
+
+== Terminar controlar contadores
+=pararcontagem
+=verificarcontagens    0
+
+== Terminar contagem
+=terminarcontadores
 // fim

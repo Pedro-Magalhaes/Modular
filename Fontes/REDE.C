@@ -50,9 +50,10 @@ RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero);
 void removerUsuario (USU_tppUsuario minhaRede);
 void adicionarAmigo (USU_tppUsuario minhaRede);
 void IrUsuario (USU_tppUsuario minhaRede);
+void editarPerfil(USU_tppUsuario minhaRede,char* nome);
 
-int verificaIdade (int idade);
-int verificaGenero (char genero);
+RED_tpCondRet verificaIdade (int idade);
+RED_tpCondRet verificaGenero (char genero);
 
 
 int main (void)
@@ -73,7 +74,7 @@ int main (void)
         {
             printf("\nRede atualmente sem usuarios\n");
         }/* else */
-        printf ("Digite o que deseja fazer:\n\t0- Finalizar execucao\n\t1- Criar Usuario\n\t2- Remover Usuario\n\t3- Adicionar Amigo\n\t4- Ir para usuario por nome\n");
+        printf ("Digite o que deseja fazer:\n\t0- Finalizar execucao\n\t1- Criar Usuario\n\t2- Remover Usuario\n\t3- Adicionar Amigo\n\t4- Editar Perfil\n\t5- Ir para usuario por nome\n");
         scanf("%d",&opcao);        
         switch (opcao)
         {
@@ -87,6 +88,9 @@ int main (void)
                 adicionarAmigo(minhaRede);
                 break;
             case 4:
+                editarPerfil(minhaRede,nome);
+            break;
+            case 5:
                 IrUsuario(minhaRede);
                 break;
             default:
@@ -228,22 +232,50 @@ void IrUsuario (USU_tppUsuario minhaRede)
         return;
 }
 
-int verificaIdade (int idade)
+RED_tpCondRet verificaIdade (int idade)
 {
     if(idade < 1 || idade > 199)
     {
-        return 0; 
+        return RED_CondRetPerfilIncorreto;; 
     }/* if */
-    return 1;
+    return RED_CondRetOK;
 }
 
-int verificaGenero (char genero)
+RED_tpCondRet verificaGenero (char genero)
 {
     if(genero == 'M' || genero == 'F' || genero == 'O' )
     {
-        return 1;
+        return RED_CondRetOK;
     }/* if */
-    return 0;
+    return RED_CondRetPerfilIncorreto;
+}
+
+void editarPerfil(USU_tppUsuario minhaRede,char * nome)
+{
+    int escolha;
+    char novoNome[MAXNOME];
+    printf("%s ,digite:\n\t0- Voltar\n\t1- Para alterar nome\n\t2- genero\n\t3- Idade\n",nome);
+    scanf("%d",&escolha);
+    switch (escolha)
+    {
+        case 1:
+            printf("digite o novo nome: ");
+            scanf(" %50[^\n]",novoNome);
+            USU_EditarNome(minhaRede,novoNome);
+            break;
+        case 2:
+            printf("digite o novo genero: ");
+            scanf(" %c",&novoNome[0]);
+            USU_EditarGenero(minhaRede,novoNome[0]);
+            break;
+        case 3:
+            printf("digite a nova idade: ");
+            scanf(" %d",&escolha);
+            USU_EditarIdade(minhaRede,escolha);
+            break;
+        default:
+            break;
+    }
 }
 
 RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero)
@@ -251,8 +283,8 @@ RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero)
     int contador; // se passar de 3 tentativas vou retornar erro
 
     /*** NOME ***/
-    printf ("Digite o nome do usuario(max 49 caracteres): ");
-    scanf(" %49[^\n]",nome);
+    printf ("Digite o nome do usuario(max 50 caracteres): ");
+    scanf(" %50[^\n]",nome);
     fflush(stdin);
 
     /*** IDADE ***/
@@ -260,7 +292,7 @@ RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero)
     scanf(" %d",idade);
     fflush(stdin);
     contador = 0;
-    while(verificaIdade(*idade) == 0)
+    while(verificaIdade(*idade) == RED_CondRetPerfilIncorreto)
     {
         if(++contador > 2)
         {
@@ -277,7 +309,7 @@ RED_tpCondRet pegaAtributosUsuario(char * nome, int * idade, char * genero)
     fflush(stdin);
     *genero = toupper(*genero);
 
-    while(verificaGenero(*genero) == 0)
+    while(verificaGenero(*genero) == RED_CondRetPerfilIncorreto)
     {
         if(++contador > 2)
         {

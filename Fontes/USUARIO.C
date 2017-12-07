@@ -83,6 +83,11 @@ static void GetNewIdUsuario(USU_tppUsuario pUsuario,int* Id_destino);
 
 static void excluirUsuario (void* usuario);
 
+static USU_tpCondRet verificaPerfil (char * nome, char genero , int idade);
+static USU_tpCondRet verificaNome (char * nome);
+static USU_tpCondRet verificaIdade (int idade);
+static USU_tpCondRet verificaGenero (char genero );
+
 #ifdef _DEBUG
 
 static void GuardaNoVetor (USU_tppUsuario pUsuario, tpPerfilUsuario * perfil);
@@ -132,8 +137,11 @@ USU_tpCondRet USU_CriaUsuario(USU_tppUsuario pUsuario, char * nome , int idade ,
       if (pUsuario == NULL)
       {
               return USU_CondRetNaoInicializado;
-      }
-
+      }/* if */
+      if (verificaPerfil(nome,genero,idade) != USU_CondRetOK)
+      {
+              return USU_CondRetPerfilIncorreto;
+      }/* if */
       perfil =(tpPerfilUsuario*) malloc(sizeof(tpPerfilUsuario));
 
       if (perfil == NULL)
@@ -147,31 +155,13 @@ USU_tpCondRet USU_CriaUsuario(USU_tppUsuario pUsuario, char * nome , int idade ,
       {//erro de memoria
         return USU_CondRetFaltouMemoria;
       } /* if */
-      if(strlen(nome) > 50)
-      {
-              return USU_CondRetPerfilIncorreto;
-      }/* if */
-      strcpy_s(perfil->nomeUsuario,50,nome); //atribuindo o nome
-
-      if(idade > 0 && idade < 200)
-      {
-        perfil->idadeUsuario = idade; //atribuindo idade
-      } /* if */
-      else
-      {
-        return USU_CondRetPerfilIncorreto;
-      } /* else */
       
-      if (genero == 'M' ||genero == 'F' || genero == 'O' || 
-          genero == 'm' || genero == 'f'|| genero == 'o')
-      {
-        perfil->generoUsuario = (char)toupper(genero); //atribuindo genero
-      } /* if */
-      else
-      {
-        return USU_CondRetPerfilIncorreto;
-      } /* else */
-
+      strcpy_s(perfil->nomeUsuario,50,nome); //atribuindo o nome
+     
+      perfil->idadeUsuario = idade; //atribuindo idade     
+     
+      perfil->generoUsuario = (char)toupper(genero); //atribuindo genero
+     
       GetNewIdUsuario( pUsuario, &perfil->idUsuario ); //atribuindo o Id
 
       retorno = USU_AdicionaUsuario(pUsuario,perfil);
@@ -258,7 +248,25 @@ USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
 *  Função: USU  &Editar Nome
 *  ****/
 
- USU_tpCondRet USU_EditarNome() ;
+ USU_tpCondRet USU_EditarNome(USU_tppUsuario pUsuario, char* nome) 
+ {
+         tpPerfilUsuario * auxiliar;
+         if(pUsuario == NULL)
+        {
+                return USU_CondRetNaoInicializado;
+        }/* if */
+        auxiliar = (tpPerfilUsuario *) GRA_ObterValorCorrente(pUsuario->pGrafo);
+        if (auxiliar == NULL)
+        {
+                return USU_CondRetNaoInicializado;
+        }/* if */
+        if (verificaNome(nome) == USU_CondRetOK)
+        {
+                strcpy_s(auxiliar->nomeUsuario,50,nome);
+                return USU_CondRetOK;
+        }/* if */
+         return USU_CondRetPerfilIncorreto;
+ }
 
 /* Fim função: USU  &Editar Nome */
 
@@ -267,7 +275,25 @@ USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
 *  Função: USU  &Editar idade
 *  ****/
 
- USU_tpCondRet USU_EditarNome() ;
+ USU_tpCondRet USU_EditarIdade(USU_tppUsuario pUsuario, int idade) 
+ {
+         tpPerfilUsuario * auxiliar;
+         if(pUsuario == NULL)
+        {
+                return USU_CondRetNaoInicializado;
+        }/* if */
+        auxiliar = (tpPerfilUsuario *) GRA_ObterValorCorrente(pUsuario->pGrafo);
+        if (auxiliar == NULL)
+        {
+                return USU_CondRetNaoInicializado;
+        }/* if */
+        if (verificaIdade(idade) == USU_CondRetOK)
+        {
+                auxiliar->idadeUsuario = idade;
+                return USU_CondRetOK;
+        }/* if */
+         return USU_CondRetPerfilIncorreto;
+ }
 
 /* Fim função: USU  &Editar idade */
 
@@ -276,7 +302,25 @@ USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
 *  Função: USU  &Editar Genero
 *  ****/
 
- USU_tpCondRet USU_EditarNome() ;
+ USU_tpCondRet USU_EditarGenero(USU_tppUsuario pUsuario, char genero) 
+ {
+         tpPerfilUsuario * auxiliar;
+         if(pUsuario == NULL)
+        {
+                return USU_CondRetNaoInicializado;
+        }/* if */
+        auxiliar = (tpPerfilUsuario *) GRA_ObterValorCorrente(pUsuario->pGrafo);
+        if (auxiliar == NULL)
+        {
+                return USU_CondRetNaoInicializado;
+        }/* if */
+        if (verificaGenero(genero) == USU_CondRetOK)
+        {
+                auxiliar->generoUsuario = toupper(genero);
+                return USU_CondRetOK;
+        }/* if */
+         return USU_CondRetPerfilIncorreto;
+ }
 
 /* Fim função: USU  &Editar Genero */
 
@@ -413,6 +457,90 @@ USU_tpCondRet USU_AdicionaUsuario(USU_tppUsuario pUsuario, tpPerfilUsuario* perf
 
 
 /* Fim função: USU  &USU_AdicionaUsuario */
+/***************************************************************************
+*
+*  Função: USU  &VerificaNome
+*       Verifica o nome recebido e retorna condretPerfilIncorreto
+*       ou condRetOK
+*  ****/
+static USU_tpCondRet verificaNome (char * nome)
+{
+        if(nome == NULL)
+        {
+                return USU_CondRetPerfilIncorreto;
+        }/* if */
+
+        if(strlen(nome) > 50)
+        {
+                return USU_CondRetPerfilIncorreto;
+        }/* if */
+
+        return USU_CondRetOK;
+}
+/* Fim função: USU  &USU_AdicionaUsuario */
+
+/***************************************************************************
+*
+*  Função: USU  &Verifica idade
+*       Verifica a idade recebida e retorna condretPerfilIncorreto
+*       ou condRetOK
+*  ****/
+static USU_tpCondRet verificaIdade (int idade)
+{
+        if(idade > 0 && idade < 200)        
+        {
+                return USU_CondRetOK;
+        }/* if */
+
+        return USU_CondRetPerfilIncorreto;
+}
+/* Fim função: USU  &USU_AdicionaUsuario */
+
+/***************************************************************************
+*
+*  Função: USU  &VerificaGenero
+*       Verifica o genero recebido e retorna condretPerfilIncorreto
+*       ou condRetOK
+*  ****/
+static USU_tpCondRet verificaGenero (char genero )
+{
+        if (genero == 'M' ||genero == 'F' || genero == 'O' || 
+          genero == 'm' || genero == 'f'|| genero == 'o')
+        {
+                return USU_CondRetOK;
+        } /* if */
+
+        return USU_CondRetPerfilIncorreto;
+}
+/* Fim função: USU  &USU_AdicionaUsuario */
+
+/***************************************************************************
+*
+*  Função: USU  &VerificaPerfil
+*       Verifica os dados de perfil recebidos e retorna condretPerfilIncorreto
+*       ou condRetOK
+*  ****/
+static USU_tpCondRet verificaPerfil (char * nome, char genero , int idade)
+{
+        if (verificaNome(nome) != USU_CondRetOK)
+        {
+                return USU_CondRetPerfilIncorreto;
+        }/* if */
+        
+        if (verificaIdade(idade) != USU_CondRetOK)
+        {
+                return USU_CondRetPerfilIncorreto;
+        }/* if */
+
+        if (verificaGenero(genero) != USU_CondRetOK)
+        {
+                return USU_CondRetPerfilIncorreto;
+        }/* if */        
+
+      return USU_CondRetOK;
+}
+
+/* Fim função: USU  &USU_Verifica Perfil */
 
 /***************************************************************************
 *

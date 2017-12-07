@@ -46,6 +46,7 @@ static const char IR_FINAL_CMD            [ ] = "=irfinal"        ;
 static const char IR_INICIO_CMD           [ ] = "=irinicio"        ;
 static const char AVANCAR_ELEMENTO_CMD    [ ] = "=avancar"        ;
 #ifdef _DEBUG
+static const char VERIFICA_GRAFO_CMD      [ ] = "=verificadora"        ;
 static const char DETURPA_CABECA_CMD      [ ] = "=deturpacabeca"        ;
 static const char RECUPERA_CABECA_CMD     [ ] = "=recuperacabeca"        ;
 #endif
@@ -106,7 +107,12 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 *     =qntaresta                    inxgrafo  ValEsp
 *     =irfinal                      inxgrafo  ValEsp
 *     =irinicio                     inxgrafo  ValEsp
-*     =avancar                      inxgrafo  numElem  ValEsp               
+*     =avancar                      inxgrafo  numElem  ValEsp    
+*
+* _DEEBUG
+*     =verificadora                 inxgrafo  ValEsp
+*     =deturpacabeca                inxgrafo  ValEsp
+*     =recuperacabeca               inxgrafo  ValEsp
 ***********************************************************************/
 
    TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
@@ -491,6 +497,23 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
      #ifdef _DEBUG
       /********** FUNÇOES DEBUG  *********/
+
+       /*GRA &Deturpa Cabeça do grafo ( torna ponteiro para origem do grafo null */
+            else if ( strcmp( ComandoTeste , VERIFICA_GRAFO_CMD ) == 0 )
+		 {
+			 numLidos = LER_LerParametros( "ii" , &inxgrafo, &ValEsp);
+
+			 if ( ( numLidos != 2 )
+              || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
+            {
+               return TST_CondRetParm ;
+            } /* if */
+
+			 return TST_CompararInt( ValEsp , GRA_Verificadora(vtgrafos[inxgrafo]) ,
+                     "Erro na funcao verificadora do Grafo."                   ) ;
+
+		 }/* fim ativa: GRA &Deturpa Cabeça do grafo */
+
       /*GRA &Deturpa Cabeça do grafo ( torna ponteiro para origem do grafo null */
             else if ( strcmp( ComandoTeste , DETURPA_CABECA_CMD ) == 0 )
 		 {
@@ -505,9 +528,9 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 			 return TST_CompararInt( ValEsp , GRA_DeturpaCabeca(vtgrafos[inxgrafo]) ,
                      "Erro ao deturpar Cabeça do Grafo."                   ) ;
 
-		 }/* fim ativa: GRA &Ver quantidade de arestas do vertice corrente */
+		 }/* fim ativa: GRA &Deturpa Cabeça do grafo */
 
-     /*GRA &Ver quantidade de arestas do vertice corrente*/
+     /*GRA &RecuperaCabeca*/
      else if ( strcmp( ComandoTeste , RECUPERA_CABECA_CMD ) == 0 )
 		 {
 			 numLidos = LER_LerParametros( "ii" , &inxgrafo, &ValEsp);
@@ -521,7 +544,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 			 return TST_CompararInt( ValEsp , GRA_RecuperaCabeca(vtgrafos[inxgrafo]) ,
                      "Erro ao recuperar cabeça, Grafo era realmente null?."                   ) ;
 
-		 }/* fim ativa: GRA &Ver quantidade de arestas do vertice corrente */
+		 }/* fim ativa: GRA &RecuperaCabeca */
 
 
      /********** FIM FUNÇÕES DEBUG  *********/

@@ -1,0 +1,21 @@
+////////////////////////////////////////////////
+//
+//  Contadores para o módulo Grafo
+//
+///////////////////////////////////////////////
+    
+    GRA_CriarGrafo
+    GRA_DestruirGrafo
+    GRA_EsvaziarGrafo
+    GRA_InserirVertice
+    GRA_ExcluirVertice
+    GRA_ExcluirAresta
+    GRA_IrVertice
+    GRA_ObterValorCorrente
+	GRA_CriarAresta
+    GRA_QntVertices
+    GRA_QntArestas
+    GRA_AvancarElementoCorrente
+    GRA_IrInicioOrigens
+    GRA_IrFinalOrigens
+    GRA_CriarElemento

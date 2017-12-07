@@ -7,3 +7,5 @@
 02/12   4h		            Codificação			    Alterações no modulo Grafo permitir caminhar na lista de origens, alteração nos testes para inluir essas funções, codificação do módulo USUARIO e do modulo REDE  
 03/12   5h		            Codificação			    Codificação do módulo rede e modulo usuário
 05/12   1h		   Organização e ajustes e testes	Criei os batches de geramake, compila e teste para todos os modulos, arrumei pequenos erros nos modulos de testes e comecei a rodar os testes nos modulos
+06/12   6h			codificação e testes	  Adicionei intrumentação no grafo com CESPDIN e Conta com casos de teste, criação da função de verificação com deturpação e recuperação, testei isso tudo
+07/12   2h			Testes e ajustes 	Ajustei alguns erros que encontrei nos testes com a função de verificação e recuperação

@@ -32,8 +32,6 @@
 #include "GRAFO.h"
 #undef GRAFO_OWN
 
-#define _DEBUG  // TIRAR ???
-
 #ifdef _DEBUG
 #include "CESPDIN.H"
 #include "CONTA.H"
@@ -126,7 +124,7 @@ static void naoExclui(void * pDado);
 GRA_tpCondRet GRA_VerificaCabeca(GRA_tppGrafo pGrafo);
 GRA_tpCondRet GRA_VerificaVertice(GRA_tppGrafo pGrafo);
 GRA_tpCondRet GRA_VerificaTamanho(GRA_tppGrafo pGrafo);
-GRA_tpCondRet GRA_VerificaId(GRA_tppGrafo pGrafo);
+GRA_tpCondRet GRA_VerificaId(GRA_tppGrafo pGrafo, tpVerticeGrafo * vertice);
 #endif
 /*****  Código das funções exportadas pelo módulo  *****/
 
@@ -156,6 +154,8 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	#ifdef _DEBUG
 	CED_DefinirTipoEspaco(pGrafo, GRA_TipoCabeca);
 	pGrafo->_pOrigemGrafoRedundante = pGrafo->pOrigemGrafo;
+	pGrafo->idGrafo = 0; //valor de exemplo, todos serao 0
+	pGrafo->numVertices = 0; //vertices iniciais
 	#endif
 
 	return pGrafo;
@@ -237,6 +237,9 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 LIS_EsvaziarLista(pGrafo->pOrigemGrafo);
 	 pGrafo->pArestas = NULL;
 	 pGrafo->pVertice = NULL;
+	 #ifdef _DEBUG
+	 	pGrafo->numVertices = 0;
+	 #endif
 	 
 
 	 return;
@@ -284,6 +287,10 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 		pGrafo->pVertice = pVerticeAux;
 		pGrafo->pArestas = pGrafo->pVertice->pVerticeArestas;
 	}/*if*/
+	#ifdef _DEBUG
+		pGrafo->numVertices++;
+		pVerticeAux->idGrafo = pGrafo->idGrafo;
+	#endif
 
 	return GRA_CondRetOK;
  }
@@ -341,6 +348,9 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 		pGrafo->pVertice = NULL;
 		pGrafo->pArestas = NULL;
 	}/*else*/
+	#ifdef _DEBUG
+		pGrafo->numVertices--;
+	#endif
 	return GRA_CondRetOK;
 
  }
@@ -367,6 +377,23 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 }/*if*/
 	 vAux = GRA_ProcurarValor(gAux->pOrigemGrafo, valor);
 	 CondRet = EfetuaExclusaoAresta(pGrafo->pVertice, vAux);
+#ifdef _DEBUG
+		if (CondRet == GRA_CondRetOK)
+		{
+			if(vAux != pGrafo->pVertice)
+			{
+				vAux->numArestas--;
+				pGrafo->pVertice->numArestas--;
+			}
+			else
+			{
+				pGrafo->pVertice->numArestas--;
+			}
+			
+		}				
+#endif
+	 
+	 
 	 return CondRet;
  }
 
@@ -478,6 +505,18 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 			 {
 				 return GRA_CondRetFaltouMemoria;
 			 }/*if*/
+			 #ifdef _DEBUG
+			 	if(aux == pGrafo->pVertice)
+				 {
+					 aux->numArestas++;
+				 }
+				 else
+				 {
+					aux->numArestas++;
+					pGrafo->pVertice->numArestas++;
+				 }
+				
+			#endif			 
 		 }/*if*/
 		 return GRA_CondRetOK;
 	 }
@@ -634,7 +673,7 @@ GRA_tpCondRet GRA_Verificadora(GRA_tppGrafo pGrafo)
 	retorno = GRA_VerificaCabeca(pGrafo);
 	if (retorno != GRA_CondRetOK)
 	{
-		if ( retorno = GRA_CondRetOrigemPerdida )
+		if ( retorno == GRA_CondRetOrigemPerdida )
 		{//vou usar a função de recuperação
 			GRA_RecuperaCabeca(pGrafo);
 		}/* if */
@@ -694,6 +733,10 @@ GRA_tpCondRet GRA_VerificaCabeca(GRA_tppGrafo pGrafo)
 			{
 				return GRA_CondRetTipoIncorreto;
 			}
+	if(pGrafo->pOrigemGrafo == NULL && pGrafo->_pOrigemGrafoRedundante != NULL)
+	{
+		return GRA_CondRetOrigemPerdida;
+	}
 	return GRA_CondRetOK;	
 }
 
@@ -742,8 +785,9 @@ GRA_tpCondRet GRA_VerificaVertice(GRA_tppGrafo pGrafo)
 			{
 				return GRA_CondRetTipoIncorreto;
 			}/* if */
-		
-		if( auxiliar->numArestas != LIS_ObtemTamanho(auxiliar->pVerticeArestas) )
+		if( TST_CompararInt(auxiliar->numArestas,
+		LIS_ObtemTamanho(auxiliar->pVerticeArestas),
+		"Numero de arestas incompativel") != TST_CondOK)		
 		{
 			return GRA_CondRetNumeroArestaIncorreto;
 		}
@@ -769,9 +813,7 @@ GRA_tpCondRet GRA_VerificaVertice(GRA_tppGrafo pGrafo)
 
 GRA_tpCondRet GRA_VerificaTamanho(GRA_tppGrafo pGrafo)
 {
-	tpVerticeGrafo * auxiliar;
-	tpVerticeGrafo * verticeInicial;
-
+	
 	if (pGrafo == NULL)
 	{
 		return GRA_CondRetGrafoNulo;
@@ -781,8 +823,9 @@ GRA_tpCondRet GRA_VerificaTamanho(GRA_tppGrafo pGrafo)
 	{
 		return GRA_CondRetGrafoVazia;
 	}/* if */
-
-	if ( pGrafo->numVertices != LIS_ObtemTamanho(pGrafo->pOrigemGrafo) )
+	if( TST_CompararInt(LIS_ObtemTamanho(pGrafo->pOrigemGrafo),
+		pGrafo->numVertices,
+		"Numero de vertices do grafo incompativel") != TST_CondOK)
 	{
 		return GRA_CondRetNumeroVerticeIncorreto;
 	}/* if */
@@ -914,7 +957,8 @@ GRA_tpCondRet GRA_VerificaId(GRA_tppGrafo pGrafo , tpVerticeGrafo * vertice)
 	 pVertice->valor = pValor;
 
 #ifdef _DEBUG
-	 CED_DefinirTipoEspaco(pValor, GRA_TipoVertice);
+	 CED_DefinirTipoEspaco(pVertice, GRA_TipoVertice);	
+	 pVertice->numArestas=0; 
 #endif
 
 	 //criando a lista de arestas com a função que nao desaloca os vertices(ao exluir arestas nao queremos desalocar vertices) 

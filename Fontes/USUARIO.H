@@ -264,7 +264,18 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
       char* USU_PegaNomeUsuarioCorrente (USU_tppUsuario pUsuario);
 
 
-      /* ainda sem certeza de o que externar */
+/***********************************************************************
+*
+*  $FC Função: USU  &IrUsuario
+*
+*  $ED Descrição da função
+*     Busca pelo nome o usuario desejado e o torna corrente
+*
+*  $FV Valor retornado
+*     inteiro -  (maior ou igual a 0) Id do usuario caso tenha encontrado, 
+*                -1 indica que o usuario não foi encontrado no grafo
+*
+***********************************************************************/ 
 
       int USU_IrUsuario (USU_tppUsuario pUsuario, char* nome);
 

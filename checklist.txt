@@ -1,0 +1,24 @@
+-juntar os modulos usuario e chat
+-percorrer lista de arestas com o modulo usuario
+- atualizar o modelo fisico (ta no gliffy já né?)
+- atualizar os requisitos? 
+- comentar as funções da rede nos moldes do .H dos outros módulos
+- 
+-
+-
+-
+
+
+Alterações especificas de módulos:
+
+rede:
+
+
+usuario:
+
+
+chat:
+
+
+grafo:
+

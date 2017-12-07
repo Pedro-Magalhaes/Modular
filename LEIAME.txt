@@ -20,6 +20,16 @@ obs. Para testar individualmente os modulos:
 $ Testa.bat TesteLista TesteLista   
 $ Testa.bat TesteGrafo TesteGrafo
 
+//******* NOVO  ****///
+
+No teste em modo debug do grafo o log de teste diz que o programa ainda tem 4 espaços de memória alocados
+mas isso está ocorrendo porque a função que passo para o grafo fazer a exclusão é "vazia" pra eu não perder minhas
+structs de teste durante o teste.
+Implementamos uma funçao de deturpação no grafo que faz com que a lista com as origens do grafo seja perdida e com a 
+função de verificação conseguimos reestabelecer a origem usando uma redundância.
+OBS: Fizemos a função de deturpação e a de recuperação Diferente do que tinhamos proposto no T3? 
+
+
 Grupo:
 Hugo Cunha- Hfac - 1610565,
 Pedro Felipe - Pfm - 1611074,
