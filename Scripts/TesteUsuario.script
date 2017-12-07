@@ -40,7 +40,7 @@
 =declararparm   pNaoNULL       int  1
 
 == Iniciar o usuario 0
-=iniciarusuario      usuario0   
+=iniciarmodulo      usuario0   
 
 == Testar diferentes condições de criar usuários cobrindo todas as classes de equivalência
 == Criar com idade inválida 
