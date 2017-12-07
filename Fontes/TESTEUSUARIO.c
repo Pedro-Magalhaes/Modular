@@ -56,7 +56,7 @@ static const char IR_USUARIO_CMD		   [ ] = "=irusuario"   ;
 #define NAO_VAZIO 1
 
 #define DIM_VT_USUARIO   10
-#define DIM_VALOR     100
+#define DIM_VALOR     50
 
 USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 
@@ -99,6 +99,7 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
           numLidos   = -1 ,
           ValEsp = -1 ,
 		      inxstruct =-1;
+      char genero;
 
       TST_tpCondRet CondRet ;
 
@@ -150,7 +151,7 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
                        &inxusuario, StringDado1, &intdado1, StringDado2, &ValEsp ) ;
 
             if ( ( numLidos != 5 )
-              || ( ! ValidarInxusuario( inxusuario , VAZIO )))
+              || (  ValidarInxusuario( inxusuario , VAZIO )))
             {
                return TST_CondRetParm ;
             } /* if */
