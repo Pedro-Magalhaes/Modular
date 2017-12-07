@@ -84,7 +84,7 @@ static void ExcluirMensagens(void *msg)
 
 CHA_tppChat CHA_CriaChat(void* participante, void(*ExcluirValor) (void * pDado))
 {
-	CHA_tpChat * pChat;
+	CHA_tpChat * pChat = NULL;
 
 	pChat = (CHA_tpChat *)malloc(sizeof(CHA_tpChat));
 	if (pChat == NULL)
