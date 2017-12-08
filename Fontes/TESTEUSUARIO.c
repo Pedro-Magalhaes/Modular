@@ -316,7 +316,7 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
             
 
             USU_DestruirUsuarios( vtusuarios[ inxusuario ] ) ;
-
+            vtusuarios[ inxusuario ] = NULL;
 
 
              return TST_CompararPonteiroNulo( 0 , vtusuarios[ inxusuario ] ,
@@ -369,8 +369,7 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 
             if ( stringtemp == NULL )
             {
-               return TST_CompararPonteiroNulo( 1 , stringtemp ,
-                         "Nome deveria existir." ) ;
+               return TST_CompararString("NULL",StringDado1,"String nome do corrente eh null");
             } /* if */
 
 			return (TST_tpCondRet) (TST_CompararString( StringDado1 , stringtemp ,

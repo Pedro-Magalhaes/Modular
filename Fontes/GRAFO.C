@@ -196,7 +196,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  {
 
 
-	 LIS_tppLista Elem = pGrafo->pOrigemGrafo;
+	 LIS_tppLista Elem;
 	 tpVerticeGrafo * atual;
 	 #ifdef _DEBUG
 		CNT_CONTAR("GRA_EsvaziarGrafo");
@@ -207,7 +207,7 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 		 return;
 	 }/*if*/
 
-
+	 Elem = pGrafo->pOrigemGrafo;
 
 	 LIS_IrInicioLista(Elem); //indo pro inicio da lista
 	 atual = LIS_ObterValor(Elem);//pegando o primeiro valor
@@ -306,17 +306,18 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
  *  ****/
  GRA_tpCondRet GRA_ExcluirVertice(GRA_tppGrafo pGrafo)
  {
-	 tpVerticeGrafo *vizinho = LIS_ObterValor(pGrafo->pArestas);
+	 tpVerticeGrafo *vizinho;
 
 #ifdef _DEBUG
 	 CNT_CONTAR("GRA_ExcluirVertice");
 #endif // _DEBUG
 
 	 
-	 if (pGrafo == NULL || pGrafo->pVertice == NULL)
+	 if (pGrafo == NULL || pGrafo->pVertice == NULL )
 	 {
 		 return GRA_CondRetGrafoNulo;
 	 }/*if*/
+	  vizinho = LIS_ObterValor(pGrafo->pArestas);
 	 LIS_IrInicioLista(pGrafo->pArestas);//indo p/ o inicio das arestas
 	 
 	 if (vizinho != NULL)

@@ -31,7 +31,7 @@
 
 
 static const char CRIAR_CHAT_CMD           [ ] = "=criarchat"     ;
-static const char ADICIONAR_INTEGRANTE_CMD [ ] = "=adicionarintgrante"     ;
+static const char ADICIONAR_INTEGRANTE_CMD [ ] = "=adicionarintegrante"     ;
 static const char ENVIAR_MENSAGEM_CMD      [ ] = "=enviarmensagem"  ;
 static const char SAIR_CHAT_CMD            [ ] = "=sairchat"  ;
 static const char DELETAR_CHAT_CMD         [ ] = "=deletarchat"   ;

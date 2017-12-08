@@ -33,6 +33,8 @@
 #include "USUARIO.h"
 #undef USUARIO_OWN
 
+#include "CHAT.h"
+
 #define MAX_USERS 10
 
 /***********************************************************************
@@ -83,8 +85,8 @@ static void GetNewIdUsuario(USU_tppUsuario pUsuario,int* Id_destino);
 
 static void excluirUsuario (void* usuario);
 
-static USU_tpCondRet verificaPerfil (char * nome, char genero , int idade);
-static USU_tpCondRet verificaNome (char * nome);
+static USU_tpCondRet verificaPerfil (USU_tppUsuario pUsuario,char * nome, char genero , int idade);
+static USU_tpCondRet verificaNome (USU_tppUsuario pUsuario,char * nome);
 static USU_tpCondRet verificaIdade (int idade);
 static USU_tpCondRet verificaGenero (char genero );
 
@@ -138,7 +140,7 @@ USU_tpCondRet USU_CriaUsuario(USU_tppUsuario pUsuario, char * nome , int idade ,
       {
               return USU_CondRetNaoInicializado;
       }/* if */
-      if (verificaPerfil(nome,genero,idade) != USU_CondRetOK)
+      if (verificaPerfil(pUsuario,nome,genero,idade) != USU_CondRetOK)
       {
               return USU_CondRetPerfilIncorreto;
       }/* if */
@@ -251,6 +253,7 @@ USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
  USU_tpCondRet USU_EditarNome(USU_tppUsuario pUsuario, char* nome) 
  {
          tpPerfilUsuario * auxiliar;
+         USU_tpCondRet retorno;
          if(pUsuario == NULL)
         {
                 return USU_CondRetNaoInicializado;
@@ -260,12 +263,15 @@ USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
         {
                 return USU_CondRetNaoInicializado;
         }/* if */
-        if (verificaNome(nome) == USU_CondRetOK)
+        retorno = verificaNome(pUsuario,nome);
+        if (retorno == USU_CondRetOK)
         {
                 strcpy_s(auxiliar->nomeUsuario,50,nome);
                 return USU_CondRetOK;
+                
         }/* if */
-         return USU_CondRetPerfilIncorreto;
+        
+        return USU_CondRetPerfilIncorreto;
  }
 
 /* Fim função: USU  &Editar Nome */
@@ -384,7 +390,8 @@ void USU_DestruirUsuarios (USU_tppUsuario pUsuario)
         }/* if */
         GRA_DestruirGrafo(pUsuario->pGrafo);
         pUsuario->pGrafo = NULL;                
-        pUsuario->IdSequencial = 0;     
+        pUsuario->IdSequencial = 0;
+        free(pUsuario);
 }
 
 /* Fim função: USU  &USU_DestruirUsuarios */
@@ -463,8 +470,9 @@ USU_tpCondRet USU_AdicionaUsuario(USU_tppUsuario pUsuario, tpPerfilUsuario* perf
 *       Verifica o nome recebido e retorna condretPerfilIncorreto
 *       ou condRetOK
 *  ****/
-static USU_tpCondRet verificaNome (char * nome)
+static USU_tpCondRet verificaNome (USU_tppUsuario pUsuario,char * nome)
 {
+        tpPerfilUsuario * inicial;
         if(nome == NULL)
         {
                 return USU_CondRetPerfilIncorreto;
@@ -475,6 +483,13 @@ static USU_tpCondRet verificaNome (char * nome)
                 return USU_CondRetPerfilIncorreto;
         }/* if */
 
+        inicial = GRA_ObterValorCorrente( pUsuario->pGrafo);
+        
+        if(buscaPorNome(pUsuario->pGrafo,nome)!= NULL)
+        {
+             return USU_CondRetPerfilIncorreto;   
+        }
+        GRA_IrVertice(pUsuario->pGrafo,inicial);
         return USU_CondRetOK;
 }
 /* Fim função: USU  &USU_AdicionaUsuario */
@@ -520,9 +535,9 @@ static USU_tpCondRet verificaGenero (char genero )
 *       Verifica os dados de perfil recebidos e retorna condretPerfilIncorreto
 *       ou condRetOK
 *  ****/
-static USU_tpCondRet verificaPerfil (char * nome, char genero , int idade)
+static USU_tpCondRet verificaPerfil (USU_tppUsuario pUsuario,char * nome, char genero , int idade)
 {
-        if (verificaNome(nome) != USU_CondRetOK)
+        if (verificaNome(pUsuario,nome) != USU_CondRetOK)
         {
                 return USU_CondRetPerfilIncorreto;
         }/* if */
@@ -582,11 +597,13 @@ static void excluirUsuario (void* dado)
 *  ****/
 static tpPerfilUsuario* buscaPorNome (GRA_tppGrafo pGrafo, char*nome)
 {
+        tpPerfilUsuario * inicial;
         tpPerfilUsuario * aux;
         if ( pGrafo == NULL )
         {
                 return NULL;
         }/* if */
+        inicial = GRA_ObterValorCorrente(pGrafo);
         GRA_IrInicioOrigens(pGrafo);        
         do
         {
@@ -600,6 +617,7 @@ static tpPerfilUsuario* buscaPorNome (GRA_tppGrafo pGrafo, char*nome)
                         return aux;
                 }/* if */
         }while(GRA_AvancarElementoCorrente(pGrafo,1) == GRA_CondRetOK);
+        GRA_IrVertice(pGrafo,inicial);
         return NULL;
 }/* Fim função: USU  &buscaPorNome */
 

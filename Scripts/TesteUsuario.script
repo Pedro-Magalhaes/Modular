@@ -17,16 +17,21 @@
 =declararparm   nome0    string  "Ansem"
 =declararparm	gen0	 string  "M"
 =declararparm	idade0   int	 53
+
 =declararparm   nome1    string  "Faker"
 =declararparm	gen1	 string  "M"
 =declararparm	idade1   int	 21
+
 =declararparm   nome2    string  "Papaco"
 =declararparm	gen2	 string  "O"
 =declararparm	idade2   int	 37  
+
 =declararparm   nome3    string  "IHZ"
 =declararparm	gen3	 string  "F"
 =declararparm	idade3   int	 116  
+
 =declararparm	string0  string	 "A"  
+=declararparm   sNULL    string  "NULL"
 
 
 =declararparm   OK                int  0
@@ -39,74 +44,90 @@
 =declararparm   pNULL          int  0
 =declararparm   pNaoNULL       int  1
 
+
 == Iniciar o usuario 0
 =iniciarmodulo      usuario0   
 
-// Testar diferentes condições de criar usuários cobrindo todas as classes de equivalência
-// Criar com idade inválida 
+
+==Criar com idade inválida 
 =criarusuario   	 usuario0   nome0   -1   gen0   PerfilIncorreto
-// Criar com gênero inválido 
+==Criar com gênero inválido 
 =criarusuario   	 usuario0   nome0   idade0   string0   PerfilIncorreto
-// Criar corretamente e verificar se foi criado
+==Criar corretamente e verificar se foi criado
 =criarusuario   	 usuario0   nome0   idade0   gen0   OK
 =totalusuarios		 usuario0   1
 
-// Testar adicionar amigo cobrindo todas as classes de equivalência
+==Testar adicionar amigo cobrindo todas as classes de equivalência
 =criarusuario   	 usuario0   nome1   idade1   gen1   OK
-// Adicionar um amigo que não existe
+==Adicionar um amigo que não existe
 =adicionaramigo   usuario0   nome2   NaoAchou
-// Adicionar amigo corretamente
+==Adicionar amigo corretamente
 =adicionaramigo   usuario0   nome1   OK
 
-// Testar pegar nome do usuário corrente cobrindo todas as classes de equivalência
-// Pegar corrente em módulo com 0 usuários
-=iniciarmodulo      usuario2
-=pegarcorrente   usuario2   NULL
-// Pegar corrente corretamente
+== Mudar corrente para um usuário que não existe
+=irusuario    usuario0   nome2   -1
+== Mudar corrente para usuário de nome1 e verificar se foi corretamnte
+=irusuario    usuario0   nome1   2
+=pegarcorrente   usuario0   nome1
+=irusuario    usuario0   nome0   1
 =pegarcorrente   usuario0   nome0
 
-// Testar editar nome do corrente cobrindo todas as classes de equivalência
-// Mudar nome para um já em uso
-=editarnome   usuario0   nome1   PerfilIncorreto
-// Editar nome corretamente e verificar se foi editado
-=editarnome   usuario0   nome3   OK
-=pegarcorrente   usuario0   nome3
-// Reverter para nome original
-=editarnome   usuario0   nome0   OK
 
-// Testar editar idade do corrente cobrindo todas as classes de equivalência
-// Mudar para uma idade inválida
+== Mudar para uma idade inválida
 =editaridade   usuario0   -1   PerfilIncorreto
-// Editar idade corretamente
+==Editar idade corretamente
 =editaridade   usuario0   idade3   OK
-// Reverter para idade original
+==Reverter para idade original
 =editaridade   usuario0   idade0   OK
 
-// Testar editar gênero do corrente cobrindo todas as classes de equivalência
-// Mudar para um gênero inválido
+==Mudar para um gênero inválido
 =editargenero   usuario0   string0   PerfilIncorreto
-// Editar gênero corretamente
+==Editar gênero corretamente
 =editargenero   usuario0   gen3   OK
-// Reverter para gênero original
+==Reverter para gênero original
 =editargenero   usuario0   gen0   OK
 
-// Testar mudar usuário corrente cobrindo todas as classes de equivalência
-// Mudar corrente para um usuário que não existe
-=irusuario    usuario0   nome2   -1
-// Mudar corrente para usuário de nome1 e verificar se foi corretamnte
-=irusuario    usuario0   nome1   0
-=pegarcorrente   usuario0   nome1
+==Testar pegar nome do usuário corrente cobrindo todas as classes de equivalência
+=iniciarmodulo      usuario2
+=pegarcorrente   usuario2   sNULL
+==Pegar corrente corretamente
+=pegarcorrente   usuario0   nome0
+==Mudar nome e buscar nome antigo
+=editarnome   usuario0   nome2   OK
+=pegarcorrente   usuario0   nome2
+=irusuario usuario0   nome0   -1
+==Editar nome corretamente e verificar se foi editado
+=totalusuarios		 usuario0   2
+=editarnome   usuario0   nome3   OK
 
-// Testar deletar usuario cobrindo todas as classes de equivalência
-// Deletar usuário corrente em módulo com 0 usuários
-=deletarusuario    usuario2   NaoInicializado
-// Deletar usuário corrente corretamente e verificar se foi deletado
+
+== editar idade:Mudar para uma idade inválida
+=editaridade   usuario0   -1   PerfilIncorreto
+== Editar idade corretamente
+=editaridade   usuario0   idade3   OK
+== Reverter para idade original
+=editaridade   usuario0   idade0   OK
+
+== Mudar para um gênero inválido
+=editargenero   usuario0   string0   PerfilIncorreto
+== Editar gênero corretamente
+=editargenero   usuario0   gen3   OK
+== Reverter para gênero original
+=editargenero   usuario0   gen0   OK
+
+
+== Deletar usuário corrente corretamente e verificar se foi deletado
 =deletarusuario    usuario0   OK
 =totalusuarios		 usuario0   1
+=deletarusuario    usuario0   OK
+=totalusuarios		 usuario0   0
+==Testando com 0 usuarios
+=deletarusuario    usuario0   NaoInicializado
 
-// Testar destruir usuários cobrindo todas as classes de equivalência
+
+
 == Destruir usuarios em módulo inicializado
 =destruirusuarios   usuario0
-
+=destruirusuarios   usuario2
 
 // fim
