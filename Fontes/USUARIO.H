@@ -140,8 +140,8 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 *  $FV Valor retornado
 *     Se executou corretamente retorna USU_CondRetOK .
-*
-*     Se ocorreu algum erro, vai retornar USU_CondRetNaoAchou .
+*     Se já forem amigos retorna USU_CondRetPerfilIncorreto
+*     Nas demais situções, vai retornar USU_CondRetNaoAchou .
 *
 ***********************************************************************/    
       USU_tpCondRet USU_AdicionaAmigo( USU_tppUsuario pUsuario, char* nome ) ;
@@ -208,7 +208,7 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *     Deleta o usuario corrente do módulo usuario 
 *
 *  $EP Parâmetros
-*     XXXXXXXXXXXX  - 
+*     pUsuario - ponteiro para a cabeça do modulo usuário 
 *
 *  $FV Valor retornado
 *     Se executou corretamente retorna o ponteiro para a lista.
@@ -228,6 +228,8 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 *  $ED Descrição da função
 *     Destroi todos os dados alocados 
+*  $EP Parâmetros
+*     pUsuario - ponteiro para a cabeça do modulo usuário 
 *
 *  $FV Valor retornado
 *     Não retorna valor
@@ -241,6 +243,8 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 *  $ED Descrição da função
 *     Retorna o numero de usuarios cadastrados atualmente
+*  $EP Parâmetros
+*     pUsuario - ponteiro para a cabeça do modulo usuário 
 *
 *  $FV Valor retornado
 *     Retorna um inteiro > 0 representando o numero de usuarios
@@ -255,6 +259,8 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 *  $ED Descrição da função
 *     Retorna o nome do usuario corrente na rede de relacionamentos
+*  $EP Parâmetros
+*     pUsuario - ponteiro para a cabeça do modulo usuário 
 *
 *  $FV Valor retornado
 *     Retorna um ponteiro pra char com o nome do usuario
@@ -268,6 +274,10 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 *  $ED Descrição da função
 *     Retorna um string formatada com os dados de um usuario
+*  $EP Parâmetros
+*     pUsuario - ponteiro para a cabeça do modulo usuário 
+*     minhaString - string onde vai ser guardado os dados deve ter
+*                   tamanho suficiente (100 é suficiente)
 *
 *   $FV Valor retornado
 *     USU_CondRetOK - se tudo correu bem
@@ -283,6 +293,10 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *  $ED Descrição da função
 *     Retorna um string formatada com os dados de todos os amigos do
 *     usuario corrente
+*  $EP Parâmetros
+*     pUsuario - ponteiro para a cabeça do modulo usuário 
+*     minhaString - string onde vai ser guardado os dados deve ter
+*                   tamanho suficiente (perto de 1000 para 10 usuarios)
 *
 *  $FV Valor retornado
 *     USU_CondRetOK - se tudo correu bem
@@ -291,7 +305,26 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 ***********************************************************************/ 
       USU_tpCondRet USU_PegaDadosAmigosCorrente (USU_tppUsuario pUsuario,
-                                                      char * minhaString);                                                      
+                                                      char * minhaString);
+/***********************************************************************
+*
+*  $FC Função: USU  &PegaDadosTodos
+*  $ED Descrição da função
+*     Retorna um string formatada com os dados de todos usuarios atualmente
+*     cadastrados na rede
+*  $EP Parâmetros
+*     pUsuario - ponteiro para a cabeça do modulo usuário 
+*     minhaString - string onde vai ser guardado os dados deve ter
+*                   tamanho suficiente (perto de 1000 para 10 usuarios)
+*
+*  $FV Valor retornado
+*     USU_CondRetOK - se tudo correu bem
+*     USU_CondRetSemUsuarios - se não há amigos
+*     USU_CondRetNaoInicializado - caso de ponteiro null
+*
+***********************************************************************/ 
+      USU_tpCondRet USU_PegaDadosTodos (USU_tppUsuario pUsuario,
+                                                      char * minhaString);                                                                                                              
 
 
 /***********************************************************************
@@ -322,7 +355,24 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 ***********************************************************************/ 
 
-USU_tpCondRet USU_enviaMsgPublica (USU_tppUsuario pUsuario, char * mensagem ,char* nome);
+      USU_tpCondRet USU_enviaMsgPublica (USU_tppUsuario pUsuario, char * mensagem ,
+                                           char * nome);
+
+/***********************************************************************
+*
+*  $FC Função: USU  &enviaMsgPrivada
+*
+*  $ED Descrição da função
+*     Envia mensagem no chat privado, para a pessoa com o nome desejado
+*
+*  $FV Valor retornado
+*     condretOK - se tudo correu bem
+*     USU_CondRetNaoInicializado - chat null
+*     USU_CondRetNaoAchou - Nao achou o chat desejado
+***********************************************************************/ 
+
+      USU_tpCondRet USU_enviaMsgPrivada (USU_tppUsuario pUsuario, char * mensagem ,
+                                          char * nomeRemetente, char * nomeDestino);
 
 /***********************************************************************
 *
@@ -338,7 +388,22 @@ USU_tpCondRet USU_enviaMsgPublica (USU_tppUsuario pUsuario, char * mensagem ,cha
 *
 ***********************************************************************/ 
 
-char* USU_pegaMsgPublico (USU_tppUsuario pUsuario );
+      char* USU_pegaMsgPublico (USU_tppUsuario pUsuario );
+/***********************************************************************
+*
+*  $FC Função: USU  &PegaMsgPrivado
+*
+*  $ED Descrição da função
+*     Retorna uma string contendo todas as mensagem do chat desejado o usuario
+*     fica responsável por desalocar a memoria do ponteiro retornado
+*
+*  $FV Valor retornado
+*     ponteiro para a msg - se tudo correu bem
+*     NULL - caso contrario           
+*
+***********************************************************************/ 
+
+      char* USU_pegaMsgPrivado (USU_tppUsuario pUsuario, char * nomeIntegrante);      
 
 #undef USUARIO_EXT
 

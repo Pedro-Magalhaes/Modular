@@ -117,8 +117,9 @@
 
 
 == Deletar usuário corrente corretamente e verificar se foi deletado
+=totalusuarios	   usuario0   2
 =deletarusuario    usuario0   OK
-=totalusuarios		 usuario0   1
+=totalusuarios	   usuario0   1
 =deletarusuario    usuario0   OK
 =totalusuarios		 usuario0   0
 ==Testando com 0 usuarios
