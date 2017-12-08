@@ -273,7 +273,6 @@ GRA_tpCondRet GRA_ExcluirAresta(GRA_tppGrafo pGrafo, void* valor);
 void* GRA_ObterValorCorrente(GRA_tppGrafo pGrafo);
 
 
-
 /***********************************************************************
 *
 *  $FC Função: GRA  &CriarAresta
@@ -379,6 +378,85 @@ GRA_tpCondRet GRA_IrVertice(GRA_tppGrafo pGrafo, void * valor);
 
    GRA_tpCondRet GRA_AvancarElementoCorrente( GRA_tppGrafo pGrafo ,
                                               int numElem ) ;
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Ir inicio Arestas
+*
+*  $ED Descrição da função
+*     vai para o inicio da lista de arestas
+*     Faz nada se a lista origens está vazia.
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo a manipular
+*
+***********************************************************************/
+
+   void GRA_IrInicioArestas( GRA_tppGrafo pGrafo ) ;
+
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Ir Final Arestas
+*
+*  $ED Descrição da função
+*     Vai para o final da lista de arestas.
+*     Faz nada se a lista origens está vazia.
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo a manipular
+*
+***********************************************************************/
+
+   void GRA_IrFinalArestas( GRA_tppGrafo pGrafo ) ;
+
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Avançar elemento Aresta
+*
+*  $ED Descrição da função
+*     Avança lista de arestas do vertice corrente
+*     Se numElem for positivo avança em direção ao final
+*     Se numElem for negativo avança em direção ao início
+*     numElem pode ser maior do que o númro de elementos existentes na
+*               direção desejada
+*     Se numElem for zero somente verifica se a lista está vazia
+*
+*  $EP Parâmetros
+*     pGrafo  - ponteiro para o grafo a ser manipulado
+*     numElem - o número de elementos a andar
+*
+*  $FV Valor retornado
+*     CondRetOK         - se numElem elementos tiverem sido andados
+*     CondRetFimGrafo   - se encontrou o fim da lista antes de andar numElem
+*                         elementos
+*     CondRetGrafoVazia - se o grafo está vazio
+*
+***********************************************************************/
+
+   GRA_tpCondRet GRA_AvancarElementoAresta( GRA_tppGrafo pGrafo ,
+                                              int numElem ) ;			
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Obter referência para o valor contido no elemento corrente 
+*				da aresta
+*
+*  $ED Descrição da função
+*     Obtem a referência para o valor contido no elemento corrente da aresta
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para a grafo de onde se quer o valor do vertice corrente
+*
+*  $FV Valor retornado
+*     não NULL - se o elemento corrente existe
+*     NULL     - se a grafo estiver vazia
+*                Pode retornar NULL se o valor inserido no elemento for NULL.
+*
+***********************************************************************/
+
+void* GRA_ObterValorAresta(GRA_tppGrafo pGrafo);								  
 
 /***********************************************************************
 *

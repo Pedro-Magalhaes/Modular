@@ -54,15 +54,18 @@ void removerUsuario (USU_tppUsuario minhaRede);
 void adicionarAmigo (USU_tppUsuario minhaRede);
 void IrUsuario (USU_tppUsuario minhaRede);
 RED_tpCondRet editarPerfil(USU_tppUsuario minhaRede,char* nome);
-
+void mostrarAmigos(USU_tppUsuario minhaRede);
 RED_tpCondRet verificaIdade (int idade);
 RED_tpCondRet verificaGenero (char genero);
+void msgPublica(USU_tppUsuario minhaRede,char* nome);
+void pegaMsgPublica(USU_tppUsuario minhaRede,char* nome);
 
 
 int main (void)
 {    
     int opcao;
     char * nome;
+    int size =0;
     USU_tppUsuario minhaRede;
     opcao = 1;
     minhaRede = USU_InicializarModulo();
@@ -77,7 +80,7 @@ int main (void)
         {
             printf("\nRede atualmente sem usuarios\n");
         }/* else */
-        printf ("Digite o que deseja fazer:\n\t0- Finalizar execucao\n\t1- Criar Usuario\n\t2- Remover Usuario\n\t3- Adicionar Amigo\n\t4- Editar Perfil\n\t5- Ir para usuario por nome\n");
+        printf ("Digite o que deseja fazer:\n\t0- Finalizar execucao\n\t1- Criar Usuario\n\t2- Remover Usuario\n\t3- Adicionar Amigo\n\t4- Editar Perfil\n\t5- Ir para usuario por nome\n\t6- Mostrar Amigos\n\t7- Msg Publica\n\t8- ver msgs Publicas\n");
         scanf("%d",&opcao);        
         switch (opcao)
         {
@@ -95,6 +98,15 @@ int main (void)
             break;
             case 5:
                 IrUsuario(minhaRede);
+                break;
+            case 6:
+                mostrarAmigos(minhaRede);
+                break;
+            case 7:
+                msgPublica(minhaRede,nome);
+                break;
+            case 8:
+                pegaMsgPublica(minhaRede,nome);
                 break;
             default:
                 break;
@@ -220,6 +232,7 @@ void IrUsuario (USU_tppUsuario minhaRede)
 {
     int aux = -1;
     char nome[MAXNOME];
+    char dados[100];
     printf("digite o nome buscado: \n");
     scanf(" %49[^\n]",nome);
     
@@ -227,7 +240,8 @@ void IrUsuario (USU_tppUsuario minhaRede)
     aux = USU_IrUsuario(minhaRede,nome);
     if(aux >= 0)
     {
-        printf("Usuario encontrado com Id: %d\n",aux);
+        USU_PegaDadosUsuarioCorrente(minhaRede,dados);
+        printf("usuario encontrado:\n%s\n",dados);
         return;
     }/* if */
     printf("Usuario nao encontrado \n");
@@ -385,4 +399,51 @@ RED_tpCondRet pegaGenero(char * genero)
     }/* while */
 
     return RED_CondRetOK;
+}
+
+void mostrarAmigos(USU_tppUsuario minhaRede)
+{
+    char buffer[800];
+    if(USU_PegaDadosAmigosCorrente(minhaRede,buffer) == USU_CondRetOK)
+    {
+        printf("\nSEUS AMIGOS:\n%s\n",buffer);
+    }
+    
+}
+
+void msgPublica(USU_tppUsuario minhaRede,char* nome)
+{
+    char mensagem[145];
+    if ( nome == NULL )
+    {
+        printf("Precisa estar logado para mandar msg\n");
+        return;
+    }/* if */
+    
+    if (minhaRede != NULL)
+    {
+        printf("digite sua msg ate 144 caracteres: \n");
+        scanf(" %144[^\n]",mensagem);
+        fflush(stdin);
+        USU_enviaMsgPublica(minhaRede,mensagem,nome);
+    }
+
+}
+
+void pegaMsgPublica(USU_tppUsuario minhaRede,char* nome)
+{
+    char * msg;
+    if(minhaRede == NULL)
+    {
+        return;
+    }
+    if (nome == NULL)
+    {
+        printf("Voce deve estar logado para ver msgs\n");
+        return;
+    }
+
+    msg = USU_pegaMsgPublico(minhaRede);
+    printf("mensagens:\n%s",msg);
+    free(msg);
 }

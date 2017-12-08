@@ -262,6 +262,36 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 *
 ***********************************************************************/ 
       char* USU_PegaNomeUsuarioCorrente (USU_tppUsuario pUsuario);
+/***********************************************************************
+*
+*  $FC Função: USU  &USU_PegaDadosUsuarioCorrente
+*
+*  $ED Descrição da função
+*     Retorna um string formatada com os dados de um usuario
+*
+*   $FV Valor retornado
+*     USU_CondRetOK - se tudo correu bem
+*     USU_CondRetNaoInicializado - caso não tenha corrente
+*
+***********************************************************************/ 
+      USU_tpCondRet USU_PegaDadosUsuarioCorrente (USU_tppUsuario pUsuario,
+                                                      char * minhaString);
+
+/***********************************************************************
+*
+*  $FC Função: USU  &PegaDadosAmigosCorrente
+*  $ED Descrição da função
+*     Retorna um string formatada com os dados de todos os amigos do
+*     usuario corrente
+*
+*  $FV Valor retornado
+*     USU_CondRetOK - se tudo correu bem
+*     USU_CondRetSemUsuarios - se não há amigos
+*     USU_CondRetNaoInicializado - caso de ponteiro null
+*
+***********************************************************************/ 
+      USU_tpCondRet USU_PegaDadosAmigosCorrente (USU_tppUsuario pUsuario,
+                                                      char * minhaString);                                                      
 
 
 /***********************************************************************
@@ -278,6 +308,37 @@ typedef struct USU_tagUsuario * USU_tppUsuario ;
 ***********************************************************************/ 
 
       int USU_IrUsuario (USU_tppUsuario pUsuario, char* nome);
+
+/***********************************************************************
+*
+*  $FC Função: USU  &enviaMsgPublica
+*
+*  $ED Descrição da função
+*     Envia mensagem no chat publico
+*
+*  $FV Valor retornado
+*     condretOK - se tudo correu bem
+*     USU_CondRetNaoInicializado - chat null           -
+*
+***********************************************************************/ 
+
+USU_tpCondRet USU_enviaMsgPublica (USU_tppUsuario pUsuario, char * mensagem ,char* nome);
+
+/***********************************************************************
+*
+*  $FC Função: USU  &PegaMsgPublico
+*
+*  $ED Descrição da função
+*     Retorna uma string contendo todas as mensagem do chat publico o usuario
+*     fica responsável por desalocar a memoria do ponteiro retornado
+*
+*  $FV Valor retornado
+*     ponteiro para a msg - se tudo correu bem
+*     NULL - caso contrario           
+*
+***********************************************************************/ 
+
+char* USU_pegaMsgPublico (USU_tppUsuario pUsuario );
 
 #undef USUARIO_EXT
 

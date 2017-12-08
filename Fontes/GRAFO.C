@@ -214,23 +214,22 @@ GRA_tppGrafo GRA_CriarGrafo(void(*ExcluirValor)(void *pDado))
 	 if (atual != NULL)
 	 {//limpando a lista de arestas
 		 LIS_DestruirLista(atual->pVerticeArestas); 
-		 pGrafo->ExcluirValor(atual->valor);
-		 free(atual);
 	 }/*if*/
 	 else
 	 {//nao há o que fazer, lista de vertices vazia
 		 return;
-	 }/*else*/
-		
+	 }/*else*/	
 	 	 	 
 	 while (LIS_AvancarElementoCorrente(Elem, 1) == LIS_CondRetOK)
 	 {		 
 		 //limpa as outras listas de arestas se existirem		 
 		 atual = LIS_ObterValor(Elem);
+		 if(atual == NULL)
+		 {
+			 break;
+		 }
 		 LIS_IrInicioLista(atual->pVerticeArestas);
-		 LIS_DestruirLista(atual->pVerticeArestas);
-		 pGrafo->ExcluirValor(atual->valor);
-		 free(atual);
+		 LIS_DestruirLista(atual->pVerticeArestas);	 
 	 }/*while*/
 
 	 //limpando a lista de vertices
@@ -634,7 +633,83 @@ void GRA_IrFinalOrigens( GRA_tppGrafo pGrafo )
 }
  /* Fim Função: GRA  &IrFinalOrigens */
 
+ /***************************************************************************
+ *
+ *  Função: GRA  &GRA_AvancarElementoAresta
+ *  ****/
+GRA_tpCondRet GRA_AvancarElementoAresta( GRA_tppGrafo pGrafo ,
+                                              int numElem ) 
+{
+		
+	LIS_tpCondRet retorno;
+	if (pGrafo == NULL)
+	{
+		return GRA_CondRetGrafoNulo;
+	}/* if */
+	retorno = LIS_AvancarElementoCorrente (pGrafo->pArestas ,numElem);
 
+	switch (retorno)
+	{
+	case LIS_CondRetFimLista:
+		return GRA_CondRetFimGrafo;
+	case LIS_CondRetListaVazia:
+		return GRA_CondRetGrafoVazia;
+	default:
+		return GRA_CondRetOK;
+		break;
+	}/* switch */
+	
+}											  
+ /* Fim Função: GRA  &GRA_AvancarElementoAresta */
+
+ /***************************************************************************
+ *
+ *  Função: GRA  &GRA_ObterValorAresta
+ *  ****/
+void* GRA_ObterValorAresta(GRA_tppGrafo pGrafo)
+{
+	tpVerticeGrafo * aux;
+	if (pGrafo == NULL)
+	{
+		return NULL;
+	}/* if */
+	
+	aux = LIS_ObterValor(pGrafo->pArestas);
+	if (aux == NULL)
+	{
+		return NULL;
+	}
+	return aux->valor;
+}
+ /* Fim Função: GRA  &GRA_ObterValorAresta */
+ /***************************************************************************
+ *
+ *  Função: GRA  &IrInicioArestas
+ *  ****/
+ void GRA_IrInicioArestas( GRA_tppGrafo pGrafo )
+ {
+	 if (pGrafo == NULL)
+	{
+		return;
+	}/* if */
+
+	LIS_IrInicioLista(pGrafo->pArestas);
+ }
+
+ /* Fim Função: GRA  &IrInicioArestas */
+ /***************************************************************************
+ *
+ *  Função: GRA  &GRA_IrFinalArestas
+ *  ****/
+void GRA_IrFinalArestas( GRA_tppGrafo pGrafo )
+{
+	 if (pGrafo == NULL)
+	{
+		return;
+	}/* if */
+	LIS_IrFinalLista(pGrafo->pArestas);
+}
+ /* Fim Função: GRA  &GRA_IrFinalArestas */
 #ifdef _DEBUG
 /***************************************************************************
  * 	FUNÇÕES DE DEBUG ENCAPSULADAS PELO MODULO

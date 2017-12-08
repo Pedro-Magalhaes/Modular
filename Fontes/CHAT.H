@@ -170,7 +170,7 @@ CHA_tpCondRet CHA_AdicionaIntegrante(CHA_tppChat pChat, void* participante);
 *
 ***********************************************************************/
 
-CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat, char* mensagem, char* remetente);
+CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat, char* mensagem, void* remetente);
 
 /***********************************************************************
 *

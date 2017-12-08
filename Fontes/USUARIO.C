@@ -48,12 +48,14 @@
         int idUsuario;
 
         char * nomeUsuario ;
-                /* String com até 50 caracteres contendo o nome de um usuário */
+        /* String com até 50 caracteres contendo o nome de um usuário */
         char generoUsuario;
-                /* Char contendo o genero do usuário ('F','M' ou 'O' ) */
+        /* Char contendo o genero do usuário ('F','M' ou 'O' ) */
 
         int idadeUsuario ;
-                /* Inteiro com a idade de um usuário */
+        /* Inteiro com a idade de um usuário */
+        LIS_tppLista listaChatPrivado;
+        /* lista com todos os chats privados do usuario */
 
    } tpPerfilUsuario ;
 
@@ -66,6 +68,8 @@ typedef struct USU_tagUsuario {
         int IdSequencial; 
         /* Inteiro sequencial para gerar o id dos usuários */
 
+        CHA_tppChat chatPublico;
+
         #ifdef _DEBUG
                 tpPerfilUsuario * meus_usuarios[MAX_USERS];
                 /* vetor para guardar meus usuários criados (redundancia) */
@@ -77,7 +81,10 @@ typedef struct USU_tagUsuario {
 
 
 /***** Protótipos das funções encapuladas no módulo *****/
+
+static void naoExclui(void* pDado);
 static tpPerfilUsuario* buscaPorNome (GRA_tppGrafo pGrafo, char*nome);
+static USU_tpCondRet formtaDadosUsu (tpPerfilUsuario * usuario,int size,char * minhaString);
 
 static USU_tpCondRet USU_AdicionaUsuario(USU_tppUsuario pUsuario, tpPerfilUsuario* perfil);
 
@@ -114,9 +121,10 @@ USU_tppUsuario USU_InicializarModulo( )
         {
                 return pUsuario;
         } /* if */
+
         pUsuario->pGrafo = GRA_CriarGrafo ( excluirUsuario );
         pUsuario->IdSequencial = 0;
-
+        pUsuario->chatPublico = CHA_CriaChat(pUsuario,naoExclui);
         #ifdef _DEBUG
                 pUsuario->NextPos = 0;
         #endif /* _DEBUG */
@@ -167,6 +175,14 @@ USU_tpCondRet USU_CriaUsuario(USU_tppUsuario pUsuario, char * nome , int idade ,
       GetNewIdUsuario( pUsuario, &perfil->idUsuario ); //atribuindo o Id
 
       retorno = USU_AdicionaUsuario(pUsuario,perfil);
+      if(retorno == USU_CondRetOK)
+      {
+              perfil->listaChatPrivado = LIS_CriarLista(naoExclui); //exclusão manual
+              if(CHA_AdicionaIntegrante(pUsuario->chatPublico,perfil->nomeUsuario) == CHA_CondRetOK)
+                {
+                        return USU_CondRetOK;
+                }/* if */
+      }/* if */
       #ifdef _DEBUG
       if(retorno == USU_CondRetOK)
       {
@@ -327,10 +343,46 @@ USU_tpCondRet USU_DeletarUsuario( USU_tppUsuario pUsuario )
         }/* if */
          return USU_CondRetPerfilIncorreto;
  }
-
 /* Fim função: USU  &Editar Genero */
 
+/***************************************************************************
+*
+*  Função: USU  &enviaMsgPublica
+*  ****/
+USU_tpCondRet USU_enviaMsgPublica (USU_tppUsuario pUsuario,char * mensagem ,char* nome)
+{
+        tpPerfilUsuario * aux;
+        if(pUsuario == NULL)
+        {
+                return USU_CondRetNaoInicializado;
+        }/* if */
 
+        aux=buscaPorNome(pUsuario->pGrafo,nome);
+        if(aux == NULL)
+        {
+                return USU_CondRetSemUsuarios;
+        }/* if */
+        if(CHA_EnviaMensagem(pUsuario->chatPublico,mensagem,aux->nomeUsuario)==CHA_CondRetOK)
+        {
+                return USU_CondRetOK;
+        }
+        return USU_CondRetPerfilIncorreto;
+}
+/* Fim função: USU  &enviaMsgPublica */
+/***************************************************************************
+*
+*  Função: USU  &enviaMsgPublica
+*  ****/
+char* USU_pegaMsgPublico (USU_tppUsuario pUsuario )
+{
+        if(pUsuario != NULL)
+        {
+               return CHA_PegaMensagens(pUsuario->chatPublico);
+        }
+        return NULL;
+}
+
+/* Fim função: USU  &enviaMsgPublica */
 /***************************************************************************
 *
 *  Função: USU  &Total Usuarios
@@ -367,7 +419,64 @@ char* USU_PegaNomeUsuarioCorrente (USU_tppUsuario pUsuario)
         return aux->nomeUsuario;
 }
 
-/* Fim função: USU  &Total Usuarios */
+
+/* Fim função: USU  &PegaDadosUsuarioCorrente */
+/***************************************************************************
+*
+*  Função: USU  &Pega Nome Usuario Corrente
+*  ****/
+USU_tpCondRet USU_PegaDadosUsuarioCorrente (USU_tppUsuario pUsuario,char * minhaString)
+{
+        tpPerfilUsuario * aux;
+        if(pUsuario == NULL)
+        {
+                return USU_CondRetNaoInicializado;
+        }/* if */
+        aux = GRA_ObterValorCorrente(pUsuario->pGrafo);
+        if(aux == NULL)
+        {
+                return USU_CondRetNaoInicializado;
+        }/* if */
+
+        formtaDadosUsu(aux,100,minhaString);
+
+        return USU_CondRetOK;
+}
+/* Fim função: USU  &PegaDadosUsuarioCorrente */
+
+USU_tpCondRet USU_PegaDadosAmigosCorrente (USU_tppUsuario pUsuario,
+                                                      char * minhaString)
+{
+        tpPerfilUsuario * aux;
+         //max 10 usuarios com 50 caracteres de nome + 1 sexo + ate 3 de idade
+        char stringAuxiliar[100];
+        if(pUsuario == NULL)
+        {
+                return USU_CondRetNaoInicializado;
+        }/* if */
+        GRA_IrInicioArestas(pUsuario->pGrafo);
+        aux = GRA_ObterValorAresta(pUsuario->pGrafo);
+        if(aux == NULL)
+        {
+                return USU_CondRetSemUsuarios;
+        }/* if */
+        if(minhaString != NULL)
+        {
+                minhaString[0]='\0';
+        }
+
+        do{
+                aux = GRA_ObterValorAresta(pUsuario->pGrafo);
+                if(aux == NULL)
+                {
+                        break;
+                }
+                formtaDadosUsu(aux,100,stringAuxiliar);
+                strcat_s(minhaString,800,stringAuxiliar);
+        }while(GRA_AvancarElementoAresta(pUsuario->pGrafo,1)==GRA_CondRetOK);
+        GRA_IrInicioArestas(pUsuario->pGrafo);//voltando
+        return USU_CondRetOK;
+}
 /***************************************************************************
 *
 *  Função: USU  &USU_DestruirUsuarios
@@ -391,7 +500,7 @@ void USU_DestruirUsuarios (USU_tppUsuario pUsuario)
         GRA_DestruirGrafo(pUsuario->pGrafo);
         pUsuario->pGrafo = NULL;                
         pUsuario->IdSequencial = 0;
-        free(pUsuario);
+        
 }
 
 /* Fim função: USU  &USU_DestruirUsuarios */
@@ -555,8 +664,25 @@ static USU_tpCondRet verificaPerfil (USU_tppUsuario pUsuario,char * nome, char g
       return USU_CondRetOK;
 }
 
-/* Fim função: USU  &USU_Verifica Perfil */
+/* Fim função: USU  &Verifica Perfil */
 
+/***************************************************************************
+*
+*  Função: USU  &formtaDadosUsu
+*       Formata os dados de perfil do usuario recebido em uma string de pelo
+*       menos 100 caracteres por segurança
+*  ****/
+static USU_tpCondRet formtaDadosUsu (tpPerfilUsuario * usuario,int size,char * minhaString)
+{
+        if(usuario == NULL)
+        {
+                return USU_CondRetSemUsuarios;
+        }
+        sprintf_s(minhaString,size,"\tUsuario: %s\n\tSexo: '%c'\n\tIdade: %d\n",usuario->nomeUsuario,
+                                                                usuario->generoUsuario,usuario->idadeUsuario);
+        return USU_CondRetOK;                                                                
+}
+/* Fim função: USU  &formtaDadosUsu */
 /***************************************************************************
 *
 *  Função: USU  &GetNewIdUsuario
@@ -567,8 +693,7 @@ static void GetNewIdUsuario(USU_tppUsuario pUsuario, int* id_destino)
 {
         if( id_destino == NULL || pUsuario == NULL)
         {
-                printf("Funcao IdUsuario: parametro recebido == NULL abortando\n");
-                exit(-1);
+                return;
         }/* if */
         //incremento a variavel global e atribuo a variavel recebida
         *id_destino = ++pUsuario->IdSequencial; 
@@ -581,16 +706,34 @@ static void GetNewIdUsuario(USU_tppUsuario pUsuario, int* id_destino)
 *       Faz a exclusão dos dados guardados no perfil
 *  ****/
 static void excluirUsuario (void* dado)
-{
+{       
         tpPerfilUsuario * perfil = (tpPerfilUsuario*) dado;
-        free(perfil->nomeUsuario);
+        if(perfil == NULL)
+        {
+                return;
+        }
+        if(perfil != NULL)
+        {
+               free(perfil->nomeUsuario);
+        }
+       
 }
 
 /* Fim função: USU  &excluirUsuario */
-
 /***************************************************************************
 *
-*  Função: USU  &excluir Usuario
+*  Função: USU  &naoExclui
+*       Função passada para o chat, como nenhum dado com alocação dinamica é
+*       passado a função é vazia
+*  ****/
+static void naoExclui(void* pDado)
+{
+
+}
+/* Fim função: USU  &excluirUsuario */
+/***************************************************************************
+*
+*  Função: USU  &naoExclui
 *       Faz a busca de um usuario no grafo recebido por parametro
 *        através no nome também recebido por parametro.
 *       retorna nullo em caso de erro e se não encontrar
