@@ -181,7 +181,7 @@ CHA_tpCondRet CHA_AdicionaIntegrante(CHA_tppChat pChat, void* participante)
 *  Função: CHA  &Envia Mensagem
 *  ****/
 
-CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat, char* mensagem, char* remetente)
+CHA_tpCondRet CHA_EnviaMensagem(CHA_tppChat pChat, char* mensagem, void* remetente)
 {
 	Mensagem *msg;
 	msg = (Mensagem*)malloc(sizeof(Mensagem));
@@ -331,16 +331,6 @@ char* CHA_PegaMensagens(CHA_tppChat pChat)
 	{
 		do
 		{
-			m = (Mensagem*)LIS_ObterValor(pChat->mensagens);
-			aux = m->remetente;
-			for (i = 0; aux[i] != '\0'; i++, j++)
-			{
-				mensagens[j] = aux[i];
-			}/*for*/
-			mensagens[j] = ':';
-			j++;
-			mensagens[j] = ' ';
-			j++;
 			m = (Mensagem*)LIS_ObterValor(pChat->mensagens);
 			aux = m->conteudo;
 			for (i = 0; aux[i] != '\0'; i++, j++)
