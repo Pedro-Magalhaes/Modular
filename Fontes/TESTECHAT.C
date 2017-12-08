@@ -159,7 +159,7 @@ CHA_tppChat   vtchats[ DIM_VT_CHAT ] ;
                        &inxchat, &inxstruct, StringDado1,  &intdado1, StringDado2, &intdado2, &ValEsp) ;
 
             if ( ( numLidos != 7 )
-              || ( ! ValidarInxChat( inxchat , NAO_VAZIO )))
+              || (  ValidarInxChat( inxchat , NAO_VAZIO )))
             {
                return TST_CondRetParm ;
             } /* if */
