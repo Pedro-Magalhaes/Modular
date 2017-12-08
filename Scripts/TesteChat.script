@@ -38,7 +38,7 @@
 =declararparm   SemMensagens    int  3
 =declararparm   NaoAchou   		int  4
 =declararparm   FaltouMemoria   int  5
-=declararparm	NaoEstaNoChat	int  6
+=declararparm	  NaoEstaNoChat	int  6
 
 =declararparm   pNULL          int  0
 =declararparm   pNaoNULL       int  1
@@ -57,9 +57,9 @@
 
 == Adicionar um integrante que já está no chat
 =adicionarintegrante  chat0   struct0   nome0   id0   gen0   idade0   OK
-== Adicionar integrante corretamente
+// Adicionar integrante corretamente
 =adicionarintegrante  chat0   struct1   nome1   id1   gen1   idade1   OK
-== Verificar se o usuario foi mesmo adicionado
+// Verificar se o usuario foi mesmo adicionado
 =verificausuario   	 chat0   struct1   OK
 
 
