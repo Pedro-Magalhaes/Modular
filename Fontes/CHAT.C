@@ -151,6 +151,7 @@ CHA_tpCondRet CHA_VericaUsuario(CHA_tppChat pChat, void* participante)
 
 CHA_tpCondRet CHA_AdicionaIntegrante(CHA_tppChat pChat, void* participante)
 {
+	CHA_tpCondRet ret;
 	if (pChat == NULL)
 	{
 		return CHA_CondRetChatNULL;
@@ -159,8 +160,17 @@ CHA_tpCondRet CHA_AdicionaIntegrante(CHA_tppChat pChat, void* participante)
 	{
 		return CHA_CondRetDadoNULL;
 	}/*if*/
-
-	if (CHA_VericaUsuario(pChat, participante) == CHA_CondRetNaoEstaNoChat)
+	
+	ret = CHA_VericaUsuario(pChat, participante);
+	if(ret == CHA_CondRetChatNULL)
+	{
+		return CHA_CondRetChatNULL;
+	}/*if*/
+	if(ret == CHA_CondRetDadoNULL)
+	{
+		return CHA_CondRetDadoNULL;
+	}/*if*/
+	if (ret == CHA_CondRetNaoEstaNoChat)
 	{
 		LIS_IrFinalLista(pChat->integrantes);
 		if (LIS_InserirElementoApos(pChat->integrantes, participante) != LIS_CondRetOK)
@@ -247,8 +257,10 @@ CHA_tpCondRet CHA_SairChat(CHA_tppChat pChat, void* participante)
 	{
 		return CHA_CondRetDadoNULL;
 	}/*if*/
-	if (CHA_VericaUsuario(pChat, participante) == CHA_CondRetNaoEstaNoChat)
+	if (CHA_VericaUsuario(pChat, participante) == CHA_CondRetOK)
 	{
+		LIS_IrInicioLista(pChat->integrantes);
+		LIS_ProcurarValor(pChat->integrantes, participante);
 		LIS_ExcluirElemento(pChat->integrantes);
 	}/*if*/
 	if (LIS_ObtemTamanho(pChat->integrantes) == 0)
@@ -349,5 +361,3 @@ char* CHA_PegaMensagens(CHA_tppChat pChat)
 }
 
 /* Fim função: CHA  &Pega mensagens */
-
-
