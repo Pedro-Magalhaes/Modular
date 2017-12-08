@@ -159,7 +159,7 @@ CHA_tppChat   vtchats[ DIM_VT_CHAT ] ;
                        &inxchat, &inxstruct, StringDado1,  &intdado1, StringDado2, &intdado2, &ValEsp) ;
 
             if ( ( numLidos != 7 )
-              || (  ValidarInxChat( inxchat , NAO_VAZIO )))
+              || ( ! ValidarInxChat( inxchat , NAO_VAZIO )))
             {
                return TST_CondRetParm ;
             } /* if */
@@ -172,7 +172,6 @@ CHA_tppChat   vtchats[ DIM_VT_CHAT ] ;
 			pDado = (no_teste*) &vtstructs[ inxstruct ];
 
             CondRet = (TST_tpCondRet) CHA_AdicionaIntegrante( vtchats[ inxchat ], pDado  ) ;
-
              if ( CondRet != CHA_CondRetOK )
             {
                //free( pDado ) ; //não foi alocado dinamicamente
@@ -415,4 +414,4 @@ CHA_tppChat   vtchats[ DIM_VT_CHAT ] ;
    } /* Fim função: TCHA -Validar indice do chat */
 
 
-/********** Fim do módulo de implementação: TLIS Teste lista de símbolos **********/
+/********** Fim do módulo de implementação: TCHA Teste lista de símbolos **********/
