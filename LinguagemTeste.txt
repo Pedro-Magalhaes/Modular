@@ -1,0 +1,95 @@
+Documentação dos scripts de teste
+
+TesteLista:
+	=criarlista
+		Recebe um int que equivale ao índice no vetor de listas que ele criará uma lista em.
+		Retorna OK se a lista for criada corretamnete e erro se não for.
+	=destruirlista
+		Recebe um int que equivale ao índice no vetor de listas que ele destruirá a lista.
+		Retorna OK
+	=esvaziarlista
+		Recebe um int que equivale ao índice no vetor de listas que ele esvaziará a lista.
+		Retorna OK
+	=inselemantes
+		Recebe um int que é índice no vetor de lista, quatro strings para formar o no_teste e a condret esperada
+		Retorna uma comparação da condret esperada com a obtida
+	=inselemapos
+		Recebe um int que é índice no vetor de lista, quatro strings para formar o no_teste e a condret esperada
+		Retorna uma comparação da condret esperada com a obtida
+	=obtervalorelem
+		Recebe um int que é índice no vetor de lista, quatro strings para formar o valor esperado e a condret esperada
+		Retorna uma comparação do valor esperado com o ontido
+	=excluirelem
+		Recebe um int que é índice no vetor de lista e uma condret esperada
+		Retorna uma comparação da condret esperada com a recebida
+	=irinicio
+		Recebe um int que é índice no vetor de lista
+		Retorna OK
+	=irfinal
+		Recebe um int que é índice no vetor de lista
+		Retorna OK
+	=avancarelem
+		Recebe um int que é índice no vetor de lista, o numero de elementos para avançar e a condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+		
+TesteChat:
+	=criarchat
+		Recebe índice para o vetor de chats, índice para o vetor de structs e as informações do no_teste a ser criado
+		Retorna uma comparação do chat criado com NULL
+	=adicionarintegrante
+		Recebe índice para o vetor de chats, índice para o vetor de structs e as informações do no_teste a ser criado e a condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+	=enviarmensagem
+		Recebe índice para o vetor de chats, índice para o vetor de structs, a mensagem a ser enviada e a condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+	=sairchat
+		Recebe índice para o vetor de chats, índice para o vetor de structs e a condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+	=deletarchat
+		Recebe índice para o vetor de chats e a condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+	=deletarmensagem
+		Recebe índice para o vetor de chats e a condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+	=pegarmensagem
+		Recebe índice para o vetor de chats e a string esperada
+		Retorna uma comparação entre a string esperada e a recebida
+	=verificarusuario
+		Recebe índice para o vetor de chats, índice para o vetor de structs e a condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+	
+TesteUsuario:
+	=iniciarmodulo
+		Recebe índice para o vetor de modulos usuario
+		Retorna uma comparação do modulo criado com NULL
+	=criarusuario
+		Recebe índice para o vetor de modulos usuario, informações do usuario a ser criado e condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+	=adicionaramigo
+		Recebe índice para o vetor de modulos usuario, nome do novo amigo e condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+	=editarnome
+		Recebe índice para o vetor de modulos usuario, novo nome e condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+	=editaridade
+		Recebe índice para o vetor de modulos usuario, nova idade e condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+	=editargenero
+		Recebe índice para o vetor de modulos usuario, novo genero e condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+	=deletarusuario
+		Recebe índice para o vetor de modulos usuario e condret esperada
+		Retorna uma comparação entre a condret esperada e a recebida
+	=destruirusuarios
+		Recebe índice para o vetor de modulos usuario
+		Retorna comparação entre modulo usuario e NULL
+	=totalusuarios
+		Recebe índice para o vetor de modulos usuario e o valor esperado
+		Retorna comparação entre valor esperado e recebido
+	=pegarcorrente
+		Recebe índice para o vetor de modulos usuario e o nome esperado
+		Retorna comparação entre nome esperado e recebido
+	=irusuario
+		Recebe índice para o vetor de modulos usuario, nome do usuario desejado como novo corrente e o valor esperado
+		Retorna comparação entre valor esperado e recebido
+		
