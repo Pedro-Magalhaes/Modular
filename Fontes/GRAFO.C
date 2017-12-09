@@ -121,6 +121,7 @@ static void LimparCabeca(GRA_tppGrafo pGrafo);  /* por enquanto nao foi utilizad
 static void naoExclui(void * pDado);
 
 #ifdef _DEBUG
+GRA_tpCondRet GRA_DeturpaCabeca (GRA_tppGrafo pGrafo);
 GRA_tpCondRet GRA_VerificaCabeca(GRA_tppGrafo pGrafo);
 GRA_tpCondRet GRA_VerificaVertice(GRA_tppGrafo pGrafo);
 GRA_tpCondRet GRA_VerificaTamanho(GRA_tppGrafo pGrafo);
@@ -713,23 +714,29 @@ void GRA_IrFinalArestas( GRA_tppGrafo pGrafo )
 #ifdef _DEBUG
 /***************************************************************************
  * 	FUNÇÕES DE DEBUG ENCAPSULADAS PELO MODULO
- *  
+ *  ****/ 
 /***************************************************************************
- *  Função: GRA  &Deturpa Cabeca
- * Torna o ponteiro pra cabeça do grafo null
+ *  Função: GRA  &DeturpaGrafo
+ * Faz deturpações no grafo
  *  ****/
-
-GRA_tpCondRet GRA_DeturpaCabeca (GRA_tppGrafo pGrafo)
+GRA_tpCondRet GRA_DeturpaGrafo(GRA_tppGrafo pGrafo,int opcao)
 {
-	if(pGrafo == NULL)
+	switch (opcao)
 	{
-		return GRA_CondRetGrafoNulo;
-	}/* if */
-	pGrafo->pOrigemGrafo = NULL;
-	return GRA_CondRetOK;
+		case 0:
+			return GRA_DeturpaCabeca(pGrafo);
+			break;
+		case 1:
+			return GRA_DeturpaCabeca(pGrafo);
+			break;
+		case 2:
+			return GRA_DeturpaCabeca(pGrafo);
+			break;
+	default:
+			return GRA_CondRetOK;
+			break;
+	}/* switch */
 }
-
-/* Fim Função: GRA  &Deturpa Cabeca */
 
 /***************************************************************************
  *  Função: GRA  &Verificadora
@@ -792,6 +799,22 @@ GRA_tpCondRet GRA_RecuperaCabeca (GRA_tppGrafo pGrafo)
 /***************************************************************************
  * 	FUNÇÕES DE DEBUG ENCAPSULADAS PELO MODULO
  *  
+ /***************************************************************************
+ *  Função: GRA  &Deturpa Cabeca
+ * Torna o ponteiro pra cabeça do grafo null
+ *  ****/
+
+GRA_tpCondRet GRA_DeturpaCabeca (GRA_tppGrafo pGrafo)
+{
+	if(pGrafo == NULL)
+	{
+		return GRA_CondRetGrafoNulo;
+	}/* if */
+	pGrafo->pOrigemGrafo = NULL;
+	return GRA_CondRetOK;
+}
+
+/* Fim Função: GRA  &Deturpa Cabeca */
  /***************************************************************************
  *  Função: GRA  &Verifica Cabeca
  * Verifica se o tipo definido na alocação da memoria da cabeça do grafo está correto

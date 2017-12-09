@@ -7,11 +7,11 @@ Objetos: Biblioteca de teste do arcabouço e os obj e build dos executáveis
 Produto: Os executáveis e os *err
 Scripts: os scripts de teste e estatistica
 
-O modulo gera dois executaveis que são testados separadamente, São eles TesteLista e TesteGrafo. 
+O modulo gera executaveis que são testados separadamente, São eles TesteLista ,TesteGrafoDEBUG , Usuario e Chat. 
 Basicamente, para compilar e executar bastar rodar o Tudo.bat dentro da pasta
 Batches, ele vai gerar os arquivos de diretiva make (na pasta Compos), 
 vai compilar gerando os EXE em Produto juntamente com o *err da compilação, em seguida vai realizar os 
-testes dos dois modulos em separado, utilizando os scrips TestaLista.script e TestaGrafo.script. 
+testes dos dois modulos em separado, utilizando os scrips de teste da pasta Scripts. 
 Tambem é gerado um log com o resultado dos testes na pasta scripts.
 Mantive outros arquivos na Pasta batches como os de geração, compilação e testes individuais. 
 Mantive também o vsvars32.bat e um atalho para o CMD que executa automaticamente 
@@ -21,6 +21,10 @@ $ Testa.bat TesteLista TesteLista
 $ Testa.bat TesteGrafo TesteGrafo
 
 //******* NOVO  ****///
+
+Não implementamos a função de desfazer amizade devido a complicações com a manipulação de chat privado inicialmente iriamos deixar o chat
+mas não conseguiriamos evitar que fosse enviada msg pois o usuario permaneceria com o ponteiro pro chat e depois deletanco tambem gerou
+complicação então optamos por não implementar.
 
 No teste em modo debug do grafo o log de teste diz que o programa ainda tem 4 espaços de memória alocados
 mas isso está ocorrendo porque a função que passo para o grafo fazer a exclusão é "vazia" pra eu não perder minhas

@@ -15,22 +15,22 @@
 =declararparm	struct3 int 3
 
 =declararparm   nome0    string  "Ansem"
-=declararparm	gen0	 string  "M"
+=declararparm	gen0	 char     'M'
 =declararparm	idade0   int	 53
 
 =declararparm   nome1    string  "Faker"
-=declararparm	gen1	 string  "M"
+=declararparm	gen1	 char     'M'
 =declararparm	idade1   int	 21
 
 =declararparm   nome2    string  "Papaco"
-=declararparm	gen2	 string  "O"
+=declararparm	gen2	 char     'O'
 =declararparm	idade2   int	 37  
 
 =declararparm   nome3    string  "IHZ"
-=declararparm	gen3	 string  "F"
+=declararparm	gen3	 char     'F'
 =declararparm	idade3   int	 116  
 
-=declararparm	string0  string	 "A"  
+=declararparm	string0  char	 'A'  
 =declararparm   sNULL    string  "NULL"
 
 

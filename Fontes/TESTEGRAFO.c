@@ -47,7 +47,7 @@ static const char IR_INICIO_CMD           [ ] = "=irinicio"        ;
 static const char AVANCAR_ELEMENTO_CMD    [ ] = "=avancar"        ;
 #ifdef _DEBUG
 static const char VERIFICA_GRAFO_CMD      [ ] = "=verificadora"        ;
-static const char DETURPA_CABECA_CMD      [ ] = "=deturpacabeca"        ;
+static const char DETURPA_GRAFO_CMD      [ ] = "=deturpagrafo"        ;
 static const char RECUPERA_CABECA_CMD     [ ] = "=recuperacabeca"        ;
 #endif
 
@@ -111,7 +111,7 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 *
 * _DEEBUG
 *     =verificadora                 inxgrafo  ValEsp
-*     =deturpacabeca                inxgrafo  ValEsp
+*     =deturpagrafo                 inxgrafo  opcao  ValEsp
 *     =recuperacabeca               inxgrafo  ValEsp
 ***********************************************************************/
 
@@ -122,7 +122,8 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
           numLidos   = -1 ,
           ValEsp = -1 ,
 			    inxstruct =-1,
-          numElem = -1;
+          numElem = -1,
+          opcao = -1;
 
       TST_tpCondRet CondRet ;
 
@@ -514,21 +515,21 @@ GRA_tppGrafo   vtgrafos[ DIM_VT_GRAFO ] ;
 
 		 }/* fim ativa: GRA &Deturpa Cabeça do grafo */
 
-      /*GRA &Deturpa Cabeça do grafo ( torna ponteiro para origem do grafo null */
-            else if ( strcmp( ComandoTeste , DETURPA_CABECA_CMD ) == 0 )
+      /*GRA &Deturpa grafo ( torna ponteiro para origem do grafo null */
+            else if ( strcmp( ComandoTeste , DETURPA_GRAFO_CMD ) == 0 )
 		 {
-			 numLidos = LER_LerParametros( "ii" , &inxgrafo, &ValEsp);
+			 numLidos = LER_LerParametros( "iii" , &inxgrafo,&opcao, &ValEsp);
 
-			 if ( ( numLidos != 2 )
+			 if ( ( numLidos != 3 )
               || ( ! ValidarInxGrafo( inxgrafo , NAO_VAZIO )) )
             {
                return TST_CondRetParm ;
             } /* if */
 
-			 return TST_CompararInt( ValEsp , GRA_DeturpaCabeca(vtgrafos[inxgrafo]) ,
-                     "Erro ao deturpar Cabeça do Grafo."                   ) ;
+			 return TST_CompararInt( ValEsp , GRA_DeturpaGrafo(vtgrafos[inxgrafo],opcao) ,
+                     "Erro ao deturpar  Grafo."                   ) ;
 
-		 }/* fim ativa: GRA &Deturpa Cabeça do grafo */
+		 }/* fim ativa: GRA &Deturpa Grafo do grafo */
 
      /*GRA &RecuperaCabeca*/
      else if ( strcmp( ComandoTeste , RECUPERA_CABECA_CMD ) == 0 )

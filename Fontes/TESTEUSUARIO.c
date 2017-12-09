@@ -97,8 +97,7 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 
       int inxusuario  = -1 ,
           numLidos   = -1 ,
-          ValEsp = -1 ,
-		      inxstruct =-1;
+          ValEsp = -1;
       char genero;
 
       TST_tpCondRet CondRet ;
@@ -108,8 +107,7 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
 	  char   StringDado3[  DIM_VALOR ] ;
 	  char   StringDado4[  DIM_VALOR ] ;
    
-
-    int i = 0;
+   
 	  int intdado1 = 0 ;
 
       
@@ -147,8 +145,8 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
          else if ( strcmp( ComandoTeste , CRIAR_USUARIO_CMD ) == 0 )
          {
 
-            numLidos = LER_LerParametros( "isisi" ,
-                       &inxusuario, StringDado1, &intdado1, StringDado2, &ValEsp ) ;
+            numLidos = LER_LerParametros( "isici" ,
+                       &inxusuario, StringDado1, &intdado1, &genero, &ValEsp ) ;
 
             if ( ( numLidos != 5 )
               || (  ValidarInxusuario( inxusuario , VAZIO )))
@@ -156,7 +154,7 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
                return TST_CondRetParm ;
             } /* if */
 
-            CondRet = (TST_tpCondRet) USU_CriaUsuario(vtusuarios[ inxusuario ], StringDado1, intdado1, StringDado2[0] ) ;
+            CondRet = (TST_tpCondRet) USU_CriaUsuario(vtusuarios[ inxusuario ], StringDado1, intdado1, genero ) ;
 
             return TST_CompararInt( ValEsp , CondRet ,
                      "Condicao de retorno errada ao criar usuario.") ;
@@ -256,8 +254,8 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
          else if ( strcmp( ComandoTeste , EDITAR_GENERO_CMD ) == 0 )
          {
 
-            numLidos = LER_LerParametros( "isi" ,
-                               &inxusuario, StringDado1, &ValEsp ) ;
+            numLidos = LER_LerParametros( "ici" ,
+                               &inxusuario, &genero, &ValEsp ) ;
 
             if ( ( numLidos != 3 )
               || ( ! ValidarInxusuario( inxusuario , NAO_VAZIO )))
@@ -265,7 +263,7 @@ USU_tppUsuario   vtusuarios[ DIM_VT_USUARIO ] ;
                return TST_CondRetParm ;
             } /* if */
 
-            CondRet = (TST_tpCondRet) USU_EditarGenero( vtusuarios[ inxusuario ] , StringDado1[0] ) ;
+            CondRet = (TST_tpCondRet) USU_EditarGenero( vtusuarios[ inxusuario ] , genero ) ;
             
 
             return TST_CompararInt( ValEsp , CondRet ,

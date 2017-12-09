@@ -73,7 +73,6 @@ int main (void)
 {    
     int opcao;
     char * nome;
-    int size = 0;
     USU_tppUsuario minhaRede;
     opcao = 1;
     minhaRede = USU_InicializarModulo();
@@ -88,7 +87,7 @@ int main (void)
         {
             printf("\nRede atualmente sem usuarios\n");
         }/* else */
-        printf ("Digite o que deseja fazer:\n\t0- Finalizar execucao\n\t1- Criar Usuario\n\t2- Remover Usuario atual\n\t3- Adicionar Amigo\n\t4- Perfil Atual\n\t5- Assumir outro usuario\n\t6- Mostrar Amigos\n\t7- Mensagens\n\t8- Ver todos usuarios\n");
+        printf ("Digite o que deseja fazer:\n\t0- Finalizar execucao\n\t1- Criar Usuario\n\t2- Remover Usuario atual\n\t3- Adicionar Amigo\n\t4- Meu perfil\n\t5- Assumir outro usuario\n\t6- Mostrar Amigos\n\t7- Mensagens\n\t8- Ver todos usuarios\n");
         scanf("%d",&opcao);        
         switch (opcao)
         {
@@ -134,14 +133,19 @@ void criarUsuario (USU_tppUsuario minhaRede)
     char nome[MAXNOME];
     int idade;
     char genero;
+    int totalUsuarios;
+    totalUsuarios = USU_TotalUsuarios(minhaRede);
+    if(totalUsuarios > 10)
+    {
+        printf("Numero Maximo de usuarios atingido. (10) delete alguem para tentar novamente\n");
+        return;
+    }
     RED_retorno = pegaAtributosUsuario(minhaRede,nome, &idade , &genero);
     if(RED_retorno == RED_CondRetOK)
-    {
-        printf("Perfil correto, inserindo usuario...\n");
+    {        
         USU_retorno = USU_CriaUsuario(minhaRede,nome,idade,genero);
         if(USU_retorno == USU_CondRetOK)
         {
-            printf("Usuario inserido\n");
             return;
         }/* if */
         if(USU_retorno == USU_CondRetFaltouMemoria)
@@ -494,7 +498,7 @@ void pegaMsgPublica(USU_tppUsuario minhaRede,char* nome)
 
     msg = USU_pegaMsgPublico(minhaRede);
     printf("\tMensagens:\n%s",msg);
-    free(msg);
+    free(msg);//msg é alocada dentro de outro modulo e é responsabilidade do usuario remover
 }
 void pegaMsgPrivada(USU_tppUsuario minhaRede,char* nome)
 {
@@ -524,7 +528,7 @@ void pegaMsgPrivada(USU_tppUsuario minhaRede,char* nome)
     
     msg = USU_pegaMsgPrivado(minhaRede,destinatario);
     printf("\tMensagens:\n%s",msg);
-    free(msg);//msg é alocada dentro do modu e é responsabilidade do usuario remover
+    free(msg);//msg é alocada dentro de outro modulo e é responsabilidade do usuario remover
 }
 void preencheMsg(char * msg,char * nome)
 {
@@ -549,9 +553,10 @@ void loopPerfil (USU_tppUsuario minhaRede,char* nome)
         return;
     }/* if */
     printf("Digite o que deseja fazer:\n\t0- Voltar\n\t1- Editar Perfil\n\t2 -Ver perfil\n");    
-    scanf(" %d",&opcao);
+    scanf("%d",&opcao);
     do
     {
+        fflush(stdin);
         if(opcao == 1)
         {
             editarPerfil(minhaRede,nome);
@@ -566,7 +571,8 @@ void loopPerfil (USU_tppUsuario minhaRede,char* nome)
             return;
         }/* if */
         printf("Digite o que deseja fazer:\n\t0- Voltar\n\t1- Editar Perfil\n\t2 -Ver perfil\n"); 
-    }while(scanf(" %d",&opcao));
+    }while(scanf("%d",&opcao)==1);
+    fflush(stdin);
     
 }
 
@@ -579,9 +585,10 @@ void loopMensgens (USU_tppUsuario minhaRede,char* nome)
         return;
     }/* if */
     printf("Digite o que deseja fazer:\n\t0- Voltar\n\t1- Enviar msg publica\n\t2 -Ver msgs Publicas\n\t3- enviar msg privada\n\t4- Ver msg privada\n");
-    scanf(" %d",&opcao);
+    scanf("%d",&opcao);
     do
     {
+        fflush(stdin);
         switch (opcao)
         {
             case 0:
@@ -603,7 +610,7 @@ void loopMensgens (USU_tppUsuario minhaRede,char* nome)
         }/* switch */
         
         printf("Digite o que deseja fazer:\n\t0- Voltar\n\t1- Enviar msg publica\n\t2 -Ver msgs Publicas\n\t3- enviar msg privada\n\t4- Ver msg privada\n");
-    }while(scanf(" %d",&opcao));
+    }while(scanf("%d",&opcao)==1);
 }
 
 void mostraUsuarios(USU_tppUsuario minhaRede)

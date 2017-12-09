@@ -113,7 +113,8 @@ static void GetNewIdUsuario(USU_tppUsuario pUsuario,int* Id_destino);
 
 static void excluirUsuario (void* usuario);
 
-static USU_tpCondRet verificaPerfil (USU_tppUsuario pUsuario,char * nome, char genero , int idade);
+static USU_tpCondRet verificaPerfil (USU_tppUsuario pUsuario,char * nome, 
+                                     char genero , int idade);
 static USU_tpCondRet verificaNome (USU_tppUsuario pUsuario,char * nome);
 static USU_tpCondRet verificaIdade (int idade);
 static USU_tpCondRet verificaGenero (char genero );

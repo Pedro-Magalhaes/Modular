@@ -1,7 +1,7 @@
-// Script:    TesteGrafo.script
-// Autor:     Yan Gurevitz , Pedro Felipe
+// Script:    TesteGrafoDeturpa.script
+// Autor:     Pedro Felipe
 // Data:      02/dezembro/2017
-// Prop�sito: Testar superficialmente o módulo grafo
+// Prop�sito: Testar as funções de deturpar, verificar e recuperar
 //
 
 

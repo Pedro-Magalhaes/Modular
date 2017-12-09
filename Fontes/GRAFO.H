@@ -505,7 +505,7 @@ int GRA_QntArestas(GRA_tppGrafo pGrafo);
 ***********************************************************************/
 
 #ifdef _DEBUG
-GRA_tpCondRet GRA_DeturpaCabeca(GRA_tppGrafo pGrafo);
+GRA_tpCondRet GRA_DeturpaGrafo(GRA_tppGrafo pGrafo,int opcao);
 GRA_tpCondRet GRA_Verificadora(GRA_tppGrafo pGrafo);
 GRA_tpCondRet GRA_RecuperaCabeca(GRA_tppGrafo pGrafo);
 #endif
