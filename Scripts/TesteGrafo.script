@@ -41,6 +41,11 @@
 =declararparm   FaltouMemoria   int  4
 =declararparm   GrafoNulo       int  5
 =declararparm	VerticeJaExiste	int  6
+=declararparm   TipoIncorreto   int  7
+=declararparm   ArestaIncorreto int  8
+=declararparm   VerticeIncorreto int  9
+=declararparm   OrigemPerdida   int  10
+=declararparm   VerticeNaoPertenceGrafo int 11
 
 =declararparm   pNULL          int  0
 =declararparm   pNaoNULL       int  1
@@ -187,6 +192,10 @@
 == Testando ir final
 =irfinal    grafo2
 =obtervalorcorrente  grafo2  str4   str9   str2   str7   pNaoNULL
+
+==Testando Funcao deturpa 2 - muda o id do grafo
+=deturpagrafo grafo2 1 OK
+=verificadora grafo2 VerticeNaoPertenceGrafo
 
 == Destruir o grafo
 =destruirgrafo   grafo2

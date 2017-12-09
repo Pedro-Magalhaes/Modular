@@ -505,8 +505,64 @@ int GRA_QntArestas(GRA_tppGrafo pGrafo);
 ***********************************************************************/
 
 #ifdef _DEBUG
+/***********************************************************************
+*
+*  $FC Função: GRA  &GRA_DeturpaGrafo
+*
+*  $ED Descrição da função
+*     Indica quantidade de arestas do vertice corrente em determinado grafo.
+*
+*  $EP Parâmetros
+*     pGrafo  - ponteiro para a cabeça do grafo 
+*	  opcao		- inteiro indicando a opçao desejada: 
+*					0 para deturpar origens e 1 para deturpar o ID da cabeça
+*					do grafo
+*     
+*
+*  $FV Valor retornado
+* condretOK se conseguiu deturpar
+* GRA_CondRetGrafoNulo - caso o ponteiro recebido seja null
+*
+***********************************************************************/
 GRA_tpCondRet GRA_DeturpaGrafo(GRA_tppGrafo pGrafo,int opcao);
+/***********************************************************************
+*
+*  $FC Função: GRA  &Verificadora
+*
+*  $ED Descrição da função
+*     Faz verificações no grafo para verificar a integridade do mesmo, no caso de 
+*	  perceber que a origem do grafo foi perdida faz a recuperação através de uma redundancia
+*
+*  $EP Parâmetros
+*     pGrafo  - ponteiro para a cabeça do grafo onde a verificação vai ocorrer
+*     
+*
+*
+*
+***********************************************************************/
 GRA_tpCondRet GRA_Verificadora(GRA_tppGrafo pGrafo);
+/***********************************************************************
+*
+*  $FC Função: GRA  &QntArestas
+*
+*  $ED Descrição da função
+*     Indica quantidade de arestas do vertice corrente em determinado grafo.
+*
+*  $EP Parâmetros
+*     pGrafo  - ponteiro para a grafo onde procurar o numero de arestas do vertice corrente
+*     
+*
+*  $FV Valor retornado
+*	
+*	GRA_CondRetNumeroArestaIncorreto -  Numero de arestas é menor que o numero esperado para o vertice 
+*	
+*	GRA_CondRetNumeroVerticeIncorreto -numero de elementos da lista é diferente do numero de vertices inseridos
+*	
+*	GRA_CondRetOrigemPerdida -  ponteiro para a Origem do grafo foi perdido 
+*	
+*	GRA_CondRetVerticeNaoPertenceGrafo - Vertice tem ID diferente do ID da cabeça do grafo
+*
+***********************************************************************/
 GRA_tpCondRet GRA_RecuperaCabeca(GRA_tppGrafo pGrafo);
 #endif
 

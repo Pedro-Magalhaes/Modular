@@ -121,6 +121,7 @@ static void LimparCabeca(GRA_tppGrafo pGrafo);  /* por enquanto nao foi utilizad
 static void naoExclui(void * pDado);
 
 #ifdef _DEBUG
+GRA_tpCondRet GRA_DeturpaIDgrafo(GRA_tppGrafo pGrafo);
 GRA_tpCondRet GRA_DeturpaCabeca (GRA_tppGrafo pGrafo);
 GRA_tpCondRet GRA_VerificaCabeca(GRA_tppGrafo pGrafo);
 GRA_tpCondRet GRA_VerificaVertice(GRA_tppGrafo pGrafo);
@@ -727,11 +728,8 @@ GRA_tpCondRet GRA_DeturpaGrafo(GRA_tppGrafo pGrafo,int opcao)
 			return GRA_DeturpaCabeca(pGrafo);
 			break;
 		case 1:
-			return GRA_DeturpaCabeca(pGrafo);
-			break;
-		case 2:
-			return GRA_DeturpaCabeca(pGrafo);
-			break;
+			return GRA_DeturpaIDgrafo(pGrafo);
+			break;		
 	default:
 			return GRA_CondRetOK;
 			break;
@@ -815,6 +813,20 @@ GRA_tpCondRet GRA_DeturpaCabeca (GRA_tppGrafo pGrafo)
 }
 
 /* Fim Função: GRA  &Deturpa Cabeca */
+ /***************************************************************************
+ *  Função: GRA  &DeturpaIDgrafo
+ * Torna a variavel de verificação ID do grafo diferente da que era antes
+ *  ****/
+GRA_tpCondRet GRA_DeturpaIDgrafo(GRA_tppGrafo pGrafo)
+{
+	if (pGrafo != NULL)
+	{
+		pGrafo->idGrafo++;
+		return GRA_CondRetOK;
+	}/* if */
+	return GRA_CondRetGrafoNulo;
+}
+
  /***************************************************************************
  *  Função: GRA  &Verifica Cabeca
  * Verifica se o tipo definido na alocação da memoria da cabeça do grafo está correto

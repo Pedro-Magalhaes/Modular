@@ -1,0 +1,152 @@
+//colocar como linguagem c no editor de texto ajuda
+//INICIO DOS CONTADORES -1
+GRA_tpCondRet GRA_Verificadora(GRA_tppGrafo pGrafo)
+{
+    // Contador Verificadora inicio-1
+	GRA_tpCondRet retorno;
+	if (pGrafo == NULL)
+	{
+        // Contador Verificadora grafoNULL-2
+		return GRA_CondRetGrafoNulo;
+	}/* if */
+
+	/* Faz duas verificações se o tipo da cabeça está correto e se a origem foi perdida,
+		no segundo caso vamos usar a redundancia para recupera-la
+	 */
+	retorno = GRA_VerificaCabeca(pGrafo);
+     // Contador Verificadora apos funcao verificaCabeca-6
+	if (retorno != GRA_CondRetOK)
+	{
+		if ( retorno == GRA_CondRetOrigemPerdida )
+		{//vou usar a função de recuperação
+        //CONTADOR USANDOFUNCAO DE RECUPERAçao - 7
+			GRA_RecuperaCabeca(pGrafo);
+		}/* if */
+		else
+		{
+            //CONTADOR outroerro - 8
+			return retorno;
+		}/* else */
+		
+	}/* if */
+	
+	/* Percorre todos os vertices do grafo verificando:
+ * 		1- Se o tipo alocado está correto 
+ * 		2- Se o numero de arestas está correto	
+ * 		3- Se o id dos vertices é o mesmo do grafo a que pertence */
+	retorno = GRA_VerificaVertice(pGrafo);
+	
+	if (retorno != GRA_CondRetOK)
+	{
+        //CONTADOR FINALNAOOKVERIFICA - 20
+		return retorno;
+	}/* if */
+ //CONTADOR FINALOKVERIFICA - 20
+	return GRA_CondRetOK;
+}
+//CONTADORES AQUI COMECAM EM 3
+GRA_tpCondRet GRA_VerificaCabeca(GRA_tppGrafo pGrafo)
+{
+	if (pGrafo == NULL)
+	{
+        //contador grafoNULL IMPOSSIVEL POIS JA FOI TESTADO -3
+		return GRA_CondRetGrafoNulo;
+	}/* if */
+	if( TST_CompararInt(GRA_TipoCabeca,
+		CED_ObterTipoEspaco(pGrafo),
+		"Tipo cabeça errado") != TST_CondOK)
+			{
+                //CONTADOR IMPOSSIVEL NAO CONSIGO alterar? -4
+				return GRA_CondRetTipoIncorreto;
+			}
+	if(pGrafo->pOrigemGrafo == NULL && pGrafo->_pOrigemGrafoRedundante != NULL)
+	{
+        //CONTADOR ORRIGEM DETURPADA -5
+		return GRA_CondRetOrigemPerdida;
+	}
+	return GRA_CondRetOK;	
+}
+
+//CONTADORES COMECAO EM 9
+GRA_tpCondRet GRA_VerificaVertice(GRA_tppGrafo pGrafo)
+{
+	tpVerticeGrafo * auxiliar;
+	tpVerticeGrafo * verticeInicial;
+	GRA_tpCondRet retorno;
+
+	if (pGrafo == NULL)
+	{
+        //CONTADOR IMPOSSIVEL JA VERIFICADO - 9
+		return GRA_CondRetGrafoNulo;
+	}/* if */
+
+	verticeInicial = LIS_ObterValor(pGrafo->pOrigemGrafo);
+
+	if( verticeInicial == NULL )
+	{
+        //CONTADOR GRAFO VAZIA -10
+		return GRA_CondRetGrafoVazia;
+	}/* if */
+	LIS_IrInicioLista(pGrafo->pOrigemGrafo);
+	do{
+        //CONTADOR LOOP verificaTipo vertice - 11
+		auxiliar = LIS_ObterValor(pGrafo->pOrigemGrafo);
+
+		if(auxiliar == NULL)
+		{//não poderia entrar aqui por causa da assertiva do verticeInicial
+			return GRA_CondRetGrafoVazia;
+		}/* if */
+
+		if(TST_CompararInt(GRA_TipoVertice,
+			CED_ObterTipoEspaco(auxiliar),
+			"Tipo vertice errado") != TST_CondOK)
+			{
+                //CONTADOR verticetipoIncorreto - 12
+				return GRA_CondRetTipoIncorreto;
+			}/* if */
+		if( TST_CompararInt(auxiliar->numArestas,
+		LIS_ObtemTamanho(auxiliar->pVerticeArestas),
+		"Numero de arestas incompativel") != TST_CondOK)		
+		{
+            //CONTADOR numero de arestas incompativel
+			return GRA_CondRetNumeroArestaIncorreto;
+		}
+		retorno = GRA_VerificaId(pGrafo,auxiliar);
+		if ( retorno != GRA_CondRetOK)
+		{//pode retornar grafo null, grafo vazio ou vertice nao pertence ao grafo
+        //CONTADOR ERRODECTADO VERIFICAID - 17
+			return retorno;
+		}
+	}while(LIS_AvancarElementoCorrente(pGrafo->pOrigemGrafo,1) == LIS_CondRetOK);
+
+	if( auxiliar != verticeInicial ) //recuperando o vertice corrente
+	{
+        //CONTADOR FINALOKVERIFICAVERTCEEDIFERENTE - 18
+		LIS_ProcurarValor(pGrafo->pOrigemGrafo,verticeInicial);
+	}		
+    //CONTADOR FINALOKVERIFICAVERTCE - 19
+	return GRA_CondRetOK;	
+}
+
+//CONTADOR inicia 13
+GRA_tpCondRet GRA_VerificaId(GRA_tppGrafo pGrafo , tpVerticeGrafo * vertice)
+{
+	if (pGrafo == NULL)
+	{// não deve ocorerr pois a função que chama já trata isso
+        //CONTADOR IMPOSIIVEL -13
+		return GRA_CondRetGrafoNulo;
+	}/* if */
+	if (vertice == NULL)
+	{//se recebi nulo significa que a lista de origens estava vazia
+        //CONTADOR IMPOSSIVEL -14
+		GRA_CondRetGrafoVazia;
+	}/* if */
+	
+	if (pGrafo->idGrafo != vertice->idGrafo)
+	{
+        //CONTADOR - IDGRAFO DIFERENTE DE VERTICE - 15
+		return GRA_CondRetVerticeNaoPertenceGrafo;
+	}
+    //CONTADOR ID OK -16
+	return GRA_CondRetOK;
+}
